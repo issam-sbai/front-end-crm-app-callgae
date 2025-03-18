@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Node modules
 node_modules/
 
@@ -17,5 +18,3 @@ yarn-error.log*
 .vscode/
 
 # OS-specific files
-.DS_Store
-Thumbs.db
