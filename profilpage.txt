@@ -1,0 +1,116 @@
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchClients, updateClientById, addClient } from '../../features/clientSlice'; // Corrected import
+import ProfileSidebar from './ProfileSidebar';
+import ProfileForm from './ProfileForm';
+import FooterButtons from './FooterButtons';
+import RdvSection from './RdvSection';
+
+// Default static client data
+const staticClientData = {
+  idRdv: "R001",
+  nomPrenom: "John Doe",
+  entreprise: "ABC Ltd.",
+  telephone: "555-987-6543",
+  adresse: "123 Main St.",
+  cp: "75001",
+  email: "john.doe@example.com",
+  agentId: "A1",
+  dateRdv: "2025-03-20",
+  typeRdv: "Extérieur",
+  commentaire: "No comments",
+  siret: "123456789",
+  statut: "Confirmed",
+  civilite: "M.",
+  telephone2: "555-222-3333"
+};
+
+export default function ProfilePage() {
+  const dispatch = useDispatch();
+  const { clients, loading } = useSelector((state) => state.client); // Get data from Redux
+  const clientDataFromAPI = clients.length > 0 ? clients[0] : null; // Get first client from Redux if available
+
+  const [clientData, setClientData] = useState(clientDataFromAPI || staticClientData);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingField, setEditingField] = useState(null);
+  const [changesCount, setChangesCount] = useState(0);
+
+  // Fetch client data from API when component mounts
+  useEffect(() => {
+    dispatch(fetchClients());
+  }, [dispatch]);
+
+  // Update local state when Redux store updates
+  useEffect(() => {
+    setClientData(clientDataFromAPI || staticClientData);
+  }, [clientDataFromAPI]);
+
+  // Track changes count
+  useEffect(() => {
+    let changes = 0;
+    for (let key in clientData) {
+      if (clientData[key] !== (clientDataFromAPI || staticClientData)[key]) {
+        changes++;
+      }
+    }
+    setChangesCount(changes);
+  }, [clientData, clientDataFromAPI]);
+
+  // Handle input change
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setClientData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  // Save changes to Redux
+  const handleSave = () => {
+    if (clientDataFromAPI) {
+      dispatch(updateClientById({ id: clientData._id, clientData })); // Use updateClientById
+    } else {
+      dispatch(addClient(clientData)); // Add new client if no API data
+    }
+    setIsEditing(false);
+    setEditingField(null);
+  };
+
+  // Cancel edit
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditingField(null);
+    setClientData(clientDataFromAPI || staticClientData);
+  };
+
+  // Handle edit click
+  const handleEditClick = (field) => {
+    setEditingField(field);
+    setIsEditing(true);
+  };
+
+  return (
+    <section style={{ backgroundColor: '#fff', minHeight: '100vh' }}>
+      <div className="container-fluid py-3" style={{ maxWidth: '100%' }}>
+        <div className="row">
+          <ProfileSidebar clientData={clientData} />
+          <ProfileForm
+            clientData={clientData}
+            editingField={editingField}
+            handleInputChange={handleInputChange}
+            handleEditClick={handleEditClick}
+          />
+          {/* Pass clientData to RDV Section */}
+          <RdvSection rdvs={[clientData]} />
+        </div>
+      </div>
+      {isEditing && (
+        <FooterButtons
+          changesCount={changesCount}
+          handleSave={handleSave}
+          handleCancel={handleCancel}
+        />
+      )}
+    </section>
+  );
+}
