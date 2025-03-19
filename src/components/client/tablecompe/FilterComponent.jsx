@@ -11,7 +11,7 @@ const FilterComponent = ({ onApplyFilter }) => {
   const [cp, setCp] = useState('');
   const [statut, setStatut] = useState('');
   const [typeRdv, setTypeRdv] = useState('');
-  const [dateRdv, setDateRdv] = useState('');
+  const [dateRdv, setDateRdv] = useState(''); // Added state for dateRdv
 
   const handleFilter = () => {
     // Collect the filter data
@@ -25,11 +25,28 @@ const FilterComponent = ({ onApplyFilter }) => {
       cp,
       statut,
       typeRdv,
-      dateRdv,
+      dateRdv, // Including dateRdv in the filter data
     };
 
     // Apply filter by sending the filter data to the parent component (ClientComponent)
     onApplyFilter(filterData);
+  };
+
+  const handleCleanFilter = () => {
+    // Reset all filter fields to their initial state
+    setName('');
+    setPhone('');
+    setAddress('');
+    setAgentId('');
+    setCivilite('');
+    setEntreprise('');
+    setCp('');
+    setStatut('');
+    setTypeRdv('');
+    setDateRdv(''); // Reset the dateRdv field
+
+    // Optionally, reset the filtered clients in the parent component as well
+    onApplyFilter({});
   };
 
   return (
@@ -122,12 +139,15 @@ const FilterComponent = ({ onApplyFilter }) => {
                 type="date"
                 placeholder="Filter by Date RDV"
                 value={dateRdv}
-                onChange={(e) => setDateRdv(e.target.value)}
+                onChange={(e) => setDateRdv(e.target.value)} // Handling date input change
               />
             </div>
-            <Button variant="success" onClick={handleFilter}>
+            <Button variant="btn btn-success mb-3" onClick={handleFilter}> 
               Apply Filter
             </Button>
+            <button className="btn btn-warning mb-3" onClick={handleCleanFilter}> 
+              Clean Filter
+            </button>
           </div>
         </Form>
       </Card>
