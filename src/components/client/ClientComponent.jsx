@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchClients, addClient, removeClient, fetchClientsByAgentId } from '../../features/clientSlice';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import FilterComponent from './tablecompe/FilterComponent';
 
 const ClientComponent = () => {
-  const userRole = localStorage.getItem("role"); // Get role from localStorage
-  const agentId = localStorage.getItem("agentId"); // Get agentId from localStorage
+  const userRole = localStorage.getItem("role");
+  const agentId = localStorage.getItem("agentId");
 
   const dispatch = useDispatch();
   const clients = useSelector((state) => state.clients.clientsx);
@@ -16,13 +17,16 @@ const ClientComponent = () => {
   const error = useSelector((state) => state.clients.error);
 
   const [showAddModal, setShowAddModal] = useState(false);
+  const [filteredClients, setFilteredClients] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const clientsPerPage = 15;
 
   useEffect(() => {
     if (status === 'idle') {
       if (userRole === 'admin') {
-        dispatch(fetchClients()); // Fetch clients for admin
+        dispatch(fetchClients());
       } else if (userRole === 'agent') {
-        dispatch(fetchClientsByAgentId(agentId)); // Fetch clients for a specific agent
+        dispatch(fetchClientsByAgentId(agentId));
       }
     }
   }, [dispatch, status, userRole, agentId]);
@@ -49,6 +53,34 @@ const ClientComponent = () => {
     });
   };
 
+  const handleFilter = (filterData) => {
+    fetch('http://192.168.100.26:5000/api/clients/filterClients', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(filterData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFilteredClients(data);
+        console.log("Filtered Clients:", data);
+      })
+      .catch((error) => {
+        console.error('Error filtering clients:', error);
+      });
+  };
+
+  const indexOfLastClient = currentPage * clientsPerPage;
+  const indexOfFirstClient = indexOfLastClient - clientsPerPage;
+  const currentClients = filteredClients.length > 0 ? filteredClients : clients;
+  const displayedClients = currentClients.slice(indexOfFirstClient, indexOfLastClient);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(currentClients.length / clientsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
   const columns = [
     {
       header: 'Nom / Prénom',
@@ -69,7 +101,7 @@ const ClientComponent = () => {
       header: 'Actions',
       render: (client) => (
         userRole !== 'agent' && (
-          <button className="btn btn-danger" onClick={() => handleDeleteClient(client._id)}>
+          <button className="btn btn-danger btn-sm" onClick={() => handleDeleteClient(client._id)}>
             Delete
           </button>
         )
@@ -88,15 +120,43 @@ const ClientComponent = () => {
   return (
     <div>
       {userRole !== 'agent' && (
-        <button className="btn btn-primary mb-3" onClick={() => setShowAddModal(true)}>
-          Add Client
-        </button>
+        <div>
+          <FilterComponent onApplyFilter={handleFilter} />
+          <button className="btn btn-primary mb-3" onClick={() => setShowAddModal(true)}>
+            Add Client
+          </button>
+        </div>
       )}
 
-      <TableComponent columns={columns} data={clients} />
+      <TableComponent columns={columns} data={displayedClients} />
+      <br />
 
       <div className="d-flex justify-content-center mt-3">
-        {/* Pagination controls */}
+        <button
+          className="btn btn-secondary mr-2"
+          onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+
+        {pageNumbers.map((number) => (
+          <button
+            key={number}
+            className={`btn ${currentPage === number ? 'btn-primary' : 'btn-light'} mx-1`}
+            onClick={() => setCurrentPage(number)}
+          >
+            {number}
+          </button>
+        ))}
+
+        <button
+          className="btn btn-secondary ml-2"
+          onClick={() => setCurrentPage(currentPage < pageNumbers.length ? currentPage + 1 : currentPage)}
+          disabled={currentPage === pageNumbers.length}
+        >
+          Next
+        </button>
       </div>
 
       <AddClientModal show={showAddModal} onHide={() => setShowAddModal(false)} onAdd={handleAddClient} />
