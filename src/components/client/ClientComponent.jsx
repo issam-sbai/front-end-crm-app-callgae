@@ -6,6 +6,7 @@ import { fetchClients, addClient, removeClient, fetchClientsByAgentId } from '..
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import FilterComponent from './tablecompe/FilterComponent';
+import { Button } from 'primereact/button';
 
 const ClientComponent = () => {
   const userRole = localStorage.getItem("role");
@@ -169,18 +170,29 @@ const ClientComponent = () => {
     },
     { header: 'Date RDV', field: 'dateRdv' },
     {
-      header: '',
+      header: 'Delete',
       render: (client) => (
         userRole !== 'agent' && (
-          <div
-            onClick={() => handleDeleteClient(client._id)}
-            style={{ cursor: 'pointer', display: 'inline-block' }}
-          >
-            <i className="pi pi-times text-danger" style={{ fontSize: '1rem' }}></i> {/* Red delete icon */}
+          <div style={{ display: 'inline-block' }}>
+            <Button 
+              icon="pi pi-times" 
+              rounded 
+              text 
+              raised 
+              severity="danger" 
+              aria-label="Cancel"
+              onClick={() => handleDeleteClient(client._id)} // Handling delete
+              style={{
+                width: '40px',
+                height: '40px',
+                padding: '0',
+                borderRadius: '50%',  // Ensures it's perfectly round
+              }} 
+            />
           </div>
         )
       ),
-    },
+    }
   ];
 
   if (status === 'loading') {

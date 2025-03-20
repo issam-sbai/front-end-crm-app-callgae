@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RdvCard from './PlanningComp/RdvCard';
 import FilterComponent from './PlanningComp/FilterComponentPlanning';
+import { Button } from 'primereact/button';
 
 
 // Helper to format a Date object as YYYY-MM-DD
@@ -256,8 +257,8 @@ const PlanningPage = () => {
       <div className="container-fluid align-items-center  px-1 my-4">
 
         <div className="d-flex align-items-center mb-4 px-0" style={{ gap: '10px' }}>
-          <button onClick={handlePreviousWeek} className="btn btn-outline-primary">Previous Week</button>
-          <button onClick={handleNextWeek} className="btn btn-outline-primary">Next Week</button>
+          <button onClick={handlePreviousWeek} className="btn btn-success">Previous Week</button>
+          <button onClick={handleNextWeek} className="btn btn-success">Next Week</button>
           <h5 className="m-0">{monday.toLocaleString('default', { month: 'short' }).toUpperCase()} {monday.getFullYear()}</h5>
         </div>
 
@@ -276,16 +277,12 @@ const PlanningPage = () => {
             return (
               <div key={date.toISOString()} className="col px-1 mb-0">
                 <div className="card h-100">
-                  <div className="card-header d-flex align-items-center bg-secondary text-white">
-                    <div className="text-center me-3" style={{ minWidth: '60px' }}>
-                      <div style={{ fontSize: '0.9rem' }}>{monthAbbr}</div>
-                      <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{dayNumber}</div>
-                    </div>
-                    <div>
-                      <div>{day}</div>
-                      <small>{formatDate(date)}</small>
+                  <div className="card-header d-flex flex align-items-center text-red" style={{ margin: 0, padding: 0 }}>
+                    <div className="text-center px-3 " style={{ minWidth: '60px', margin: 0, padding: 5 ,color: 'rgb(26, 115, 232)' }}>
+                      <div style={{ fontSize: '1rem', margin: 0, padding: 0 }}> <b> {monthAbbr} </b> {dayNumber}</div>
                     </div>
                   </div>
+
                   <div className="card-body px-1  ">
                     {dayAppointments.length > 0 ? (
                       dayAppointments.map(apt => (

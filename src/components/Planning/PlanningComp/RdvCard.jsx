@@ -2,58 +2,55 @@ import React from 'react';
 import "primeicons/primeicons.css"; // Import PrimeIcons styles
 
 const RdvCard = ({ apt }) => {
-  const getTypeIcon = (typeRdv) => {
-    if (typeRdv === "Téléphone") return "pi-phone";
-    if (typeRdv === "Extérieur") return "pi-map-marker";
-    return "pi-building"; // Default icon for "Bureau"
-  };
-
-  const getStatusIcon = (status) => {
-    return "pi-chart-line"; // Status icon
-  };
-
   return (
     <div className="card mb-2">
       <div className="card-body p-2">
+        {/* Line 1: Title (nomPrenom) */}
         <h6 className="card-title mb-1">{apt.nomPrenom}</h6>
-        <p className="card-text mb-1"><small>{apt.entreprise}</small></p>
 
+        {/* Line 2: Icon for entreprise */}
         <div className="d-flex align-items-center gap-2 mb-1">
-          {/* Phone icon */}
-          <i className={`pi ${getTypeIcon(apt.typeRdv)} p-1`} style={{ fontSize: '1rem', color: '#007bff' }}></i>
+          <i className="pi pi-briefcase p-1" style={{ fontSize: '1rem', color: '#007bff' }}></i>
+          <small>{apt.entreprise}</small>
+        </div>
+
+        {/* Line 3: Icon for telephone */}
+        <div className="d-flex align-items-center gap-2 mb-1">
+          <i className="pi pi-phone p-1" style={{ fontSize: '1rem', color: '#007bff' }}></i>
           <small>{apt.telephone}</small>
         </div>
 
+        {/* Line 4: Icon for adresse */}
         <div className="d-flex align-items-center gap-2 mb-1">
-          {/* Address icon */}
-          <i className="pi pi-map p-1" style={{ fontSize: '1rem', color: '#6c757d' }}></i>
+          <i className="pi pi-map-marker p-1" style={{ fontSize: '1rem', color: '#6c757d' }}></i>
           <small>{apt.adresse}, {apt.cp}</small>
         </div>
 
+        {/* Line 5: Icon for email */}
         <div className="d-flex align-items-center gap-2 mb-1">
-          {/* Email icon */}
           <i className="pi pi-envelope p-1" style={{ fontSize: '1rem', color: '#007bff' }}></i>
           <small>{apt.email}</small>
         </div>
 
+        {/* Line 6: Icon for status */}
         <div className="d-flex align-items-center gap-2 mb-1">
-          {/* Type of RDV icon */}
-          <i className={`pi ${getTypeIcon(apt.typeRdv)} p-1`} style={{ fontSize: '1rem', color: '#007bff' }}></i>
-          <small>Type: {apt.typeRdv}</small>
-        </div>
-
-        <div className="d-flex align-items-center gap-2 mb-1">
-          {/* Status icon */}
-          <i className={`pi ${getStatusIcon(apt.statut)} p-1`} style={{ fontSize: '1rem', color: '#28a745' }}></i>
+          <i className="pi pi-chart-line p-1" style={{ fontSize: '1rem', color: '#28a745' }}></i>
           <small>Status: {apt.statut}</small>
         </div>
 
+        {/* Line 7: Icon for commentaire (optional) */}
         {apt.commentaire && 
           <div className="d-flex align-items-center gap-2 mb-1">
             <i className="pi pi-comment p-1" style={{ fontSize: '1rem', color: '#6c757d' }}></i>
             <small>{apt.commentaire}</small>
           </div>
         }
+
+        {/* Line 8: Icon for type of RDV */}
+        <div className="d-flex align-items-center gap-2 mb-1">
+          <i className="pi pi-arrow-right-arrow-left p-1" style={{ fontSize: '1rem', color: '#007bff' }}></i>
+          <small>Type: {apt.typeRdv}</small>
+        </div>
       </div>
     </div>
   );
