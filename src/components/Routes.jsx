@@ -9,6 +9,7 @@ import ProfilePage from "./clientProfile/ProfilePage";
 import ClientsList from "./client/ClientsList ";
 import ClientDetails from "./clientProfile/ClientDetails";
 import LoginPage from "../login/login";
+import PlanningPage from "./Planning/PlanningPage";
 
 const AppRoutes = ({ isLoggedIn }) => {
   return (
@@ -21,7 +22,7 @@ const AppRoutes = ({ isLoggedIn }) => {
       <Route path="/clients" element={isLoggedIn ? <ClientComponent /> : <Navigate to="/login" />} />
       <Route path="/client/:id" element={isLoggedIn ? <ProfilePage /> : <Navigate to="/login" />} />
       <Route path="/users" element={isLoggedIn ? <Users /> : <Navigate to="/login" />} />
-      <Route path="/rdv" element={isLoggedIn ? <ClientsList /> : <Navigate to="/login" />} />
+      <Route path="/rdv" element={isLoggedIn ? <PlanningPage /> : <Navigate to="/login" />} />
 
       {/* If trying to access a non-existent route */}
       <Route path="*" element={<Navigate to="/login" />} />

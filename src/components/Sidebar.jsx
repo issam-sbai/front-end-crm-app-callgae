@@ -11,8 +11,9 @@ export default function Sidebar() {
   const items = [
     { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
     { label: 'Clients', icon: 'pi pi-fw pi-users', to: '/clients' },
-    { label: 'Users', icon: 'pi pi-fw pi-user', to: '/users' },
     { label: 'RDV', icon: 'pi pi-fw pi-calendar', to: '/rdv' },
+    { label: 'Users', icon: 'pi pi-fw pi-user', to: '/users' },
+
   ];
 
   // Logout function with confirmation
