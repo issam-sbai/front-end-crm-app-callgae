@@ -1,11 +1,23 @@
-body {
-  font-family: 'Poppins', sans-serif;
+/* Bootstrap Typography Override */
+:root {
+  --bs-body-font-family: "Open Sans", sans-serif;
+  --bs-body-font-optical-sizing: auto;
+  --bs-body-font-weight: 600;
+  --bs-body-font-style: normal;
+  --bs-body-font-variation-settings: "wdth" 100;
 }
+
+/* Apply Open Sans Globally */
+body {
+  font-family: var(--bs-body-font-family);
+  font-weight: var(--bs-body-font-weight);
+  font-style: var(--bs-body-font-style);
+  font-variation-settings: var(--bs-body-font-variation-settings);
+}
+
 
 h1 {
   font-weight: 300;
 }
 
-p {
-  font-weight: 400;
-}
+

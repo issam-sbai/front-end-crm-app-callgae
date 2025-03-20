@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import Select from 'react-select';
 
 const ProfileForm = ({ clientData }) => {
   const clientKeys = [
@@ -14,7 +15,7 @@ const ProfileForm = ({ clientData }) => {
     'telephone2',
     'statut',
     'commentaire',
-    'typeRdv',
+    'typeRdv', // Include typeRdv here
     'dateRdv',
   ];
 
@@ -28,6 +29,11 @@ const ProfileForm = ({ clientData }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  // Handle change for react-select
+  const handleSelectChange = (selectedOption, field) => {
+    setFormData((prevData) => ({ ...prevData, [field]: selectedOption.value }));
   };
 
   // Toggle edit mode
@@ -46,7 +52,6 @@ const ProfileForm = ({ clientData }) => {
   // Save changes: update data via API and then exit edit mode
   const handleSaveClick = async () => {
     try {
-      // Display confirmation dialog
       const result = await Swal.fire({
         title: 'Do you want to save the changes?',
         showDenyButton: true,
@@ -56,7 +61,6 @@ const ProfileForm = ({ clientData }) => {
       });
 
       if (result.isConfirmed) {
-        // Proceed with saving the data
         const clientId = formData.id || formData._id;
         const response = await fetch(`http://192.168.100.26:5000/api/clients/${clientId}`, {
           method: 'PUT',
@@ -72,7 +76,6 @@ const ProfileForm = ({ clientData }) => {
         setEditing(false);
         Swal.fire('Saved!', '', 'success');
       } else if (result.isDenied) {
-        // Revert changes if not saved
         setFormData(clientData);
         setEditing(false);
         Swal.fire('Changes are not saved', '', 'info');
@@ -81,6 +84,49 @@ const ProfileForm = ({ clientData }) => {
       setError(`Error updating client: ${err.message}`);
     }
   };
+
+  const handleStatusClick = (id, status) => {
+    console.log(`Status for ${id} changed to ${status}`);
+    // Handle status change here
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Cancelled':
+        return '#ff0000'; // Red
+      case 'Confirmed':
+        return '#26ba12'; // Green
+      case 'Installation':
+        return '#0000ff'; // Blue
+      default:
+        return '#cccccc'; // Gray for "Non statué"
+    }
+  };
+
+  const getRdvTypeColor = (type) => {
+    switch (type) {
+      case 'Intérieur':
+        return '#FFA07A'; // Red for Intérieur
+      case 'Extérieur':
+        return '#FFD700'; // Blue for Extérieur
+      default:
+        return '#808080'; // Gray for unknown or other types
+    }
+  };
+
+  // React-Select options for statut
+  const statutOptions = [
+    { value: 'Installation', label: 'Installation' },
+    { value: 'Confirmed', label: 'Confirmed' },
+    { value: 'Cancelled', label: 'Cancelled' },
+    { value: 'Non statué', label: 'Non statué' },
+  ];
+
+  // React-Select options for typeRdv
+  const typeRdvOptions = [
+    { value: 'Intérieur', label: 'Intérieur' },
+    { value: 'Extérieur', label: 'Extérieur' },
+  ];
 
   return (
     <div className="col-lg-8 col-md-12" style={{ marginLeft: '25%' }}>
@@ -95,13 +141,82 @@ const ProfileForm = ({ clientData }) => {
               </div>
               <div className="col-sm-9">
                 {editing ? (
-                  <input
-                    type="text"
-                    name={key}
-                    className="form-control"
-                    value={formData[key] || ''}
-                    onChange={handleInputChange}
-                  />
+                  key === 'statut' ? (
+                    <div className="d-flex align-items-center">
+                      <Select
+                        name={key}
+                        value={statutOptions.find(option => option.value === formData[key])}
+                        onChange={(selectedOption) => handleSelectChange(selectedOption, 'statut')}
+                        options={statutOptions}
+                        className="react-select-container"
+                      />
+                    </div>
+                  ) : key === 'typeRdv' ? (
+                    <div className="d-flex align-items-center">
+                      <i
+                        className="fas fa-circle"
+                        style={{
+                          backgroundColor: getRdvTypeColor(formData[key]),
+                          color: 'white',
+                          width: '15px',
+                          height: '15px',
+                          display: 'inline-block',
+                          borderRadius: '50%',
+                          marginRight: '10px',
+                        }}
+                      ></i>
+                      <Select
+                        name={key}
+                        value={typeRdvOptions.find(option => option.value === formData[key])}
+                        onChange={(selectedOption) => handleSelectChange(selectedOption, 'typeRdv')}
+                        options={typeRdvOptions}
+                        className="react-select-container"
+                      />
+                    </div>
+                  ) : (
+                    <input
+                      type="text"
+                      name={key}
+                      className="form-control"
+                      value={formData[key] || ''}
+                      onChange={handleInputChange}
+                    />
+                  )
+                ) : key === 'statut' ? (
+                  <div
+                    id={`idqc1_${formData.id}`}
+                    onClick={() => handleStatusClick(formData.id, formData[key])}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <i
+                      className="fas fa-square"
+                      style={{
+                        backgroundColor: getStatusColor(formData[key]),
+                        color: 'white',
+                        width: '15px',
+                        height: '15px',
+                        display: 'inline-block',
+                        borderRadius: '2px',
+                      }}
+                    ></i>
+                    <span style={{ marginLeft: '5px' }}>{formData[key] || 'N/A'}</span>
+                  </div>
+                ) : key === 'typeRdv' ? (
+                  <div className="d-flex align-items-center">
+                    <i
+                      className="fas fa-circle"
+                      style={{
+                        backgroundColor: getRdvTypeColor(formData[key]),
+                        color: 'white',
+                        width: '15px',
+                        height: '15px',
+                        display: 'inline-block',
+                        borderRadius: '50%',
+                        marginRight: '10px',
+                      }}
+                    ></i>
+                    <span>{formData[key] || 'N/A'}</span>
+                  </div>
                 ) : (
                   <p
                     style={{
@@ -119,7 +234,6 @@ const ProfileForm = ({ clientData }) => {
 
           {error && <div className="alert alert-danger">{error}</div>}
 
-          {/* Only show the buttons if the role is not 'agent' */}
           {userRole !== 'agent' && (
             <div className="d-flex justify-content-end mt-3">
               {editing ? (

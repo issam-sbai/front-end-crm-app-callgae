@@ -1,11 +1,13 @@
 /* In your index.css or App.css file */
+/* Apply Open Sans globally to the entire app */
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
-}
 
 h1 {
   font-weight: 300;
@@ -15,50 +17,49 @@ p {
   font-weight: 400;
 }
 
-
-
+/* Navbar Active Link */
 .navbar-nav .nav-link.active {
-    color: #fff !important; /* Set active link color to white */
-  }
-  /* In your CSS file */
-.bg-success {
-    background-color: #28a745;
-  }
-  
-  .bg-warning {
-    background-color: #ffc107;
-  }
-  
-  .bg-danger {
-    background-color: #dc3545;
-  }
-  
-  .text-white {
-    color: white;
-  }
-  
-  .text-dark {
-    color: darkgray;
-  }
-  
+  color: #fff !important; /* Set active link color to white */
+}
 
-  /* Custom modal size */
+/* Background Colors */
+.bg-success {
+  background-color: #28a745;
+}
+
+.bg-warning {
+  background-color: #ffc107;
+}
+
+.bg-danger {
+  background-color: #dc3545;
+}
+
+/* Text Colors */
+.text-white {
+  color: white;
+}
+
+.text-dark {
+  color: darkgray;
+}
+
+/* Custom Modal Size */
 .custom-modal .modal-dialog {
-    max-width: 90%; /* Adjust this value for desired size */
-    width: 80%;     /* Set the width to 80% of the viewport */
-  }
-  
-  .custom-modal .modal-content {
-    height: auto; /* Allow the height to adjust automatically */
-  }
-  
-  /* Margin between form inputs */
-  .d-flex .flex-fill {
-    margin-left: 30px;
-  }
-  
-  /* Optional: Adjust the gap between form elements */
-  .d-flex.gap-4 {
-    gap: 30px;  /* 30px gap between inputs */
-  }
-  
+  max-width: 90%;
+  width: 80%;
+}
+
+.custom-modal .modal-content {
+  height: auto;
+}
+
+/* Margin Between Form Inputs */
+.d-flex .flex-fill {
+  margin-left: 30px;
+}
+
+/* Adjust Gap Between Form Elements */
+.d-flex.gap-4 {
+  gap: 30px;
+}

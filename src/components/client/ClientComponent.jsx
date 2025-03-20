@@ -94,16 +94,90 @@ const ClientComponent = () => {
     { header: 'Entreprise', field: 'entreprise' },
     { header: 'Téléphone', field: 'telephone' },
     { header: 'Adresse', field: 'adresse' },
+    {
+      header: 'Statut',
+      field: 'statut',
+      render: (client) => {
+        const getStatusColor = (status) => {
+          switch (status) {
+            case 'Confirmed':
+              return '#26ba12'; // Green for Confirmed
+            case 'Cancelled':
+              return '#FF6347'; // Red for Cancelled
+            case 'Installation':
+              return '#4169E1'; // Blue for Installation
+            default:
+              return '#808080'; // Gray for Non statué or unknown status
+          }
+        };
+
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <i
+              className="fas fa-square"
+              style={{
+                backgroundColor: getStatusColor(client.statut),
+                color: 'white',
+                width: '15px',
+                height: '15px',
+                display: 'inline-block',
+                borderRadius: '2px',
+                marginRight: '8px',
+              }}
+            ></i>
+            {client.statut}
+          </div>
+        );
+      },
+    },
     { header: 'Email', field: 'email' },
-    { header: 'Statut', field: 'statut' },
+
+
+    {
+      header: 'Type RDV',
+      field: 'typeRdv',  // Assuming typeRdv is a field in your client object
+      render: (client) => {
+        const getRdvTypeColor = (type) => {
+          switch (type) {
+            case 'Intérieur':
+              return '#FFA07A'; // Red for Intérieur
+            case 'Extérieur':
+              return '#FFD700'; // Blue for Extérieur
+            default:
+              return '#808080'; // Gray for unknown or other types
+          }
+        };
+
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <i
+              className="fas fa-circle"
+              style={{
+                backgroundColor: getRdvTypeColor(client.typeRdv),
+                color: 'white',
+                width: '15px',
+                height: '15px',
+                display: 'inline-block',
+                borderRadius: '50%',
+                marginRight: '8px',
+              }}
+            ></i>
+            {client.typeRdv}
+          </div>
+        );
+      },
+    },
     { header: 'Date RDV', field: 'dateRdv' },
     {
-      header: 'Actions',
+      header: '',
       render: (client) => (
         userRole !== 'agent' && (
-          <button className="btn btn-danger btn-sm" onClick={() => handleDeleteClient(client._id)}>
-            Delete
-          </button>
+          <div
+            onClick={() => handleDeleteClient(client._id)}
+            style={{ cursor: 'pointer', display: 'inline-block' }}
+          >
+            <i className="pi pi-times text-danger" style={{ fontSize: '1rem' }}></i> {/* Red delete icon */}
+          </div>
         )
       ),
     },

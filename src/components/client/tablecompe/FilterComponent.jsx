@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
+import Select from 'react-select';
 
 const FilterComponent = ({ onApplyFilter }) => {
   const [name, setName] = useState('');
@@ -11,7 +12,7 @@ const FilterComponent = ({ onApplyFilter }) => {
   const [cp, setCp] = useState('');
   const [statut, setStatut] = useState('');
   const [typeRdv, setTypeRdv] = useState('');
-  const [dateRdv, setDateRdv] = useState(''); // Added state for dateRdv
+  const [dateRdv, setDateRdv] = useState('');
 
   const handleFilter = () => {
     // Collect the filter data
@@ -25,10 +26,10 @@ const FilterComponent = ({ onApplyFilter }) => {
       cp,
       statut,
       typeRdv,
-      dateRdv, // Including dateRdv in the filter data
+      dateRdv,
     };
 
-    // Apply filter by sending the filter data to the parent component (ClientComponent)
+    // Apply filter by sending the filter data to the parent component
     onApplyFilter(filterData);
   };
 
@@ -43,10 +44,41 @@ const FilterComponent = ({ onApplyFilter }) => {
     setCp('');
     setStatut('');
     setTypeRdv('');
-    setDateRdv(''); // Reset the dateRdv field
+    setDateRdv('');
 
     // Optionally, reset the filtered clients in the parent component as well
     onApplyFilter({});
+  };
+
+  // Custom options for the statut field with colors
+  const statutOptions = [
+    { value: 'Non statué', label: 'Non statué', color: '#808080' },
+    { value: 'Confirmed', label: 'Confirmed', color: '#26ba12' },
+    { value: 'Installation', label: 'Installation', color: '#0000ff' },
+    { value: 'Cancelled', label: 'Cancelled', color: '#ff0000' }
+  ];
+
+  // Custom options for the type RDV with colors
+  const typeRdvOptions = [
+    { value: 'Intérieur', label: 'Intérieur', color: '#FFA07A' },  // Red for Intérieur
+    { value: 'Extérieur', label: 'Extérieur', color: '#FFD700' }  // Blue for Extérieur
+  ];
+
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? '#D3D3D3' : 'white',
+      color: state.isSelected ? 'black' : 'black',
+      padding: 10,
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: 'black',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: '100%',
+    }),
   };
 
   return (
@@ -111,28 +143,50 @@ const FilterComponent = ({ onApplyFilter }) => {
               />
             </div>
             <div className="flex-fill">
-              <Form.Control
-                as="select"
-                value={statut}
-                onChange={(e) => setStatut(e.target.value)}
-              >
-                <option value="">Filter by Statut</option>
-                <option value="Non statué">Non statué</option>
-                <option value="Confirmed">Confirmed</option>
-                <option value="Installation">Installation</option>
-                <option value="Cancelled">Cancelled</option>
-              </Form.Control>
+              <Select
+                options={statutOptions}
+                value={statutOptions.find(option => option.value === statut)}
+                onChange={(selectedOption) => setStatut(selectedOption.value)}
+                getOptionLabel={(e) => (
+                  <div className="d-flex align-items-center">
+                    <div
+                      style={{
+                        backgroundColor: e.color,
+                        width: '15px',
+                        height: '15px',
+                        borderRadius: '50%',
+                        marginRight: '8px',
+                      }}
+                    />
+                    <span>{e.label}</span>
+                  </div>
+                )}
+                placeholder="Filter by Statut"
+                styles={customStyles}
+              />
             </div>
             <div className="flex-fill">
-              <Form.Control
-                as="select"
-                value={typeRdv}
-                onChange={(e) => setTypeRdv(e.target.value)}
-              >
-                <option value="">Filter by Type RDV</option>
-                <option value="Intérieur">Intérieur</option>
-                <option value="Extérieur">Extérieur</option>
-              </Form.Control>
+              <Select
+                options={typeRdvOptions}
+                value={typeRdvOptions.find(option => option.value === typeRdv)}
+                onChange={(selectedOption) => setTypeRdv(selectedOption.value)}
+                getOptionLabel={(e) => (
+                  <div className="d-flex align-items-center">
+                    <div
+                      style={{
+                        backgroundColor: e.color,
+                        width: '15px',
+                        height: '15px',
+                        borderRadius: '50%',
+                        marginRight: '8px',
+                      }}
+                    />
+                    <span>{e.label}</span>
+                  </div>
+                )}
+                placeholder="Filter by Type RDV"
+                styles={customStyles}
+              />
             </div>
             <div className="flex-fill">
               <Form.Control
