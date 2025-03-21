@@ -15,7 +15,7 @@ const TableComponent = ({ users, onUpdateUser, onDeleteUser }) => {
                             <th><i className="pi pi-shield"></i> Role</th>
                             <th><i className="pi pi-shield"></i> agent Id</th>
                             <th><i className="pi pi-check-circle"></i> Active</th>
-                            <th style={{ textAlign: 'right' }}><i className="pi pi-cog"></i> Actions</th>
+                            <th style={{ textAlign: 'right' , maxWidth:'10px'}}><i className="pi pi-cog"></i> Actions</th>
                         </tr>
                     </thead>
                     <tbody>

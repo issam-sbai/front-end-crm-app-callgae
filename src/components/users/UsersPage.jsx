@@ -3,6 +3,7 @@ import { Button, Spinner } from "react-bootstrap";
 import axios from "axios";
 import AddUserModal from "./AddUserModal";
 import TableComponent from "./TableComponent"; // Assuming TableComponent is in the same directory
+import FilterUserComponent from "./FilterUserComponent";
 
 const User = () => {
   const [users, setUsers] = useState([]); // State to store the list of users
@@ -51,6 +52,8 @@ const User = () => {
 
   return (
     <div>
+
+<FilterUserComponent />
       <div className="d-flex justify-content-end mb-3 px-4">
         <Button variant="success" onClick={() => setShowModal(true)}>
           <i className="pi pi-plus"> </i> Add User
