@@ -10,12 +10,12 @@ const TableComponent = ({ users, onUpdateUser, onDeleteUser }) => {
                 <table className="table table-bordered table-sm">
                     <thead>
                         <tr className="text-center">
-                            <th><i className="pi pi-user"></i> Name</th>
-                            <th><i className="pi pi-envelope"></i> Email</th>
-                            <th><i className="pi pi-shield"></i> Role</th>
-                            <th><i className="pi pi-shield"></i> agent Id</th>
+                            <th><i className="pi pi-user"></i>  Name</th>
+                            <th><i className="pi pi-envelope"></i>  Email</th>
+                            <th><i className="pi pi-shield"></i>  Role</th>
+                            <th><i className="pi pi-shield"></i>  agent Id</th>
                             <th><i className="pi pi-check-circle"></i> Active</th>
-                            <th style={{ textAlign: 'right' , maxWidth:'10px'}}><i className="pi pi-cog"></i> Actions</th>
+                            <th style={{ textAlign: 'center' , maxWidth:'20px'}}><i className="pi pi-cog"></i> </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -26,7 +26,7 @@ const TableComponent = ({ users, onUpdateUser, onDeleteUser }) => {
                                 <td>{user.role}</td>
                                 <td>{user.agentId}</td>
                                 <td>{user.isActive ? 'Yes' : 'No'}</td>
-                                <td className="text-end">
+                                <td className="text-end" style={{ textAlign: 'center' , maxWidth:'20px'}} >
                                     <Button 
                                         variant="warning" 
                                         size="sm" 
