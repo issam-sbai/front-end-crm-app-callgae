@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Clients from "./Clients";
-import Users from "./Users";
+import Users from "./users/UsersPage";
 import Rdv from "./Rdv";
 import ClientComponent from "./client/ClientComponent";
 import ClientProfile from "./clientProfile/ClientProfile";

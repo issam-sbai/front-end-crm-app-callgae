@@ -1,0 +1,26 @@
+/* This targets only elements inside the .user-container class */
+.user-container .table th {
+    background-color: #337ab7; /* Header background color */
+    color: white; /* Text color for header */
+}
+
+.user-container .table th i {
+    color: white; /* Set icon color to white */
+}
+
+.user-container .table tbody tr:hover {
+    background-color: #f1f1f1; /* Light grey color */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.user-container .table th i {
+    color: white; /* Set icon color to white */
+}
+
+.user-container .table th, .user-container .table td {
+    text-align: center; /* Ensure all table text is centered */
+}
+
+.user-container .table th:last-child {
+    text-align: right; /* Align the last header cell to the right */
+}

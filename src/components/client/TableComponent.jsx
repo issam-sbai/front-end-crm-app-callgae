@@ -5,9 +5,9 @@ const TableComponent = ({ columns, data, onRowClick }) => {
   return (
     <Table striped bordered hover responsive>
       <thead>
-        <tr>
+        <tr >
           {columns.map((col, index) => (
-            <th key={index}>{col.header}</th>
+            <th style={{ backgroundColor: '#337ab7',color: "white" }} key={index}>{col.header}</th>
           ))}
         </tr>
       </thead>
@@ -15,7 +15,7 @@ const TableComponent = ({ columns, data, onRowClick }) => {
         {data.map((row, rowIndex) => (
           <tr key={rowIndex} onClick={() => onRowClick(row)} style={{ cursor: "pointer" }}>
             {columns.map((col, colIndex) => (
-              <td key={colIndex}>
+              <td key={colIndex} style={{ height: '5px', verticalAlign: 'middle' }} >
                 {col.render ? col.render(row) : row[col.field]}
               </td>
             ))}
