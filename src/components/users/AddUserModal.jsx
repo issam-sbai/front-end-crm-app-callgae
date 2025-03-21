@@ -9,6 +9,7 @@ const AddUserModal = ({ show, onHide, onAdd }) => {
         password: '',
         role: 'User',
         isActive: true,
+        agentId: '', // Add agentId to the state
     });
 
     const [error, setError] = useState('');
@@ -21,7 +22,7 @@ const AddUserModal = ({ show, onHide, onAdd }) => {
 
     const validateForm = () => {
         // Check required fields
-        const requiredFields = ['name', 'email', 'password'];
+        const requiredFields = ['name', 'email', 'password', 'agentId']; // Added agentId to required fields
         for (let field of requiredFields) {
             if (!newUser[field]) {
                 return `${field} is required`;
@@ -44,7 +45,7 @@ const AddUserModal = ({ show, onHide, onAdd }) => {
             setSuccess("User added successfully!");
             setError('');
             onAdd(newUser); // Call the parent component's callback
-            setNewUser({ name: '', email: '', password: '', role: 'User', isActive: true }); // Reset the form
+            setNewUser({ name: '', email: '', password: '', role: 'User', isActive: true, agentId: '' }); // Reset the form
             onHide(); // Close the modal after adding
         } catch (err) {
             setError("Failed to add user. Please try again.");
@@ -119,6 +120,18 @@ const AddUserModal = ({ show, onHide, onAdd }) => {
                             name="isActive"
                             checked={newUser.isActive}
                             onChange={() => setNewUser({ ...newUser, isActive: !newUser.isActive })}
+                        />
+                    </Form.Group>
+
+                    {/* Agent ID */}
+                    <Form.Group className="mb-4">
+                        <Form.Label>Agent ID</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="agentId"
+                            value={newUser.agentId}
+                            onChange={handleChange}
+                            required
                         />
                     </Form.Group>
                 </Form>

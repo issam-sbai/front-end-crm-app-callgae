@@ -13,6 +13,7 @@ const TableComponent = ({ users, onUpdateUser, onDeleteUser }) => {
                             <th><i className="pi pi-user"></i> Name</th>
                             <th><i className="pi pi-envelope"></i> Email</th>
                             <th><i className="pi pi-shield"></i> Role</th>
+                            <th><i className="pi pi-shield"></i> agent Id</th>
                             <th><i className="pi pi-check-circle"></i> Active</th>
                             <th style={{ textAlign: 'right' }}><i className="pi pi-cog"></i> Actions</th>
                         </tr>
@@ -23,6 +24,7 @@ const TableComponent = ({ users, onUpdateUser, onDeleteUser }) => {
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>{user.role}</td>
+                                <td>{user.agentId}</td>
                                 <td>{user.isActive ? 'Yes' : 'No'}</td>
                                 <td className="text-end">
                                     <Button 
