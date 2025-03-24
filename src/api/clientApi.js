@@ -1,11 +1,11 @@
 // api/clientApi.js
 import axios from 'axios';
 
-// const API_URL = 'http://localhost:5000/api/clients';
+// const API_URL = 'http:/.localhost:5000/api/clients';
 
 
 
-const API_URL = 'http://192.168.100.26:5000/api/clients';
+const API_URL = 'http://backend-callgae.vercel.app/api/clients';
 
 
 
