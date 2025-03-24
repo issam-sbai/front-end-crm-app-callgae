@@ -27,24 +27,58 @@ const LoginPage = () => {
       ];
       
 
-    const handleLogin = () => {
-        // Find the user in the users array
-        const user = users.find((u) => u.username === username && u.password === password);
+    // const handleLogin = () => {
+    //     // Find the user in the users array
+    //     const user = users.find((u) => u.username === username && u.password === password);
 
-        if (!user) {
-            setError("Invalid username or password");
-        } else {
-            // Store user info in localStorage
-            localStorage.setItem("username", username);
-            localStorage.setItem("role", user.role);
-            localStorage.setItem("agentId", user.username); // Store agentId if applicable
+    //     if (!user) {
+    //         setError("Invalid username or password");
+    //     } else {
+    //         // Store user info in localStorage
+    //         localStorage.setItem("username", username);
+    //         localStorage.setItem("role", user.role);
+    //         localStorage.setItem("agentId", user.username); // Store agentId if applicable
 
+    //         window.location.reload();
+
+    //         navigate("/client"); // Redirect to dashboard after login
+    //     }
+    // };
+
+    const handleLogin = async () => {
+        try {
+            const response = await fetch("http://localhost:5000/api/user/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: username, password }), 
+            });
+    
+            const data = await response.json();
+            console.log(data)
+    
+            if (!response.ok) {
+                setError(data.error || "Login failed");
+                return;
+            }
+    
+            // Store token and user info in localStorage
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("username", data.user.name);
+            localStorage.setItem("role", data.user.role);
+            localStorage.setItem("agentId", data.user.agentId);
+    
+            // Reload page to apply authentication changes
             window.location.reload();
-
-            navigate("/client"); // Redirect to dashboard after login
+    
+            // Redirect after login
+            navigate("/client");
+        } catch (err) {
+            setError("Something went wrong. Please try again.");
+            console.error("Login Error:", err);
         }
     };
 
+    
     return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <div className="card p-4" style={{ width: "100%", maxWidth: "500px" }}>
