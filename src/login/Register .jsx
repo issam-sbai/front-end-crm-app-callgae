@@ -11,7 +11,7 @@ const Register = () => {
 
     const handleRegister = async () => {
         try {
-            const response = await axios.post('http://backend-callgae.vercel.app/api/auth/register', {
+            const response = await axios.post('http://192.168.100.26:5000/api/auth/register', {
                 name,
                 email,
                 password,

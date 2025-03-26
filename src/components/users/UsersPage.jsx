@@ -14,7 +14,7 @@ const User = () => {
   const fetchUsers = async () => {
     setLoading(true); // Start loading
     try {
-      const response = await axios.get("http://backend-callgae.vercel.app/api/user/all");
+      const response = await axios.get("http://192.168.100.26:5000/api/user/all");
       setUsers(response.data); // Set users to the fetched data
     } catch (error) {
       console.error("Error fetching users", error);
@@ -43,7 +43,7 @@ const User = () => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      await axios.delete(`http://backend-callgae.vercel.app/api/user/${userId}`);
+      await axios.delete(`http://192.168.100.26:5000/api/user/${userId}`);
       setUsers(users.filter((user) => user._id !== userId));
     } catch (error) {
       console.error("Error deleting user:", error);

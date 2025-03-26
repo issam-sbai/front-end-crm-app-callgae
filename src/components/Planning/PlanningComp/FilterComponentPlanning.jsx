@@ -1,154 +1,175 @@
 import React, { useState } from 'react';
-import { Card, Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import Select from 'react-select';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import 'primeicons/primeicons.css'; // Import PrimeIcons
+
+const options = {
+  flag: [
+    { value: 'Aucun(e)', label: 'Aucun(e)' },
+    { value: 'OK', label: 'OK' },
+    { value: 'MANQUE CNI', label: 'MANQUE CNI' },
+    { value: 'MANQUE TAXE FONCIERE', label: 'MANQUE TAXE FONCIERE' },
+    { value: 'MANQUE AVIS', label: 'MANQUE AVIS' },
+    { value: 'DOCUMENTS VALIDES', label: 'DOCUMENTS VALIDES' }
+  ],
+  document: [
+    { value: 'Aucun(e)', label: 'Aucun(e)' },
+    { value: 'OK', label: 'OK' },
+    { value: 'MANQUE CNI', label: 'MANQUE CNI' },
+    { value: 'MANQUE TAXE FONCIERE', label: 'MANQUE TAXE FONCIERE' },
+    { value: 'MANQUE AVIS', label: 'MANQUE AVIS' },
+    { value: 'DOCUMENTS VALIDES', label: 'DOCUMENTS VALIDES' }
+  ],
+  civilite: [
+    { value: 'M.', label: 'M.' },
+    { value: 'Mme', label: 'Mme' },
+    { value: 'Melle', label: 'Melle' }
+  ],
+  audit: [
+    { value: 'Envoyé en VT', label: 'Envoyé en VT' },
+    { value: 'VT reçu', label: 'VT reçu' },
+    { value: 'Envoyé en BAO', label: 'Envoyé en BAO' },
+    { value: 'BAO reçu', label: 'BAO reçu' },
+    { value: 'VT à rectifier', label: 'VT à rectifier' },
+    { value: 'BAO à rectifier', label: 'BAO à rectifier' }
+  ],
+  typeDossier: [
+    { value: 'Aucun(e)', label: 'Aucun(e)' },
+    { value: '145', label: '145' },
+    { value: 'AMPLEUR', label: 'AMPLEUR' },
+    { value: 'ITE', label: 'ITE' },
+    { value: 'ITE + TOITURE', label: 'ITE + TOITURE' },
+    { value: 'LED', label: 'LED' }
+  ],
+  statusChantier: [
+    { value: 'A RAPPELER', label: 'A RAPPELER' },
+    { value: 'NRP', label: 'NRP' },
+    { value: 'INJOIGNABLE', label: 'INJOIGNABLE' },
+    { value: 'A RETRAITER', label: 'A RETRAITER' },
+    { value: 'CONFIRMER RÉGIE', label: 'CONFIRMER RÉGIE' }
+  ]
+};
 
 const FilterComponent = ({ onApplyFilter }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+  const [codePostal, setCodePostal] = useState('');
+  const [prenom, setPrenom] = useState('');
   const [agentId, setAgentId] = useState('');
-  const [civilite, setCivilite] = useState('');
-  const [entreprise, setEntreprise] = useState('');
-  const [cp, setCp] = useState('');
-  const [statut, setStatut] = useState('');
-  const [typeRdv, setTypeRdv] = useState('');
-  const [dateRdv, setDateRdv] = useState('');
+  const [civilite, setCivilite] = useState(null);
+  const [audit, setAudit] = useState(null);
+  const [typeDossier, setTypeDossier] = useState(null);
+  const [document, setDocument] = useState(null);
+  const [flag, setFlag] = useState(null);
+  const [statusChantier, setStatusChantier] = useState(null);
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
 
   const handleFilter = () => {
-    // Collect the filter data
     const filterData = {
       nomPrenom: name,
       telephone: phone,
-      adresse: address,
+      codePostal,
+      prenom,
       agentId,
-      civilite,
-      entreprise,
-      cp,
-      statut,
-      typeRdv,
-      dateRdv,
+      civilite: civilite?.value || '',
+      audit: audit?.value || '',
+      typeDossier: typeDossier?.value || '',
+      document: document?.value || '',
+      flag: flag?.value || '',
+      statusChantier: statusChantier?.value || '',
+      startDate: startDate ? startDate.toISOString().split('T')[0] : '',
+      endDate: endDate ? endDate.toISOString().split('T')[0] : ''
     };
-
-    // Apply filter by sending the filter data to the parent component
     onApplyFilter(filterData);
   };
 
   const handleCleanFilter = () => {
-    // Reset all filter fields to their initial state
     setName('');
     setPhone('');
-    setAddress('');
+    setCodePostal('');
+    setPrenom('');
     setAgentId('');
-    setCivilite('');
-    setEntreprise('');
-    setCp('');
-    setStatut('');
-    setTypeRdv('');
-    setDateRdv('');
-
-    // Optionally, reset the filtered clients in the parent component as well
+    setCivilite(null);
+    setAudit(null);
+    setTypeDossier(null);
+    setDocument(null);
+    setFlag(null);
+    setStatusChantier(null);
+    setDateRange([null, null]);
     onApplyFilter({});
   };
 
-  // Custom options for the statut field with colors
-  const statutOptions = [
-    { value: 'Non statué', label: 'Non statué', color: '#808080' },
-    { value: 'Confirmed', label: 'Confirmed', color: '#26ba12' },
-    { value: 'Installation', label: 'Installation', color: '#0000ff' },
-    { value: 'Cancelled', label: 'Cancelled', color: '#ff0000' }
-  ];
-
-  // Custom options for the type RDV with colors
-  const typeRdvOptions = [
-    { value: 'Intérieur', label: 'Intérieur', color: '#FFA07A' },  // Red for Intérieur
-    { value: 'Extérieur', label: 'Extérieur', color: '#FFD700' }  // Blue for Extérieur
-  ];
-
-  const customStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isSelected ? '#D3D3D3' : 'white',
-      color: state.isSelected ? 'black' : 'black',
-      padding: 10,
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: 'black',
-    }),
-    menu: (provided) => ({
-      ...provided,
-      width: '100%',
-    }),
-  };
-
   return (
-    <div className="mb-3">
-      <Card className="p-3">
-        <Form>
-          <div className="d-flex flex-wrap gap-4">
-            <div className="flex-fill">
-              <Select
-                options={statutOptions}
-                value={statutOptions.find(option => option.value === statut)}
-                onChange={(selectedOption) => setStatut(selectedOption.value)}
-                getOptionLabel={(e) => (
-                  <div className="d-flex align-items-center">
-                    <div
-                      style={{
-                        backgroundColor: e.color,
-                        width: '15px',
-                        height: '15px',
-                        borderRadius: '50%',
-                        marginRight: '8px',
-                      }}
-                    />
-                    <span>{e.label}</span>
-                  </div>
-                )}
-                placeholder="Filter by Statut"
-                styles={customStyles}
-              />
-            </div>
-            <div className="flex-fill">
-              <Select
-                options={typeRdvOptions}
-                value={typeRdvOptions.find(option => option.value === typeRdv)}
-                onChange={(selectedOption) => setTypeRdv(selectedOption.value)}
-                getOptionLabel={(e) => (
-                  <div className="d-flex align-items-center">
-                    <div
-                      style={{
-                        backgroundColor: e.color,
-                        width: '15px',
-                        height: '15px',
-                        borderRadius: '50%',
-                        marginRight: '8px',
-                      }}
-                    />
-                    <span>{e.label}</span>
-                  </div>
-                )}
-                placeholder="Filter by Type RDV"
-                styles={customStyles}
-              />
-            </div>
-            <div className="flex-fill">
-              <Form.Control
-                type="date"
-                placeholder="Filter by Date RDV"
-                value={dateRdv}
-                onChange={(e) => setDateRdv(e.target.value)} // Handling date input change
-              />
-            </div>
-            <Button variant="btn btn-success mb-3" onClick={handleFilter}> 
-              Apply Filter
-            </Button>
-            <button className="btn btn-warning mb-3" onClick={handleCleanFilter}> 
-              Clean Filter
-            </button>
+    <div>
+      <Form>
+        <div className="row g-1">
+          <div className="col-2">
+            <Select options={options.civilite} value={civilite} placeholder="Civilité" onChange={setCivilite} />
           </div>
-        </Form>
-      </Card>
+          <div className="col-2">
+            <Select options={options.audit} value={audit} placeholder="Audit" onChange={setAudit} />
+          </div>
+          <div className="col-2">
+            <Select options={options.typeDossier} value={typeDossier} placeholder="Type Dossier" onChange={setTypeDossier} />
+          </div>
+          <div className="col-2">
+            <Select options={options.document} value={document} placeholder="Document" onChange={setDocument} />
+          </div>
+          <div className="col-2">
+            <Select options={options.flag} value={flag} placeholder="Flag" onChange={setFlag} />
+          </div>
+          <div className="col-2">
+            <Select options={options.statusChantier} value={statusChantier} placeholder="Status Chantier" onChange={setStatusChantier} />
+          </div>
+
+          <div className="col-2">
+            <Form.Control
+              type="text"
+              name="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              placeholder="Téléphone"
+            />
+          </div>
+          <div className="col-2">
+            <Form.Control
+              type="number"
+              name="codePostal"
+              value={codePostal}
+              onChange={(e) => setCodePostal(e.target.value)}
+              required
+              placeholder="Code Postal"
+            />
+          </div>
+          <div className="col-2">
+            <Form.Control
+              type="text"
+              name="prenom"
+              value={prenom}
+              onChange={(e) => setPrenom(e.target.value)}
+              required
+              placeholder="Prénom"
+            />
+          </div>
+
+
+          <div className="col-2">
+            <Select options={options.civilite} value={civilite} placeholder="add selcet her" onChange={setCivilite} />
+          </div>
+          <div className="col-2">
+            <Select options={options.civilite} value={civilite} placeholder="add selcet he" onChange={setCivilite} />
+          </div>
+
+          <div className="col-2">
+            <Button variant="success" onClick={handleFilter}>Appliquer</Button>
+            <Button variant="warning" onClick={handleCleanFilter} className="mx-1">Réinitialiser</Button>
+          </div>
+        </div>
+      </Form>
     </div>
   );
 };

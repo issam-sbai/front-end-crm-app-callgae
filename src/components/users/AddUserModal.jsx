@@ -41,7 +41,7 @@ const AddUserModal = ({ show, onHide, onAdd }) => {
 
         try {
             // Submit the form data to the API
-            await axios.post("http://backend-callgae.vercel.app/api/user/register", newUser);
+            await axios.post("http://192.168.100.26:5000/api/user/register", newUser);
             setSuccess("User added successfully!");
             setError('');
             onAdd(newUser); // Call the parent component's callback
