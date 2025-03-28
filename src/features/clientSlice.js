@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { createClient, getClients, getClientById, updateClient, deleteClient, getClientsByAgentId } from '../api/clientApi';
+import { createClient, getClients, getClientById, updateClient, deleteClient, getClientsByAgentId ,filterClients} from '../api/clientApi';
 
 const initialState = {
   clientsx: [],
@@ -45,6 +45,15 @@ export const removeClient = createAsyncThunk('clients/removeClient', async (id) 
   await deleteClient(id);
   return id;
 });
+
+
+export const filterClientsByCriteria = createAsyncThunk(
+  'clients/filterClientsByCriteria',
+  async (filterData) => {
+    const response = await filterClients(filterData); // Call the API for filtering
+    return response.data;
+  }
+);
 
 const clientsSlice = createSlice({
   name: 'clients',
@@ -96,6 +105,17 @@ const clientsSlice = createSlice({
       .addCase(fetchClientsByAgentId.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(filterClientsByCriteria.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(filterClientsByCriteria.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.clientsx = action.payload; // Store filtered clients
+      })
+      .addCase(filterClientsByCriteria.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;  
       });
   },
 });

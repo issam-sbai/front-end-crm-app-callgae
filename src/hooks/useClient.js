@@ -1,6 +1,6 @@
 // hooks/useClient.js
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClients, addClient, removeClient } from '../features/clientSlice';
+import { fetchClients, addClient, removeClient,filterClientsByCriteria  } from '../features/clientSlice';
 
 const useClient = () => {
   const dispatch = useDispatch();
@@ -25,6 +25,10 @@ const useClient = () => {
     dispatch(fetchClientsByAgentId(agentId));
   };
 
+  const filterClients = (filterData) => {
+    dispatch(filterClientsByCriteria(filterData));
+  };
+
   return {
     clients,
     status,
@@ -32,7 +36,8 @@ const useClient = () => {
     getAllClients,
     createClient,
     deleteClient,
-    getClientsByAgentId
+    getClientsByAgentId,
+    filterClients
   };
 };
 

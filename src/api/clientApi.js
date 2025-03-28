@@ -5,7 +5,7 @@ import axios from 'axios';
 
 
 
-const API_URL = 'http://192.168.100.26:5000/api/clients';
+const API_URL = 'http://localhost:5000/api/clients';
 
 
 
@@ -34,3 +34,6 @@ export const getClientsByAgentId = (agentId) => {
   return axios.get(`${API_URL}/agent/${agentId}`);
 };
 
+export const filterClients = (filterData) => {
+  return axios.post(`${API_URL}/filter`, filterData);
+};

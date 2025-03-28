@@ -2,8 +2,16 @@ import { Button } from "primereact/button";
 import React from "react";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { fetchClients, addClient, removeClient, fetchClientsByAgentId } from '../../features/clientSlice';
+import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
 
-const TableComponent = ({ onRowClick,  data }) => {
+const TableComponent = ({ onRowClick, data }) => {
+
+  const dispatch = useDispatch();
+
+
+
   const columns = [
     {
       header: 'Nom / Prénom',
@@ -25,10 +33,38 @@ const TableComponent = ({ onRowClick,  data }) => {
           switch (status) {
             case 'A RAPPELER':
               return '#FF6347'; // Red for A RAPPELER
-            case 'Confirmed':
-              return '#26ba12'; // Green for Confirmed
+            case 'Confirmer':
+              return '#26ba12'; // Green for Confirmer
+            case 'NRP':
+              return '#f1c40f'; // Yellow for NRP
+            case 'INJOIGNABLE':
+              return '#e74c3c'; // Red for INJOIGNABLE
+            case 'A RETRAITER':
+              return '#8e44ad'; // Purple for A RETRAITER
+            case 'CONFIRMER RÉGIE':
+              return '#3498db'; // Blue for CONFIRMER RÉGIE
+            case 'LEDS SOLAIRES':
+              return '#2ecc71'; // Light Green for LEDS SOLAIRES
+            case 'Chantier annuler':
+              return '#95a5a6'; // Gray for Chantier annuler
+            case 'SAV':
+              return '#f39c12'; // Orange for SAV
+            case 'RENVOYER EQUIPE SUR PLACE':
+              return '#d35400'; // Dark Orange for RENVOYER EQUIPE SUR PLACE
+            case 'RETOURNER RECUPERER LEDS':
+              return '#1abc9c'; // Turquoise for RETOURNER RECUPERER LEDS
+            case 'MANQUE PIÈCES':
+              return '#e67e22'; // Orange for MANQUE PIÈCES
+            case 'LIVRAISON POSTALE':
+              return '#9b59b6'; // Purple for LIVRAISON POSTALE
+            case 'Chantier Terminé':
+              return '#16a085'; // Teal for Chantier Terminé
+            case 'MANQUES RÉGLETTES':
+              return '#d1b800'; // Yellow for MANQUES RÉGLETTES
+            case 'MPR':
+              return '#c0392b'; // Dark Red for MPR
             default:
-              return '#808080'; // Gray for Non statué or unknown status
+              return '#808080'; // Gray for unknown status
           }
         };
 
@@ -51,6 +87,7 @@ const TableComponent = ({ onRowClick,  data }) => {
         );
       },
     },
+
     { header: 'Email', field: 'email' },
     {
       header: 'Type RDV',
@@ -58,12 +95,16 @@ const TableComponent = ({ onRowClick,  data }) => {
       render: (client) => {
         const getRdvTypeColor = (type) => {
           switch (type) {
-            case 'Initial Consultation':
-              return '#FFA07A'; // Red for Initial Consultation
-            case 'Follow-up':
-              return '#FFD700'; // Yellow for Follow-up
-            default:
-              return '#808080'; // Gray for other types
+            case 'Inspection':
+              return '#FF6347'; // Red for A RAPPELER
+            case 'Initial':
+              return '#26ba12'; // Green for Confirmer
+            case 'Consultation':
+              return '#f1c40f'; // Yellow for NRP
+            case 'INJOIGNABLE':
+              return '#e74c3c'; // Red for INJOIGNABLE
+            case 'Contrôle':
+              return '#8e44ad'; // Purple for A RETRAITER
           }
         };
 
@@ -110,6 +151,23 @@ const TableComponent = ({ onRowClick,  data }) => {
       ),
     }
   ];
+  const handleDeleteClient = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(removeClient(id));
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      }
+    });
+  };
+
 
   return (
     <Table striped bordered hover responsive>
@@ -124,7 +182,7 @@ const TableComponent = ({ onRowClick,  data }) => {
       </thead>
       <tbody>
         {data.map((row, rowIndex) => (
-          <tr key={rowIndex} onClick={() => onRowClick(row)} style={{ cursor: "pointer" }}>
+          <tr key={rowIndex} style={{ cursor: "pointer" }}>
             {columns.map((col, colIndex) => (
               <td key={colIndex} style={{ height: '5px', verticalAlign: 'middle' }}>
                 {col.render ? col.render(row) : row[col.field]}

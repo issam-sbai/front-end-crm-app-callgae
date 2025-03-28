@@ -5,6 +5,8 @@ import 'primeicons/primeicons.css'; // Import PrimeIcons
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
+import { format } from "date-fns";
+import useClient from '../../hooks/useClient';
 
 const options = {
     flag: [
@@ -43,7 +45,7 @@ const options = {
         { value: 'PICTURE', label: 'PICTURE' },
         { value: 'EMAIL-NEW', label: 'EMAIL-NEW' },
         { value: 'EMAIL-OPEN', label: 'EMAIL-OPEN' },
-      ],
+    ],
     document: [
         { value: '', label: 'Aucun(e)' },
         { value: 'OK', label: 'OK' },
@@ -101,7 +103,7 @@ const options = {
         { value: 'MANQUES RÉGLETTES', label: 'MANQUES RÉGLETTES' },
         { value: 'MPR', label: 'MPR' }
     ],
-    equipe : [
+    equipe: [
         { value: '', label: 'Aucun(e)' },
         { value: 'EQUIP LED 1', label: 'EQUIP LED 1' },
         { value: 'EQUIP LED 2', label: 'EQUIP LED 2' },
@@ -112,21 +114,21 @@ const options = {
         { value: 'EQUIPE 7', label: 'EQUIPE 7' },
         { value: 'EQUIPE FABRICE 1', label: 'EQUIPE FABRICE 1' },
         { value: 'EQUIPE FABRICE 2', label: 'EQUIPE FABRICE 2' },
-      ]
+    ]
 };
 
 const formatDate = (dateObj) => {
-  if (dateObj && dateObj.date) {
-    const { date } = dateObj; // Safe destructuring after checking for null
-    return date.toISOString().split('T')[0];
-    // format and return date as needed
-  } else {
-    return null; // or default value if date is unavailable
-  }
+    if (dateObj && dateObj.date) {
+        const { date } = dateObj; // Safe destructuring after checking for null
+        return date.toISOString().split('T')[0];
+        // format and return date as needed
+    } else {
+        return null; // or default value if date is unavailable
+    }
 };
 
 
-const FilterComponenttest = ({ data2 ,onApplyFilter }) => {
+const FilterComponenttest = () => {
 
     const [dateCreatedFrom, setDateCreatedFrom] = useState(null);
     const [dateCreatedTo, setDateCreatedTo] = useState(null);
@@ -134,7 +136,7 @@ const FilterComponenttest = ({ data2 ,onApplyFilter }) => {
     const [dateRdvTo, setDateRdvTo] = useState(null);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
-    const [codePostal, setCodePostal] = useState('');
+    // const [codePostal, setCodePostal] = useState('');
     const [prenom, setPrenom] = useState('');
     const [agentId, setAgentId] = useState('');
     const [equipe, setEquipe] = useState(null);
@@ -143,12 +145,16 @@ const FilterComponenttest = ({ data2 ,onApplyFilter }) => {
     const [document, setDocument] = useState(null);
     const [flag, setFlag] = useState(null);
     const [statusChantier, setStatusChantier] = useState(null);
+    const [department, setDepartment] = useState('');
+    const { filterClients } = useClient();
 
-    const handleFilter = async () => {
+    const handleFilter = async (event) => {
+        event.preventDefault();
         const filterData = {
             nomPrenom: name,
             telephone: phone,
-            codePostal,
+            department,
+            // codePostal,
             prenom,
             agentId,
             audit: audit?.value || '',
@@ -156,16 +162,14 @@ const FilterComponenttest = ({ data2 ,onApplyFilter }) => {
             document: document?.value || '',
             flag: flag?.value || '',
             statusChantier: statusChantier?.value || '',
-            dateCreatedFrom: formatDate(dateCreatedFrom),
-            dateCreatedTo: formatDate(dateCreatedTo),
-            dateRdvFrom: formatDate(dateRdvFrom),
-            dateRdvTo: formatDate(dateRdvTo),
+            dateCreatedFrom: dateCreatedFrom,
+            dateCreatedTo: dateCreatedTo,
+            dateRdvFrom: dateRdvFrom,
+            dateRdvTo: dateRdvTo,
         };
 
         try {
-            const response = await axios.post('http://localhost:5000/api/clients/filter', filterData);
-            onApplyFilter(response.data);
-            console.log(response.data)  // Pass the fetched data back to parent component
+            filterClients(filterData)
         } catch (error) {
             console.error('Error fetching filtered clients', error);
         }
@@ -174,7 +178,7 @@ const FilterComponenttest = ({ data2 ,onApplyFilter }) => {
     const handleCleanFilter = () => {
         setName('');
         setPhone('');
-        setCodePostal('');
+        setDepartment('');
         setPrenom('');
         setAgentId('');
         setAudit(null);
@@ -186,13 +190,24 @@ const FilterComponenttest = ({ data2 ,onApplyFilter }) => {
         setDateCreatedTo(null);
         setDateRdvFrom(null);
         setDateRdvTo(null);
-        // onApplyFilter([]);
+        setEquipe({ value: '', label: 'Aucun(e)' });  // Reset the equipe select to default
     };
+    
 
     return (
         <div>
             <Form>
                 <div className="row g-1">
+                    <div className="col-2">
+                        <Form.Control
+                            type="text"
+                            name="prenom"
+                            value={prenom}
+                            onChange={(e) => setPrenom(e.target.value)}
+                            required
+                            placeholder="Prénom"
+                        />
+                    </div>
                     <div className="col-2">
                         <Form.Control
                             type="text"
@@ -203,7 +218,7 @@ const FilterComponenttest = ({ data2 ,onApplyFilter }) => {
                             placeholder="Téléphone"
                         />
                     </div>
-                    <div className="col-2">
+                    {/* <div className="col-2">
                         <Form.Control
                             type="text"
                             name="codePostal"
@@ -212,15 +227,13 @@ const FilterComponenttest = ({ data2 ,onApplyFilter }) => {
                             required
                             placeholder="Code Postal"
                         />
-                    </div>
+                    </div> */}
                     <div className="col-2">
                         <Form.Control
                             type="text"
-                            name="prenom"
-                            value={prenom}
-                            onChange={(e) => setPrenom(e.target.value)}
-                            required
-                            placeholder="Prénom"
+                            value={department}
+                            onChange={(e) => setDepartment(e.target.value)} // Update department state
+                            placeholder="Dep (Ex: 24,33,40,47,64)"
                         />
                     </div>
                     {/* <div className="col-2">
@@ -246,23 +259,24 @@ const FilterComponenttest = ({ data2 ,onApplyFilter }) => {
                     {/* date */}
                     <div className="col-2">
                         <div className="input-group d-flex">
-                            <label style={{ maxWidth: '14%' }} className="input-group-text" htmlFor="id_flt_clients_rdv_1" >
+                            <label style={{ maxWidth: '14%' }} className="input-group-text" htmlFor="id_flt_clients_rdv_1">
                                 <i className="pi pi-calendar-plus" style={{ color: '#666' }}></i>
                             </label>
                             <div style={{ maxWidth: '43%' }}>
                                 <DatePicker
                                     selected={dateRdvFrom}
-                                    onChange={(date) => setDateRdvFrom(date)}
+                                    onChange={(date) => setDateRdvFrom(date ? format(date, "yyyy-MM-dd") : null)}
                                     placeholderText="Du... "
                                     dateFormat="dd/MM/yyyy"
                                     className="form-control"
                                     style={{ width: '15px', marginRight: '8px' }}
-                                /></div>
-                            <div style={{ maxWidth: '43%' }} >
+                                />
+                            </div>
+                            <div style={{ maxWidth: '43%' }}>
                                 <DatePicker
                                     selected={dateRdvTo}
-                                    onChange={(date) => setDateRdvTo(date)}
-                                    placeholderText="date rdv"
+                                    onChange={(date) => setDateRdvTo(date ? format(date, "yyyy-MM-dd") : null)}
+                                    placeholderText="Date RDV"
                                     dateFormat="dd/MM/yyyy"
                                     className="form-control"
                                     style={{ maxWidth: '15px' }}
@@ -270,25 +284,27 @@ const FilterComponenttest = ({ data2 ,onApplyFilter }) => {
                             </div>
                         </div>
                     </div>
+
                     <div className="col-2">
                         <div className="input-group d-flex">
-                            <label alt='ggggggggggggggggggg' style={{ maxWidth: '14%' }} className="input-group-text" htmlFor="id_flt_clients_creation_1" >
+                            <label style={{ maxWidth: '14%' }} className="input-group-text" htmlFor="id_flt_clients_creation_1">
                                 <i className="pi pi-calendar" style={{ color: '#666' }}></i>
                             </label>
                             <div style={{ maxWidth: '43%' }}>
                                 <DatePicker
                                     selected={dateCreatedFrom}
-                                    onChange={(date) => setDateCreatedFrom(date)}
+                                    onChange={(date) => setDateCreatedFrom(date ? format(date, "yyyy-MM-dd") : null)}
                                     placeholderText="Du... "
                                     dateFormat="dd/MM/yyyy"
                                     className="form-control"
                                     style={{ width: '15px', marginRight: '8px' }}
-                                /></div>
-                            <div style={{ maxWidth: '43%' }} >
+                                />
+                            </div>
+                            <div style={{ maxWidth: '43%' }}>
                                 <DatePicker
                                     selected={dateCreatedTo}
-                                    onChange={(date) => setDateCreatedTo(date)}
-                                    placeholderText="date Creation"
+                                    onChange={(date) => setDateCreatedTo(date ? format(date, "yyyy-MM-dd") : null)}
+                                    placeholderText="Date Creation"
                                     dateFormat="dd/MM/yyyy"
                                     className="form-control"
                                     style={{ maxWidth: '15px' }}

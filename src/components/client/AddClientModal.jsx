@@ -74,7 +74,7 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
     };
 
     return (
-        <Modal show={show} onHide={onHide} centered size="lg">
+        <Modal show={show} onHide={onHide} centered size="xl">
             <Modal.Header closeButton>
                 <Modal.Title>Add New Client</Modal.Title>
             </Modal.Header>
@@ -83,8 +83,8 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
 
                 <Form>
                     {/* Row with two fields side by side */}
-                    <div className="d-flex gap-4 mb-4">
-                        <div className="flex-fill">
+                    <div className="d-flex mb-3">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
                                 <Form.Label>ID RDV</Form.Label>
                                 <Form.Control
@@ -96,7 +96,7 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className="flex-fill">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
                                 <Form.Label>Nom / Prénom</Form.Label>
                                 <Form.Control
@@ -108,11 +108,7 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
                                 />
                             </Form.Group>
                         </div>
-                    </div>
-
-                    {/* Row with two fields side by side */}
-                    <div className="d-flex gap-4 mb-4">
-                        <div className="flex-fill">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
                                 <Form.Label>Entreprise</Form.Label>
                                 <Form.Control
@@ -124,7 +120,11 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className="flex-fill">
+                    </div>
+
+                    {/* Row with two fields side by side */}
+                    <div className="d-flex mb-3">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
                                 <Form.Label>Téléphone</Form.Label>
                                 <Form.Control
@@ -136,11 +136,7 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
                                 />
                             </Form.Group>
                         </div>
-                    </div>
-
-                    {/* Row with two fields side by side */}
-                    <div className="d-flex gap-4 mb-4">
-                        <div className="flex-fill">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
                                 <Form.Label>Téléphone 2</Form.Label>
                                 <Form.Control
@@ -151,35 +147,7 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className="flex-fill">
-                            <Form.Group>
-                                <Form.Label>Adresse</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="adresse"
-                                    value={newClient.adresse}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                        </div>
-                    </div>
-
-                    {/* Row with two fields side by side */}
-                    <div className="d-flex gap-4 mb-4">
-                        <div className="flex-fill">
-                            <Form.Group>
-                                <Form.Label>Code Postal</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="cp"
-                                    value={newClient.cp}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className="flex-fill">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
@@ -194,8 +162,72 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
                     </div>
 
                     {/* Row with two fields side by side */}
-                    <div className="d-flex gap-4 mb-4">
-                        <div className="flex-fill">
+                    <div className="d-flex mb-3">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
+                            <Form.Group>
+                                <Form.Label>Adresse</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="adresse"
+                                    value={newClient.adresse}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                        </div>
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
+                            <Form.Group>
+                                <Form.Label>Code Postal</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="cp"
+                                    value={newClient.cp}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                        </div>
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
+                            <Form.Group>
+                                <Form.Label>Ville</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="cp"
+                                    value={newClient.cp}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                        </div>
+                    </div>
+
+                                        {/* Civilité and Siret */}
+                    <div className="d-flex mb-3" >
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
+                            <Form.Group>
+                                <Form.Label>Civilité</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="civilite"
+                                    value={newClient.civilite}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                        </div>
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
+                            <Form.Group>
+                                <Form.Label>Siret</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="siret"
+                                    value={newClient.siret}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                        </div>
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
                                 <Form.Label>Agent ID</Form.Label>
                                 <Form.Control
@@ -207,23 +239,11 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className="flex-fill">
-                            <Form.Group>
-                                <Form.Label>Date RDV</Form.Label>
-                                <Form.Control
-                                    type="date"
-                                    name="dateRdv"
-                                    value={newClient.dateRdv}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                        </div>
                     </div>
 
                     {/* Statut Dropdown */}
-                    <div className="d-flex gap-4 mb-4">
-                        <div className="flex-fill">
+                    <div className="d-flex mb-3 ">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
                                 <Form.Label>Statut</Form.Label>
                                 <Form.Control
@@ -239,7 +259,7 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
                                 </Form.Control>
                             </Form.Group>
                         </div>
-                        <div className="flex-fill">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
                                 <Form.Label>Type RDV</Form.Label>
                                 <Form.Control
@@ -253,47 +273,50 @@ const AddClientModal = ({ show, onHide, onAdd }) => {
                                 </Form.Control>
                             </Form.Group>
                         </div>
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
+                            <Form.Group>
+                                <Form.Label>Date RDV</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    name="dateRdv"
+                                    value={newClient.dateRdv}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                        </div>
                     </div>
 
-                    {/* Civilité and Siret */}
-                    <div className="d-flex gap-4 mb-4">
-                        <div className="flex-fill">
+                    <div className="d-flex mb-3">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
-                                <Form.Label>Civilité</Form.Label>
+                                <Form.Label>Commentaire Agent</Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    name="civilite"
-                                    value={newClient.civilite}
+                                    as="textarea"
+                                    rows={3}
+                                    name="commentaire"
+                                    value={newClient.commentaire || ""}
                                     onChange={handleChange}
-                                    required
                                 />
                             </Form.Group>
                         </div>
-                        <div className="flex-fill">
+                        <div className="flex-fill" style={{ marginLeft: '10px' }}>
                             <Form.Group>
-                                <Form.Label>Siret</Form.Label>
+                                <Form.Label>Info RDV</Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    name="siret"
-                                    value={newClient.siret}
+                                    as="textarea"
+                                    rows={3}
+                                    name="commentaire"
+                                    value={newClient.commentaire || ""}
                                     onChange={handleChange}
-                                    required
                                 />
                             </Form.Group>
                         </div>
+
                     </div>
 
                     {/* Commentaire */}
-                    <Form.Group>
-                        <Form.Label>Commentaire Agent</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            rows={3}
-                            name="commentaire"
-                            value={newClient.commentaire || ""}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
+
                 </Form>
             </Modal.Body>
             <Modal.Footer>
