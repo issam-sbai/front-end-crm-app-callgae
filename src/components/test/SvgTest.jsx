@@ -1,6 +1,8 @@
 import React, { useLayoutEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+const SvgTest = () => {
+  const clientData = useSelector((state) => state.clients.clientsx);
 
-const SvgTest = ({ clientData }) => {
   const [departmentCoordinates, setDepartmentCoordinates] = useState({});
   const [hoveredPath, setHoveredPath] = useState(null);
   const svgRef = useRef(null);
@@ -44,7 +46,7 @@ const SvgTest = ({ clientData }) => {
       version="1.1"
       width={640}
       height={700}
-      style={{ border: "1px solid #ccc", WebkitTapHighlightColor: "rgba(0, 0, 0, 0)" }}
+      style={{ WebkitTapHighlightColor: "rgba(0, 0, 0, 0)" }}
     >
       <desc>Created with Raphaël</desc>
       <defs />

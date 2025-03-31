@@ -63,3 +63,56 @@ p {
 .d-flex.gap-4 {
   gap: 30px;
 }
+/* Card Style */
+.custom-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Table header customization */
+.table-header {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 12px;
+  font-size: 1rem;
+}
+
+/* Table row customization */
+.table-row:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.table-cell {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Button icon styling */
+.pi.pi-times {
+  font-size: 1.2rem;
+  color: white;
+}
+
+/* Loading spinner style */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+}
+
+/* Responsive table adjustments */
+@media (max-width: 768px) {
+  .table-header {
+    font-size: 0.9rem;
+  }
+  
+  .table-cell {
+    font-size: 0.8rem;
+  }
+}

@@ -86,6 +86,7 @@ const options = {
 
     statusChantier: [
         { value: '', label: 'Aucun(e)' },
+        { value: 'NO STATUS', label: 'NO STATUS' },
         { value: 'A RAPPELER', label: 'A RAPPELER' },
         { value: 'NRP', label: 'NRP' },
         { value: 'INJOIGNABLE', label: 'INJOIGNABLE' },
@@ -147,9 +148,11 @@ const FilterComponenttest = () => {
     const [statusChantier, setStatusChantier] = useState(null);
     const [department, setDepartment] = useState('');
     const { filterClients } = useClient();
+    const { getAllClients } = useClient();
 
     const handleFilter = async (event) => {
         event.preventDefault();
+        console.log("Filter function executed, event prevented!");
         const filterData = {
             nomPrenom: name,
             telephone: phone,
@@ -191,12 +194,13 @@ const FilterComponenttest = () => {
         setDateRdvFrom(null);
         setDateRdvTo(null);
         setEquipe({ value: '', label: 'Aucun(e)' });  // Reset the equipe select to default
+        getAllClients()
     };
     
 
     return (
         <div>
-            <Form>
+            <Form onSubmit={handleFilter}>
                 <div className="row g-1">
                     <div className="col-2">
                         <Form.Control
@@ -325,7 +329,7 @@ const FilterComponenttest = () => {
                     </div> */}
 
                     <div className="col-2">
-                        <Button variant="success" onClick={handleFilter}>Appliquer</Button>
+                        <Button variant="success" type="submit" onClick={handleFilter}>Appliquer</Button>
                         <Button variant="warning" onClick={handleCleanFilter} className="mx-1">Réinitialiser</Button>
                     </div>
                 </div>

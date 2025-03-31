@@ -10,10 +10,11 @@ export default function Sidebar() {
 
   const items = [
     { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+    { label: 'clients RDV', icon: 'pi pi-fw pi-user', to: '/test' },
     { label: 'Clients', icon: 'pi pi-fw pi-users', to: '/clients' },
     { label: 'RDV', icon: 'pi pi-fw pi-calendar', to: '/rdv' },
     { label: 'Users', icon: 'pi pi-fw pi-user', to: '/users' },
-    { label: 'clients RDV', icon: 'pi pi-fw pi-user', to: '/test' },
+    
 
   ];
 

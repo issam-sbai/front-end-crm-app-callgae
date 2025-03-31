@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    host: '192.168.100.26', // or use your IP address '192.168.100.26'
+    host: 'localhost', // or use your IP address '192.168.100.26'
 
   },
 });

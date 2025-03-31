@@ -57,7 +57,8 @@ const AddClient = ({ show, onHide, onAdd }) => {
             typeRdv: newClient.typeRdv,
             agentId: newClient.agentId,
             infoRdv: newClient.infoRdv,
-            commentaire: newClient.commentaire
+            commentaire: newClient.commentaire,
+            statusChantier:"NO STATUS"
         };
 
         onAdd(formData);
@@ -76,6 +77,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
             agentId: "",
             infoRdv: "",
             commentaire: "",
+
         });
         onHide();
     };

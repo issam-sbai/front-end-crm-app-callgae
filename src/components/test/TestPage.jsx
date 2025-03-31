@@ -1,74 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { addClient, fetchClients } from '../../features/clientSlice'; // Import the async action
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import FilterComponenttest from './TestFilter';
 import TestTable from './TestTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import SvgTest from './SvgTest';
 import AddClient from './AddClient';
-
+import useClient from '../../hooks/useClient'; 
+import { useDispatch } from "react-redux";
+import { addClient } from "../../features/clientSlice";
 const TestPage = () => {
-  const dispatch = useDispatch();
-  const clients = useSelector((state) => state.clients.clientsx);
-  const status = useSelector((state) => state.clients.status);
-  const error = useSelector((state) => state.clients.error);
   const [showMap, setShowMap] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  
+  const dispatch = useDispatch();
 
-  // Fetch clients when the component mounts
-  useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchClients()); // Dispatch the action to fetch clients
-    }
-  }, [dispatch, status]);
+  const { exportToCSV } = useClient();
+
+  const handleShowMap = () => setShowMap(true);
+  const handleCloseMap = () => setShowMap(false);
 
   const handleAddClient = (newClient) => {
     dispatch(addClient(newClient));
     setShowAddModal(false);
   };
 
-  const handleApplyFilter = (filteredClients) => {
-    // Update the filtered clients state in Redux (optional)
-    
-  };
-
-  const handleShowMap = () => setShowMap(true);
-  const handleCloseMap = () => setShowMap(false);
-
-  if (status === 'loading') {
-    return <div>Loading...</div>;
-  }
-
-  if (status === 'failed') {
-    return <div>Error fetching clients: {error}</div>;
-  }
 
   return (
     <>
       <FilterComponenttest />
       <br />
       <div className="d-flex justify-content-start align-items-center mb-3">
-        <Button className="btn btn-primary "  onClick={() => setShowAddModal(true)}>
+        <Button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
           Add Client
         </Button>
 
         <Button className="btn btn-primary mx-2" onClick={handleShowMap}>
           Show Department
         </Button>
+        <Button className="btn btn-primary" onClick={exportToCSV}>
+          Export to CSV
+        </Button>
       </div>
-      
-      <TestTable data={clients} />
+
+      {/* Pass clients as a prop to TestTable */}
+      <TestTable />
       <br />
 
       {/* Modal Popup for the Department Map */}
       <Modal show={showMap} onHide={handleCloseMap} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Department Map</Modal.Title>
-        </Modal.Header>
         <Modal.Body>
-          <SvgTest clientData={clients} />
+          <SvgTest />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseMap}>
@@ -77,7 +58,7 @@ const TestPage = () => {
         </Modal.Footer>
       </Modal>
 
-      <AddClient show={showAddModal} onHide={() => setShowAddModal(false)} onAdd={handleAddClient} />
+      <AddClient show={showAddModal} onAdd={handleAddClient} onHide={() => setShowAddModal(false)} />
     </>
   );
 };
