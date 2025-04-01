@@ -15,7 +15,7 @@ const ClientDetails = () => {
         const data = await response.json();
         
         // Log the client data to the console
-        console.log('Client Data:', data);
+        // console.log('Client Data:', data);
 
         setClient(data);
       } catch (err) {

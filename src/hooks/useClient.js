@@ -1,6 +1,11 @@
-// hooks/useClient.js
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClients, addClient, removeClient, filterClientsByCriteria } from '../features/clientSlice';
+import { 
+  fetchClients, 
+  addClient, 
+  removeClient, 
+  filterClientsByCriteria
+} from '../features/clientSlice';
+
 
 const useClient = () => {
   const dispatch = useDispatch();
@@ -27,6 +32,12 @@ const useClient = () => {
 
   const filterClients = (filterData) => {
     dispatch(filterClientsByCriteria(filterData));
+  };
+
+  // Add the updateClientNRP function to dispatch the action
+  const updateClientNRP = (id, nrpData) => {
+    
+    dispatch(updateClientNRP({ id, nrpData }));
   };
 
   // Export clients data to CSV
@@ -74,6 +85,7 @@ const useClient = () => {
     deleteClient,
     getClientsByAgentId,
     filterClients,
+    updateClientNRP,
     exportToCSV
   };
 };

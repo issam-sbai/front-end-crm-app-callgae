@@ -37,3 +37,7 @@ export const getClientsByAgentId = (agentId) => {
 export const filterClients = (filterData) => {
   return axios.post(`${API_URL}/filter`, filterData);
 };
+
+export const updateClientNRP = (id, nrpData) => {
+  return axios.patch(`${API_URL}/${id}/nrp`, nrpData);  // Full URL with API_URL
+};

@@ -4,9 +4,11 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClients, removeClient } from '../../features/clientSlice';
+import { fetchClients, removeClient, updateClientNRP } from '../../features/clientSlice';
 import Swal from 'sweetalert2';
 import 'primeicons/primeicons.css';
+import { InputNumber } from 'primereact/inputnumber';
+import axios from 'axios';
 
 const TableComponent = ({ onRowClick }) => {
   const dispatch = useDispatch();
@@ -16,7 +18,33 @@ const TableComponent = ({ onRowClick }) => {
   const status = useSelector((state) => state.clients.status);
   const error = useSelector((state) => state.clients.error);
 
-  // Fetch data on component mount
+
+  const handelUpdateClientNRP = (clientId, newNRP) => {
+    // First, confirm with the user if they are sure about the NRP change
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You are about to change NRP to ${newNRP}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, update it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Dispatch the action to update NRP if the user confirmed
+        dispatch(updateClientNRP({ id: clientId, nrpData: newNRP }))
+          .then(() => {
+            // Success alert
+            Swal.fire('Updated!', 'The NRP has been updated.', 'success');
+          })
+          .catch((error) => {
+            // Error alert
+            Swal.fire('Error!', 'There was an issue updating the NRP.', 'error');
+          });
+      }
+    });
+  };
+
   useEffect(() => {
     dispatch(fetchClients());
   }, []);
@@ -30,7 +58,7 @@ const TableComponent = ({ onRowClick }) => {
           <a href={`/client/${client._id}`} className="text-primary hover:underline">
             <b>{client.prenom}</b>
           </a>
-          <div><i className="pi pi-ticket" style={{  color: "blue" }}></i> {client.siret}</div>
+          <div><i className="pi pi-ticket" style={{ color: "blue" }}></i> {client.siret}</div>
         </>
       ),
     },
@@ -64,6 +92,40 @@ const TableComponent = ({ onRowClick }) => {
         </div>
       ),
     },
+    {
+      field: 'nrp',
+      header: 'NRP',
+      body: (client) => (
+        <div className="d-flex align-items-center gap-1">
+          {/* Minus Button */}
+          <button
+            className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
+            aria-label="Decrease NRP"
+            onClick={() => handelUpdateClientNRP(client._id, client.nrp - 1)}
+            style={{ width: "18px", height: "18px" }}
+            disabled={client.nrp === 0}  // Disable the button if NRP is 0
+          >
+            <i className="pi pi-minus-circle" style={{ fontSize: "0.8rem", color: "red" }}></i>
+          </button>
+          <span style={{ minWidth: "20px", fontSize: "0.9rem", textAlign: "center" }}>
+              {client.nrp ?? 0}
+            </span>
+          <button
+            className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
+            aria-label="Increase NRP"
+            onClick={() => handelUpdateClientNRP(client._id, client.nrp + 1)}
+            style={{ width: "18px", height: "18px" }}
+          >
+            <i className="pi pi-plus-circle" style={{ fontSize: "0.8rem", color: "green" }}></i>
+          </button>
+
+        </div>
+
+      ),
+    }
+
+
+    ,
     {
       field: 'statusChantier',
       header: 'Statut',
@@ -129,18 +191,18 @@ const TableComponent = ({ onRowClick }) => {
       header: 'Delete',
       body: (client) => (
         <button
-        className="btn rounded-circle"
-        aria-label="Cancel"
-        onClick={() => handleDeleteClient(client._id)}
-        style={{
-          width: "35px",
-          height: "35px",
-          padding: "0",
-          borderRadius: "50%",
-        }}
-      >
-        <i className="pi pi-times-circle" style={{ fontSize: "1.2rem", color:'red' }}></i>
-      </button>
+          className="btn rounded-circle"
+          aria-label="Cancel"
+          onClick={() => handleDeleteClient(client._id)}
+          style={{
+            width: "35px",
+            height: "35px",
+            padding: "0",
+            borderRadius: "50%",
+          }}
+        >
+          <i className="pi pi-times-circle" style={{ fontSize: "1.2rem", color: 'red' }}></i>
+        </button>
       ),
     },
   ];
@@ -165,7 +227,7 @@ const TableComponent = ({ onRowClick }) => {
 
   return (
     <div className="card">
-      <DataTable value={clients} size={'small'} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }} loading={status === 'loading'}>
+      <DataTable stripedRows value={clients} size={'small'} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }} loading={status === 'loading'}>
         {columns.map((col, index) => (
           <Column
             key={index}

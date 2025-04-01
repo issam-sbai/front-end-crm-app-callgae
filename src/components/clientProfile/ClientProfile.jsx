@@ -46,7 +46,7 @@ export default function ProfilePage() {
   const handleSave = () => {
     setIsEditing(false);
     setEditingField(null); // Reset the editing field when save is clicked
-    console.log('Client Data Saved', clientData);
+    // console.log('Client Data Saved', clientData);
   };
 
   const handleCancel = () => {

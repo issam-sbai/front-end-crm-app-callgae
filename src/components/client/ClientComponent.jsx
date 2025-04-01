@@ -65,7 +65,7 @@ const ClientComponent = () => {
       .then((response) => response.json())
       .then((data) => {
         setFilteredClients(data);
-        console.log("Filtered Clients:", data);
+        // console.log("Filtered Clients:", data);
       })
       .catch((error) => {
         console.error('Error filtering clients:', error);
