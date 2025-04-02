@@ -106,6 +106,14 @@ p {
   justify-content: center;
 }
 
+/* Tooltip styling */
+.tooltip-inner {
+  max-width: 200px;  /* Set a max width for the tooltip */
+  white-space: normal; /* Allow the tooltip to wrap text */
+  word-wrap: break-word; /* Prevent long words from breaking out */
+}
+
+
 /* Responsive table adjustments */
 @media (max-width: 768px) {
   .table-header {

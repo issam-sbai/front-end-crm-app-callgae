@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
-import { Button } from 'primereact/button';
+import React, { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClients, removeClient, updateClientNRP } from '../../features/clientSlice';
+import { fetchClients, removeClient, updateClientNRP, addObservation } from '../../features/clientSlice';
 import Swal from 'sweetalert2';
 import 'primeicons/primeicons.css';
-import { InputNumber } from 'primereact/inputnumber';
-import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
+import { Button as BootstrapButton } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const TableComponent = ({ onRowClick }) => {
   const dispatch = useDispatch();
@@ -18,6 +17,37 @@ const TableComponent = ({ onRowClick }) => {
   const status = useSelector((state) => state.clients.status);
   const error = useSelector((state) => state.clients.error);
 
+  const [showModal, setShowModal] = useState(false);
+  const [textAreaValue, setTextAreaValue] = useState('');
+  const [selectedClient, setSelectedClient] = useState(null);  // Track the client being edited
+
+  // Popup for adding new observation
+  const handleShow = (client) => {
+    setSelectedClient(client);
+    setTextAreaValue(''); // Clear textarea when modal is opened for adding new observation
+    setShowModal(true);
+  };
+  const handleClose = () => setShowModal(false);
+
+  const handleSave = () => {
+    if (selectedClient) {
+      // Add new observation entered in the textarea
+      const newObservation = textAreaValue.trim();  // Prevent saving empty observations
+      if (newObservation) {
+        // Dispatch action to add new observation
+        dispatch(addObservation({ id: selectedClient._id, newObservation }))
+          .then(() => {
+            Swal.fire('Saved!', 'The observation has been added.', 'success');
+            setShowModal(false); // Close modal after saving
+          })
+          .catch(() => {
+            Swal.fire('Error!', 'There was an issue saving the observation.', 'error');
+          });
+      } else {
+        Swal.fire('Error!', 'Observation cannot be empty.', 'warning');
+      }
+    }
+  };
 
   const handelUpdateClientNRP = (clientId, newNRP) => {
     // First, confirm with the user if they are sure about the NRP change
@@ -58,7 +88,7 @@ const TableComponent = ({ onRowClick }) => {
           <a href={`/client/${client._id}`} className="text-primary hover:underline">
             <b>{client.prenom}</b>
           </a>
-          <div><i className="pi pi-ticket" style={{ color: "blue" }}></i> {client.siret}</div>
+          <div><i className="pi" style={{ color: "green" }}>siret:</i> {client.siret}</div>
         </>
       ),
     },
@@ -68,7 +98,7 @@ const TableComponent = ({ onRowClick }) => {
       body: (client) => (
         <div>
           <div><i className="pi pi-building-columns "></i>  {client.entreprise}</div>
-          <div><i className="pi pi-flag"></i>  {client.flag}</div>
+          <div><i className="pi pi-flag" style={{ fontSize: "0.8rem", color: "green" }} ></i> <span style={{ color: "green" }}>{client.flag}</span></div>
         </div>
       ),
     },
@@ -85,47 +115,59 @@ const TableComponent = ({ onRowClick }) => {
     {
       field: 'adresse',
       header: 'Adresse',
-      body: (client) => (
-        <div>
-          <div>{client.adresse}</div>
-          <div>{client.codepostal}</div>
-        </div>
-      ),
+      body: (client) => {
+        // Create the address string
+        const address = `${client.adresse} ${client.ville} ${client.codepostal}`;
+
+        // Function to fetch coordinates and open Geoportail with them
+        const openGeoportail = async () => {
+          const geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+          const response = await fetch(geocodeUrl);
+          const data = await response.json();
+
+          if (data && data[0]) {
+            const latitude = data[0].lat;
+            const longitude = data[0].lon;
+
+            // Construct Geoportail URL with lat, lon
+            const geoportailUrl = `https://www.geoportail.gouv.fr/carte?c=${longitude},${latitude}&z=19&l0=GEOGRAPHICALGRIDSYSTEMS.MAPS.3D::GEOPORTAIL:OGC:WMTS==aggregate(1)&d1=1256334(0)&l2=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR::GEOPORTAIL:OGC:WMTS(1)&d3=1256360(0)&d4=1256322(0)&d5=1256364(0)&d6=1256385(1)&d7=1256377(0)&l8=GEOGRAPHICALGRIDSYSTEMS.PLANIGN::GEOPORTAIL:OGC:WMTS(1)&l9=CADASTRALPARCELS.PARCELS::GEOPORTAIL:OGC:WMTS(1)&l10=AD.Address::INSPIRE:OGC:WMS+(1)&permalink=yes`;
+
+            // Open Geoportail in a new tab
+            window.open(geoportailUrl, '_blank');
+          } else {
+            alert('Address not found!');
+          }
+        };
+
+        return (
+          <div>
+            <div >
+              <div>{client.adresse} </div>
+              <div>{client.ville} {client.codepostal}</div>
+            </div>
+            <div>
+              <a
+                href="#"
+                onClick={openGeoportail}  // Call geocoding and open Geoportail
+                style={{ textDecoration: 'none', color: 'inherit', marginRight: '5px' }}
+              >
+                <i className="pi pi-map" style={{ fontSize: "0.8rem", color: "red" }}></i>
+              </a>
+              <a
+                href={`https://www.google.com/maps?q=${encodeURIComponent(address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none', color: 'inherit', marginRight: '5px' }}
+              >
+                <i className="pi pi-map-marker" style={{ fontSize: "0.8rem", color: "rgb(13, 110, 253)" }}></i>
+              </a>
+
+            </div>
+          </div>
+        );
+      },
     },
-    {
-      field: 'nrp',
-      header: 'NRP',
-      body: (client) => (
-        <div className="d-flex align-items-center gap-1">
-          {/* Minus Button */}
-          <button
-            className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
-            aria-label="Decrease NRP"
-            onClick={() => handelUpdateClientNRP(client._id, client.nrp - 1)}
-            style={{ width: "18px", height: "18px" }}
-            disabled={client.nrp === 0}  // Disable the button if NRP is 0
-          >
-            <i className="pi pi-minus-circle" style={{ fontSize: "0.8rem", color: "red" }}></i>
-          </button>
-          <span style={{ minWidth: "20px", fontSize: "0.9rem", textAlign: "center" }}>
-              {client.nrp ?? 0}
-            </span>
-          <button
-            className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
-            aria-label="Increase NRP"
-            onClick={() => handelUpdateClientNRP(client._id, client.nrp + 1)}
-            style={{ width: "18px", height: "18px" }}
-          >
-            <i className="pi pi-plus-circle" style={{ fontSize: "0.8rem", color: "green" }}></i>
-          </button>
 
-        </div>
-
-      ),
-    }
-
-
-    ,
     {
       field: 'statusChantier',
       header: 'Statut',
@@ -171,6 +213,80 @@ const TableComponent = ({ onRowClick }) => {
         );
       },
     },
+    {
+      field: 'nrp',
+      header: 'NRP',
+      body: (client) => (
+        <div className="d-flex align-items-center gap-1">
+          {/* Minus Button */}
+          <button
+            className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
+            aria-label="Decrease NRP"
+            onClick={() => handelUpdateClientNRP(client._id, client.nrp - 1)}
+            style={{ width: "18px", height: "18px" }}
+            disabled={client.nrp === 0}  // Disable the button if NRP is 0
+          >
+            <i className="pi pi-minus-circle" style={{ fontSize: "0.8rem", color: "red" }}></i>
+          </button>
+          <span style={{ minWidth: "20px", fontSize: "0.9rem", textAlign: "center" }}>
+            {client.nrp ?? 0}
+          </span>
+          <button
+            className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
+            aria-label="Increase NRP"
+            onClick={() => handelUpdateClientNRP(client._id, client.nrp + 1)}
+            style={{ width: "18px", height: "18px" }}
+          >
+            <i className="pi pi-plus-circle" style={{ fontSize: "0.8rem", color: "green" }}></i>
+          </button>
+
+        </div>
+
+      ),
+    },
+    {
+      field: 'observations',
+      header: 'Observations',
+      body: (client) => (
+        <div>
+          <button
+            className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
+            aria-label="Add Observation"
+            onClick={() => handleShow(client)}  // Open modal on click
+            style={{ width: "18px", height: "18px" }}
+          >
+            <i className="pi pi-plus-circle" style={{ fontSize: "0.8rem", color: "green" }}></i>
+          </button>
+          {client.observations && client.observations.length > 0 ? (
+            client.observations.map((obs, index) => (
+              <OverlayTrigger
+                key={index}
+                placement="top"  // You can change to "right", "bottom", or "left"
+                overlay={<Tooltip id={`tooltip-${index}`}>{obs}</Tooltip>} // Show the full observation text
+              >
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    color: "rgb(13, 110, 253)",
+                    cursor: 'pointer',
+                    maxWidth: '150px',    // Adjust based on your design
+                    whiteSpace: 'nowrap', // Prevent wrapping
+                    overflow: 'hidden',   // Hide overflowed text
+                    textOverflow: 'ellipsis' // Add ellipsis for truncated text
+                  }}
+                >
+                  {/* Truncate text to 50 characters and add ellipsis if longer */}
+                  {obs.length > 50 ? `${obs.substring(0, 50)}...` : obs}
+                </div>
+              </OverlayTrigger>
+            ))
+          ) : (
+            <span style={{ fontSize: "0.85rem", color: "gray" }}>No observations</span>
+          )}
+        </div>
+      ),
+    },
+
     {
       field: 'dateCreation',
       header: 'Dates',
@@ -237,6 +353,30 @@ const TableComponent = ({ onRowClick }) => {
           />
         ))}
       </DataTable>
+
+      {/* Modal for adding new observation */}
+      <Modal show={showModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Observation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <textarea
+            className="form-control"
+            style={{ width: "100%", height: "130px" }}
+            value={textAreaValue}
+            onChange={(e) => setTextAreaValue(e.target.value)}
+            placeholder="Enter new observation"
+          ></textarea>
+        </Modal.Body>
+        <Modal.Footer>
+          <BootstrapButton variant="secondary" onClick={handleClose}>
+            Close
+          </BootstrapButton>
+          <BootstrapButton variant="primary" onClick={handleSave}>
+            Save changes
+          </BootstrapButton>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
