@@ -17,12 +17,13 @@
 // src/store.js
 import { configureStore } from '@reduxjs/toolkit';
 import clientsReducer from '../features/clientSlice';
+import userReducer from '../features/userSlice'; // Import user reducer
 
 const store = configureStore({
   reducer: {
     clients: clientsReducer,
+    user: userReducer, // ✅ Add this
   },
 });
 
 export default store;
-
