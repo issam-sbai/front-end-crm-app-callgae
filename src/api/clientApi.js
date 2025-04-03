@@ -14,6 +14,10 @@ export const createClient = (clientData) => {
   return axios.post(API_URL, clientData);
 };
 
+export const getClientsByEquipe = (equipeId) => {
+  return axios.get(`http://localhost:5000/api/clients/equipe/${equipeId}/clients`);
+};
+
 export const getClients = () => {
   return axios.get(API_URL);
 };

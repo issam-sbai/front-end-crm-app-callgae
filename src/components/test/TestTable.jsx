@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClients, removeClient, updateClientNRP, addObservation } from '../../features/clientSlice';
+import { fetchClients, removeClient, updateClientNRP, addObservation, getClientsByEquipeThunk } from '../../features/clientSlice';
 import Swal from 'sweetalert2';
 import 'primeicons/primeicons.css';
 import Modal from 'react-bootstrap/Modal';
@@ -76,8 +76,23 @@ const TableComponent = ({ onRowClick }) => {
   };
 
   useEffect(() => {
-    dispatch(fetchClients());
-  }, []);
+    const role = localStorage.getItem('role');  // Get the role from localStorage
+    if (role === 'admin') {
+      // Admin: Fetch all clients
+      dispatch(fetchClients());
+    } else if (role === 'supervisor') {
+      // Supervisor: Get equipId from localStorage and fetch clients by equipe
+      const equipId = localStorage.getItem("equipId");
+      // console.log(equipId);
+      
+      if (equipId) {
+        dispatch(getClientsByEquipeThunk(equipId));
+      }
+    }
+  }, [dispatch]);
+
+ // Runs every time clients are updated
+
 
   const columns = [
     {
@@ -100,6 +115,13 @@ const TableComponent = ({ onRowClick }) => {
           <div><i className="pi pi-building-columns "></i>  {client.entreprise}</div>
           <div><i className="pi pi-flag" style={{ fontSize: "0.8rem", color: "green" }} ></i> <span style={{ color: "green" }}>{client.flag}</span></div>
         </div>
+      ),
+    },
+    {
+      field: 'equipe',
+      header: 'Equipe',
+      body: (client) => (
+        <div> {client.equipe ? client.equipe.name : 'No equipe'}    </div>
       ),
     },
     {

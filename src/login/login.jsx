@@ -22,7 +22,10 @@ const LoginPage = () => {
             localStorage.setItem("username", response.user.username); // Store username
             localStorage.setItem("role", response.user.role); // Store user role
             localStorage.setItem("equip", JSON.stringify(response.user.equip)); // Store equip object as a string
-
+            localStorage.setItem("equipId", response.user.equip._id); // Store equipId directly
+            
+            // console.log(response.user.equip._id);  // Just to verify the equip object
+            
             // Redirect to dashboard or other page after successful login
             navigate("/test");
 

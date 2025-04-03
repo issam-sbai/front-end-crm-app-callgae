@@ -8,7 +8,8 @@ import {
   getClientsByAgentId, 
   filterClients,
   updateClientNRP as updateClientNRPApi ,// Renamed the imported updateClientNRP to avoid conflict
-  addObservation as addObservationApi // Import addObservation
+  addObservation as addObservationApi, // Import addObservation
+  getClientsByEquipe
 } from '../api/clientApi';
 
 const initialState = {
@@ -86,6 +87,15 @@ export const addObservation = createAsyncThunk(
   async ({ id, newObservation }) => {
     const response = await addObservationApi(id, newObservation);
     return response.data;  // Return the updated client with new observation
+  }
+);
+
+export const getClientsByEquipeThunk = createAsyncThunk(
+  'clients/getClientsByEquipe', 
+  async (equipeId) => {
+    // console.log('Equipe ID:', equipeId);  // Log to verify the ID
+    const response = await getClientsByEquipe(equipeId);
+    return response.data;
   }
 );
 
@@ -178,6 +188,17 @@ const clientsSlice = createSlice({
       .addCase(addObservation.rejected, (state, action) => {
         state.status = 'failed'; // Set status to failed if there's an error
         state.error = action.error.message; // Store the error message
+      })
+      .addCase(getClientsByEquipeThunk.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getClientsByEquipeThunk.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.clientsx = action.payload;  // Set the fetched clients in the state
+      })
+      .addCase(getClientsByEquipeThunk.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;  // Handle error
       });
   },
 });
