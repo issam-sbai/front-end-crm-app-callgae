@@ -9,8 +9,8 @@ import FilterComponent from './tablecompe/FilterComponent';
 import { Button } from 'primereact/button';
 
 const ClientComponent = () => {
-  const userRole = localStorage.getItem("role");
-  const agentId = localStorage.getItem("agentId");
+  // const userRole = localStorage.getItem("role");
+  // const agentId = localStorage.getItem("agentId");
 
   const dispatch = useDispatch();
   const clients = useSelector((state) => state.clients.clientsx);

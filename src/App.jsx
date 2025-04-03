@@ -14,14 +14,14 @@ import { Provider } from 'react-redux';
 import store from "./app/store";
 
 function App() {
-  const isLoggedIn = localStorage.getItem("username");
 
+//  isLoggedIn={isLoggedIn} 
   return (
     <Provider store={store}>
       <PrimeReactProvider>
         <Router>
           <Layout>
-            <AppRoutes isLoggedIn={isLoggedIn} />
+            <AppRoutes/>
           </Layout>
         </Router>
       </PrimeReactProvider>

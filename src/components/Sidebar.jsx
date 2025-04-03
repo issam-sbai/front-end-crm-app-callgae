@@ -11,14 +11,13 @@ export default function Sidebar() {
   const items = [
     { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
     { label: 'clients RDV', icon: 'pi pi-fw pi-user', to: '/test' },
-    { label: 'Clients', icon: 'pi pi-fw pi-users', to: '/clients' },
+    // { label: 'Clients', icon: 'pi pi-fw pi-users', to: '/clients' },
     { label: 'RDV', icon: 'pi pi-fw pi-calendar', to: '/rdv' },
     { label: 'Users', icon: 'pi pi-fw pi-user', to: '/users' },
     
 
   ];
 
-  // Logout function with confirmation
   const handleLogout = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -33,15 +32,16 @@ export default function Sidebar() {
         // Clear user data from localStorage
         localStorage.removeItem("username");
         localStorage.removeItem("role");
-
+        localStorage.removeItem("token"); // Clear the token as well
+  
         // Show success message after logout
         Swal.fire({
           title: "Logged out!",
           text: "You have successfully logged out.",
           icon: "success"
         }).then(() => {
-          // Refresh the page after logout
-          window.location.reload();
+          // Redirect to the login page after logout
+          navigate("/login");
         });
       }
     });

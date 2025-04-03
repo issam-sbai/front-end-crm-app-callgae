@@ -1,8 +1,7 @@
-import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
-  const isLoggedIn = localStorage.getItem("username");
+
 
   return (
     <div>
@@ -10,8 +9,8 @@ const Layout = ({ children }) => {
       {/* <Navbar /> */}
 
       {/* Conditionally render Sidebar only if logged in */}
-      {isLoggedIn && <Sidebar />}
-
+      {/* {isLoggedIn && <Sidebar /> } */}
+      <Sidebar />
       {/* Main content */}
       <div style={{ padding: '20px', width: '100%' }}>
         {children}
