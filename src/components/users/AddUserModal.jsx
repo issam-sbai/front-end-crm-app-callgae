@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { registerUserAsync } from '../../features/userSlice';
+import { registerUserAsync, getAllUsersAsync } from '../../features/userSlice'; // Make sure getAllUsersAsync is imported
+import Swal from 'sweetalert2';
 
-const AddUserModal = ({ show, onHide }) => {
+const AddUserModal = ({ users, show, onHide }) => {
     const dispatch = useDispatch();
 
     const equipes = [
@@ -12,7 +13,6 @@ const AddUserModal = ({ show, onHide }) => {
         { _id: '67ed6e3bff2b70c4c5583729', name: 'Equipe 3' },
     ];
 
-    // Separate states for each field with new variable names
     const [usernamex, setUsernamex] = useState('');
     const [rolex, setRolex] = useState('');
     const [equipx, setEquipx] = useState('');
@@ -22,10 +22,14 @@ const AddUserModal = ({ show, onHide }) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const checkIfUserExists = async (username) => {
+        const userExists = users.some(user => user.username === username);
+        return userExists;
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Check if all required fields are filled
         if (!usernamex || !equipx || !passwordx) {
             setErrorMessage('Please fill in all required fields');
             return;
@@ -33,7 +37,14 @@ const AddUserModal = ({ show, onHide }) => {
 
         setLoading(true);
 
-        // Dispatch registerUserAsync action to register the user
+        // Check if the username already exists
+        const userExists = await checkIfUserExists(usernamex);
+        if (userExists) {
+            setErrorMessage('Username already exists. Please choose another one.');
+            setLoading(false);
+            return;
+        }
+
         dispatch(registerUserAsync({ username: usernamex, role: rolex, equip: equipx, password: passwordx }))
             .then(() => {
                 setErrorMessage(''); // Clear any previous error messages
@@ -43,6 +54,12 @@ const AddUserModal = ({ show, onHide }) => {
                 setPasswordx('');
                 onHide(); // Close the modal
                 setLoading(false);
+
+                // Re-fetch the users after adding a new user
+                dispatch(getAllUsersAsync());
+
+                // Show success message
+                Swal.fire('User Added!', 'The user has been added successfully.', 'success');
             })
             .catch(() => {
                 setErrorMessage('There was a problem registering the user.');
@@ -78,6 +95,7 @@ const AddUserModal = ({ show, onHide }) => {
                             value={rolex}
                             onChange={(e) => setRolex(e.target.value)}
                             className="w-100"
+                            required
                         >
                             <option value="">Select Role</option>
                             <option value="agent">Agent</option>

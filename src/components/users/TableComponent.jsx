@@ -12,7 +12,7 @@ import { getAllUsersAsync, updateUserAsync, deleteUserAsync } from '../../featur
 import AddUserModal from './AddUserModal';
 
 const TableComponentuser = () => {
-    const [showModal, setShowModal] = useState(false); 
+    const [showModal, setShowModal] = useState(false);
     const dispatch = useDispatch();
     const { users, loading, error } = useSelector((state) => state.user);
 
@@ -67,29 +67,61 @@ const TableComponentuser = () => {
 
     return (
         <>
-            <div className="d-flex justify-content-end mb-3 px-4">
-                <Button variant="success" onClick={() => setShowModal(true)}>
-                    <i className="pi pi-plus"></i> Add User
-                </Button>
+
+            <div className="d-flex justify-content-between mb-3 px-4">
+                <br />
+                <div className="px-2 mt-2 flex-grow-1">
+                    <div className=" mb-3">
+                        <Button variant="success" onClick={() => setShowModal(true)}>
+                            <i className="pi pi-plus "></i> Add Equipe
+                        </Button>
+                    </div>
+
+                    <DataTable
+                        stripedRows
+                        value={users}
+                        paginator
+                        rows={5}
+                        rowsPerPageOptions={[5, 10, 25, 50]}
+                        size="small"
+                        tableStyle={{ minWidth: '100%' }}
+                        loading={loading}
+                    >
+                        <Column field="username" header="Equipe Name" />
+                        <Column field="role" header="description" />
+                        <Column field="equip.name" header="createdAt" />
+                        <Column header="Actions" body={actionTemplate} style={{ textAlign: 'center' }} />
+                    </DataTable>
+                </div>
+                <div className="px-2 mt-2 flex-grow-1">
+                    <div className=" mb-3">
+                        <Button variant="success" onClick={() => setShowModal(true)}>
+                            <i className="pi pi-plus "></i> Add User
+                        </Button>
+                    </div>
+
+                    <DataTable
+                        stripedRows
+                        value={users}
+                        paginator
+                        rows={5}
+                        rowsPerPageOptions={[5, 10, 25, 50]}
+                        size="small"
+                        tableStyle={{ minWidth: '100%' }}
+                        loading={loading}
+                    >
+                        <Column field="username" header="User Name" />
+                        <Column field="role" header="Role" />
+                        <Column field="equip.name" header="Equipe" />
+                        <Column header="Actions" body={actionTemplate} style={{ textAlign: 'center' }} />
+                    </DataTable>
+                </div>
             </div>
-            <div className="px-2 mt-2">
-                <DataTable
-                    stripedRows
-                    value={users}
-                    size="small"
-                    tableStyle={{ minWidth: '50rem' }}
-                    loading={loading}
-                >
-                    <Column field="username" header="User Name" />
-                    <Column field="role" header="Role" />
-                    <Column field="equip.name" header="Equipe" />
-                    <Column field="isActive" header="Active" body={(rowData) => (rowData.isActive ? 'Yes' : 'No')} />
-                    <Column header="Actions" body={actionTemplate} style={{ textAlign: 'center', maxWidth: '20px' }} />
-                </DataTable>
-            </div>
-            <AddUserModal show={showModal} onHide={() => setShowModal(false)} />
+
+
+            <AddUserModal users = {users} show={showModal} onHide={() => setShowModal(false)} />
         </>
-       // Callback to handle adding user onAdd={handleAddUser}
+        // Callback to handle adding user onAdd={handleAddUser}
     );
 };
 
