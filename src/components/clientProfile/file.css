@@ -1,0 +1,30 @@
+/* file.css */
+
+/* Styling for the Profile Image */
+.profile-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  /* Styling for the Profile Section Card */
+  .profile-card {
+    max-width: 850px;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styling for headings */
+  .profile-card h2 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .profile-card p {
+    color: #555;
+  }
+  

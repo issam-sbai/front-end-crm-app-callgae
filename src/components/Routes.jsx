@@ -5,12 +5,13 @@ import Users from "./users/UsersPage";
 // import Rdv from "./Rdv";
 // import ClientComponent from "./client/ClientComponent";
 // import ClientProfile from "./clientProfile/ClientProfile";
-// import ProfilePage from "./clientProfile/ProfilePage";
+// 
 // import ClientsList from "./client/ClientsList ";
 // import ClientDetails from "./clientProfile/ClientDetails";
 import LoginPage from "../login/login";
 import PlanningPage from "./Planning/PlanningPage";
 import TestPage from "./test/TestPage";
+import ProfilePage from "./clientProfile/ProfilePage";
 
 const AppRoutes = ({ isLoggedIn }) => {
   return (
@@ -25,7 +26,7 @@ const AppRoutes = ({ isLoggedIn }) => {
       <Route path="/users" element={ <Users />} />
       <Route path="/rdv" element={<PlanningPage />} />
       <Route path="/test" element={<TestPage/>} />
-
+      <Route path="/client/:id" element={<ProfilePage />} />
 
       {/* <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
       <Route path="/clients" element={isLoggedIn ? <ClientComponent /> : <Navigate to="/login" />} />

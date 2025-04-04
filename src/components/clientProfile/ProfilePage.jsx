@@ -4,25 +4,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchClients, updateClientById, addClient } from '../../features/clientSlice'; // Import actions
 import ProfileSidebar from './ProfileSidebar';
 import ProfileForm from './ProfileForm';
-import FooterButtons from './FooterButtons';
-import RdvSection from './RdvSection';
+import ProfileSection from './ProfileSection';
+
 
 const ProfilePage = () => {
   const { id } = useParams(); // Get the client ID from the URL
   const dispatch = useDispatch();
-  
+
   // Local state for storing client data, loading, and error
   const [clientData, setClientData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
     const fetchClient = async () => {
       try {
-        const response = await fetch(`http://192.168.100.26:5000/api/clients/${id}`);
+        const response = await fetch(`http://localhost:5000/api/clients/${id}`);
         if (!response.ok) throw new Error('Client not found');
         const data = await response.json();
-        
+
         // Log the client data for debugging
         console.log('Client Data:', data);
 
@@ -45,24 +45,10 @@ const ProfilePage = () => {
 
   return (
     <section style={{ backgroundColor: '#fff', minHeight: '100vh' }}>
-      <div className="container-fluid py-3" style={{ maxWidth: '100%' }}>
-        <div className="row">
-          {/* Profile Sidebar */}
-          <ProfileSidebar clientData={clientData} />
+      <ProfileSection
+        client={clientData}
+      />
 
-          {/* Profile Form */}
-           <ProfileForm
-            clientData={clientData}
-          /> 
-
-
-          {/* RDV Section */}
-          {/* <RdvSection rdvs={[clientData]} /> */}
-        </div>
-      </div>
-
-      {/* Footer Buttons */}
-      {/* You can add FooterButtons or any other UI elements here */}
     </section>
   );
 };

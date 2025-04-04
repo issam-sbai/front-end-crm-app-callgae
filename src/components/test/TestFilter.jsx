@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import { format } from "date-fns";
 import useClient from '../../hooks/useClient';
+import { useSelector } from 'react-redux';
 
 const options = {
     flag: [
@@ -143,9 +144,12 @@ const FilterComponenttest = () => {
     const [department, setDepartment] = useState('');
     const { filterClients } = useClient();
     const { getAllClients } = useClient();
-
+ 
+    const { equipes, loading: equipeLoading, error: equipeError } = useSelector((state) => state.equipe);
     const handleFilter = async (event) => {
         event.preventDefault();
+        console.log(equipes);
+        
         console.log("Filter function executed, event prevented!");
         const filterData = {
             nomPrenom: name,
