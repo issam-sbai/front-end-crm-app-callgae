@@ -106,15 +106,9 @@ const options = {
     ],
     equipe: [
         { value: '', label: 'Aucun(e)' },
-        { value: 'EQUIP LED 1', label: 'EQUIP LED 1' },
-        { value: 'EQUIP LED 2', label: 'EQUIP LED 2' },
-        { value: 'EQUIPE 3', label: 'EQUIPE 3' },
-        { value: 'EQUIPE 4', label: 'EQUIPE 4' },
-        { value: 'EQUIPE 5', label: 'EQUIPE 5' },
-        { value: 'EQUIPE 6', label: 'EQUIPE 6' },
-        { value: 'EQUIPE 7', label: 'EQUIPE 7' },
-        { value: 'EQUIPE FABRICE 1', label: 'EQUIPE FABRICE 1' },
-        { value: 'EQUIPE FABRICE 2', label: 'EQUIPE FABRICE 2' },
+        { value: '67ed6e1cff2b70c4c5583724', label: 'EQUIPE 1' },
+        { value: '67ed6e3bff2b70c4c5583727', label: 'EQUIPE 2' },
+        { value: '67ee50102c2321b1acbfa187', label: 'EQUIPE 3' },
     ]
 };
 
@@ -169,10 +163,13 @@ const FilterComponenttest = () => {
             dateCreatedTo: dateCreatedTo,
             dateRdvFrom: dateRdvFrom,
             dateRdvTo: dateRdvTo,
+            equipe:equipe?.value || ''
+
         };
 
         try {
             filterClients(filterData)
+            // console.log(filterData)
         } catch (error) {
             console.error('Error fetching filtered clients', error);
         }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 
 const AddClient = ({ show, onHide, onAdd }) => {
+    
     const [newClient, setNewClient] = useState({
         civilite: "M.",
         prenom: "",
@@ -35,6 +36,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
         }
         return "";
     };
+    const storedEquipId = localStorage.getItem("equipId");
 
     const handleSubmit = () => {
         const validationError = validateForm();
@@ -42,7 +44,10 @@ const AddClient = ({ show, onHide, onAdd }) => {
             setError(validationError);
             return;
         }
+    
+        // 👉 Get equipe from localStorage
         
+        console.log(storedEquipId)
         const formData = {
             civilite: newClient.civilite,
             prenom: newClient.prenom,
@@ -58,10 +63,14 @@ const AddClient = ({ show, onHide, onAdd }) => {
             agentId: newClient.agentId,
             infoRdv: newClient.infoRdv,
             commentaire: newClient.commentaire,
-            statusChantier:"NO STATUS"
+            statusChantier: "NO STATUS",
+            // 👉 Include equipe here
+            equipe: storedEquipId || null,
         };
-
+    
         onAdd(formData);
+    
+        // Reset form
         setNewClient({
             civilite: "M.",
             prenom: "",
@@ -77,8 +86,8 @@ const AddClient = ({ show, onHide, onAdd }) => {
             agentId: "",
             infoRdv: "",
             commentaire: "",
-
         });
+    
         onHide();
     };
 
