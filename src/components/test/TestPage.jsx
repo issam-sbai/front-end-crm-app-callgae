@@ -8,7 +8,7 @@ import SvgTest from './SvgTest';
 import AddClient from './AddClient';
 import useClient from '../../hooks/useClient'; 
 import { useDispatch } from "react-redux";
-import { addClient } from "../../features/clientSlice";
+import { addClient ,fetchClients } from "../../features/clientSlice";
 const TestPage = () => {
   const [showMap, setShowMap] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -21,6 +21,8 @@ const TestPage = () => {
 
   const handleAddClient = (newClient) => {
     dispatch(addClient(newClient));
+    dispatch(fetchClients());
+
     setShowAddModal(false);
   };
 

@@ -36,7 +36,6 @@ const AddClient = ({ show, onHide, onAdd }) => {
         }
         return "";
     };
-    const storedEquipId = localStorage.getItem("equipId");
 
     const handleSubmit = () => {
         const validationError = validateForm();
@@ -45,9 +44,13 @@ const AddClient = ({ show, onHide, onAdd }) => {
             return;
         }
     
-        // 👉 Get equipe from localStorage
-        
-        console.log(storedEquipId)
+        // 👉 Get role and equipe from localStorage
+        const storedRole = localStorage.getItem("role");
+        const storedEquipId = localStorage.getItem("equip");
+    
+        console.log("Role:", storedRole);
+        console.log("Equipe ID:", storedEquipId);
+    
         const formData = {
             civilite: newClient.civilite,
             prenom: newClient.prenom,
@@ -64,9 +67,12 @@ const AddClient = ({ show, onHide, onAdd }) => {
             infoRdv: newClient.infoRdv,
             commentaire: newClient.commentaire,
             statusChantier: "NO STATUS",
-            // 👉 Include equipe here
-            equipe: storedEquipId || null,
         };
+    
+        // 👉 Add equipe only if NOT admin
+        if (storedRole !== "admin") {
+            formData.equipe = storedEquipId || null;
+        }
     
         onAdd(formData);
     
@@ -90,6 +96,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
     
         onHide();
     };
+    
 
     return (
         <Modal show={show} onHide={onHide} centered size="xl">
