@@ -17,14 +17,16 @@
 // src/store.js
 import { configureStore } from '@reduxjs/toolkit';
 import clientsReducer from '../features/clientSlice';
-import userReducer from '../features/userSlice'; // Import user reducer
-import equipeReducer from '../features/equipeSlice';
+import userReducer    from '../features/userSlice';
+import equipeReducer  from '../features/equipeSlice';
+import fieldsReducer  from '../features/fieldsSlice';  // Import the dynamic fields reducer
 
 const store = configureStore({
   reducer: {
     clients: clientsReducer,
-    equipe: equipeReducer,
-    user: userReducer, // ✅ Add this
+    equipe:  equipeReducer,
+    user:    userReducer,
+    fields:  fieldsReducer,   // Add the fields slice here
   },
 });
 
