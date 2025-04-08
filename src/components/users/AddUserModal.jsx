@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { registerUserAsync, getAllUsersAsync } from '../../features/userSlice'; // Make sure getAllUsersAsync is imported
+import { fetchEquipes } from '../../features/equipeSlice'; // Make sure getAllUsersAsync is imported
 import Swal from 'sweetalert2';
 
 const AddUserModal = ({ users, show, onHide }) => {
     const dispatch = useDispatch();
+    const { equipes, loading: equipeLoading, error: equipeError } = useSelector((state) => state.equipe);
 
-    const equipes = [
-        { _id: '67ed6e3bff2b70c4c5583727', name: 'Equipe 1' },
-        { _id: '67ed6e3bff2b70c4c5583728', name: 'Equipe 2' },
-        { _id: '67ed6e3bff2b70c4c5583729', name: 'Equipe 3' },
-    ];
+    // const equipes = [
+    //     { _id: '67ed6e3bff2b70c4c5583727', name: 'Equipe 1' },
+    //     { _id: '67ed6e3bff2b70c4c5583728', name: 'Equipe 2' },
+    //     { _id: '67ed6e3bff2b70c4c5583729', name: 'Equipe 3' },
+    // ];
 
     const [usernamex, setUsernamex] = useState('');
     const [rolex, setRolex] = useState('');

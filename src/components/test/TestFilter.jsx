@@ -197,6 +197,13 @@ const FilterComponenttest = () => {
         setEquipe({ value: '', label: 'Aucun(e)' });  // Reset the equipe select to default
         getAllClients()
     };
+
+    const equipeOptions = [{ value: '', label: 'Aucun(e)' }];
+    if (equipes && equipes.length > 0) {
+        equipes.forEach(eq => {
+            equipeOptions.push({ value: eq._id, label: eq.name });
+        });
+    }
     
 
     return (
@@ -320,7 +327,13 @@ const FilterComponenttest = () => {
 
                     {/* static select */}
                     <div className="col-2">
-                        <Select options={options.equipe} value={equipe} placeholder="Equipe" onChange={setEquipe} />
+                        <Select
+                            options={equipeOptions}
+                            value={equipeOptions.find(opt => opt.value === equipe?.value)}
+                            onChange={setEquipe}
+                            placeholder="Équipe"
+                            isLoading={equipeLoading}
+                        />
                     </div>
                     {/* <div className="col-2">
                         <Select options={options.civilite} value={civilite} placeholder="add selcet he" onChange={setCivilite} />
