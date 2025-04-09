@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import FilterComponenttest from './TestFilter';
 import TestTable from './TestTable';
@@ -8,7 +8,8 @@ import SvgTest from './SvgTest';
 import AddClient from './AddClient';
 import useClient from '../../hooks/useClient'; 
 import { useDispatch } from "react-redux";
-import { addClient ,fetchClients } from "../../features/clientSlice";
+import { addClient ,fetchClients, getClientsByEquipeThunk } from "../../features/clientSlice";
+import {fetchEquipes } from "../../features/equipeSlice";
 const TestPage = () => {
   const [showMap, setShowMap] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -19,12 +20,28 @@ const TestPage = () => {
   const handleShowMap = () => setShowMap(true);
   const handleCloseMap = () => setShowMap(false);
 
-  const handleAddClient = (newClient) => {
-    dispatch(addClient(newClient));
-    dispatch(fetchClients());
-
-    setShowAddModal(false);
+  const handleAddClient = async (newClient) => {
+    try {
+      await dispatch(addClient(newClient)); // wait until the client is added
+  
+      const role = localStorage.getItem('role');
+      if (role === 'admin') {
+        dispatch(fetchClients());
+      } else if (role === 'supervisor') {
+        const equipId = localStorage.getItem("equipId");
+        if (equipId) {
+          dispatch(getClientsByEquipeThunk(equipId));
+        }
+      }
+  
+      setShowAddModal(false);
+    } catch (error) {
+      console.error("Failed to add client:", error);
+    }
   };
+  useEffect(() => {
+    dispatch(fetchEquipes());  // Get the role from localStorage
+    }, []);
 
 
   return (
@@ -59,7 +76,7 @@ const TestPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-
+      
       <AddClient show={showAddModal} onAdd={handleAddClient} onHide={() => setShowAddModal(false)} />
     </>
   );

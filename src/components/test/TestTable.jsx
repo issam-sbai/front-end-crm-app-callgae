@@ -32,7 +32,11 @@ const TableComponent = ({ onRowClick }) => {
   const handleSave = () => {
     if (selectedClient) {
       // Add new observation entered in the textarea
-      const newObservation = textAreaValue.trim();  // Prevent saving empty observations
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, '0');
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const formattedDate = `${day}/${month}`;
+      const newObservation = `${formattedDate} ${textAreaValue.trim()}`;  // Prevent saving empty observations
       if (newObservation) {
         // Dispatch action to add new observation
         dispatch(addObservation({ id: selectedClient._id, newObservation }))
@@ -84,14 +88,15 @@ const TableComponent = ({ onRowClick }) => {
       // Supervisor: Get equipId from localStorage and fetch clients by equipe
       const equipId = localStorage.getItem("equipId");
       // console.log(equipId);
-      
+
       if (equipId) {
         dispatch(getClientsByEquipeThunk(equipId));
+        
       }
     }
   }, [dispatch]);
 
- // Runs every time clients are updated
+  // Runs every time clients are updated
 
 
   const columns = [

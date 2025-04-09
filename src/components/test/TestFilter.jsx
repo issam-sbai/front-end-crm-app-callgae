@@ -105,12 +105,12 @@ const options = {
         { value: 'MANQUES RÉGLETTES', label: 'MANQUES RÉGLETTES' },
         { value: 'MPR', label: 'MPR' }
     ],
-    equipe: [
-        { value: '', label: 'Aucun(e)' },
-        { value: '67ed6e1cff2b70c4c5583724', label: 'EQUIPE 1' },
-        { value: '67ed6e3bff2b70c4c5583727', label: 'EQUIPE 2' },
-        { value: '67ee50102c2321b1acbfa187', label: 'EQUIPE 3' },
-    ]
+    // equipe: [
+    //     { value: '', label: 'Aucun(e)' },
+    //     { value: '67ed6e1cff2b70c4c5583724', label: 'EQUIPE 1' },
+    //     { value: '67ed6e3bff2b70c4c5583727', label: 'EQUIPE 2' },
+    //     { value: '67ee50102c2321b1acbfa187', label: 'EQUIPE 3' },
+    // ]
 };
 
 const formatDate = (dateObj) => {
@@ -149,35 +149,42 @@ const FilterComponenttest = () => {
     const handleFilter = async (event) => {
         event.preventDefault();
         console.log(equipes);
-        
+      
         console.log("Filter function executed, event prevented!");
+      
+        const role = localStorage.getItem("role");
+        const equipId = localStorage.getItem("equipId");
+      
         const filterData = {
-            nomPrenom: name,
-            telephone: phone,
-            department,
-            // codePostal,
-            prenom,
-            agentId,
-            audit: audit?.value || '',
-            typeDossier: typeDossier?.value || '',
-            document: document?.value || '',
-            flag: flag?.value || '',
-            statusChantier: statusChantier?.value || '',
-            dateCreatedFrom: dateCreatedFrom,
-            dateCreatedTo: dateCreatedTo,
-            dateRdvFrom: dateRdvFrom,
-            dateRdvTo: dateRdvTo,
-            equipe:equipe?.value || ''
-
+          nomPrenom: name,
+          telephone: phone,
+          department,
+          prenom,
+          agentId,
+          audit: audit?.value || '',
+          typeDossier: typeDossier?.value || '',
+          document: document?.value || '',
+          flag: flag?.value || '',
+          statusChantier: statusChantier?.value || '',
+          dateCreatedFrom: dateCreatedFrom,
+          dateCreatedTo: dateCreatedTo,
+          dateRdvFrom: dateRdvFrom,
+          dateRdvTo: dateRdvTo,
+          equipe: equipe?.value || ''
         };
-
-        try {
-            filterClients(filterData)
-            // console.log(filterData)
-        } catch (error) {
-            console.error('Error fetching filtered clients', error);
+      
+        // Override equipe if the user is not admin
+        if (role !== "admin" && equipId) {
+          filterData.equipe = equipId;
         }
-    };
+      
+        try {
+          filterClients(filterData);
+          // console.log(filterData)
+        } catch (error) {
+          console.error('Error fetching filtered clients', error);
+        }
+      };
 
     const handleCleanFilter = () => {
         setName('');
