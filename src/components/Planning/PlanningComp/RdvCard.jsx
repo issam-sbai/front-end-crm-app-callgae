@@ -2,8 +2,27 @@ import React from 'react';
 import "primeicons/primeicons.css"; // Import PrimeIcons styles
 
 const RdvCard = ({ apt }) => {
+  // Determine background color based on status
+  const getCardTitleStyle = (statut) => {
+    if (statut === "Chantier Terminé") {
+      return { backgroundColor: '#007bff', color: '#fff' }; // Blue
+    } else if (statut === "Confirmer") {
+      return { backgroundColor: '#28a745', color: '#fff' }; // Green
+    }else if (statut === "NO STATUS") {
+      return { backgroundColor: '#696969', color: '#fff' }; // Green
+    }
+    return {}; // Default
+  };
+
   return (
     <div className="card mb-2">
+      <div className="card-title" style={getCardTitleStyle(apt.statut)}>
+        <div className="d-flex align-items-center gap-2 mb-1" style={{ fontSize: '1rem' }}>
+          <i className="pi pi-chart-line p-1" style={{ fontSize: '1rem' }}></i>
+          <small>{apt.statut}</small>
+        </div>
+      </div>
+
       <div className="card-body p-2">
         {/* Line 1: Title (nomPrenom) */}
         <h6 className="card-title mb-1">{apt.nomPrenom}</h6>
@@ -39,12 +58,12 @@ const RdvCard = ({ apt }) => {
         </div>
 
         {/* Line 7: Icon for commentaire (optional) */}
-        {apt.commentaire && 
+        {apt.commentaire && (
           <div className="d-flex align-items-center gap-2 mb-1">
             <i className="pi pi-comment p-1" style={{ fontSize: '1rem', color: '#6c757d' }}></i>
             <small>{apt.commentaire}</small>
           </div>
-        }
+        )}
 
         {/* Line 8: Icon for type of RDV */}
         <div className="d-flex align-items-center gap-2 mb-1">

@@ -4,6 +4,7 @@ import { fetchClients } from '../../features/clientSlice';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RdvCard from './PlanningComp/RdvCard';
 import FilterComponent from './PlanningComp/FilterComponentPlanning';
+import FilterComponenttest from '../test/TestFilter';
 
 // Helper functions
 const formatDate = (date) => date.toISOString().split('T')[0];
@@ -29,20 +30,21 @@ const PlanningPage = () => {
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchClients());
+
     }
   }, [dispatch, status]);
 
   // Ensure appointments are correctly extracted
-  const appointments = Array.isArray(clients) ? 
+  const appointments = Array.isArray(clients) ?
     clients.map(client => ({
-      idRdv: client.idRdv,
+      idRdv: client._id,
       nomPrenom: client.nomPrenom,
       entreprise: client.entreprise || "N/A",
-      telephone: client.telephone || "N/A",
+      telephone: client.phone || "N/A",
       adresse: client.adresse || "N/A",
       cp: client.cp || "N/A",
       email: client.email || "N/A",
-      statut: client.statut || "N/A",
+      statut: client.statusChantier || "N/A",
       commentaire: client.commentaire || "",
       typeRdv: client.typeRdv || "N/A",
       dateRdv: client.dateRdv, // Ensure this field exists
@@ -57,7 +59,7 @@ const PlanningPage = () => {
 
   return (
     <>
-      <FilterComponent />
+      <FilterComponenttest />
       <div className="container-fluid align-items-center px-1 my-4">
         <div className="d-flex align-items-center mb-4 px-0" style={{ gap: '10px' }}>
           <button onClick={() => setWeekOffset(weekOffset - 1)} className="btn btn-success">Previous Week</button>
@@ -75,14 +77,21 @@ const PlanningPage = () => {
             const dayNumber = date.getDate();
 
             return (
-              <div key={date.toISOString()} className="col px-1 mb-0">
+              <div key={date.toISOString()} className="col px-1 pt-0 mb-0">
                 <div className="card h-100">
                   <div className="card-header d-flex align-items-center text-red">
-                    <div className="text-center px-3" style={{ minWidth: '60px', color: 'rgb(26, 115, 232)' }}>
+                    <div className="text-center px-3"
+                      style={{
+                        minWidth: '60px',
+                        color: formatDate(date) === formatDate(new Date()) ? 'red' : 'rgb(26, 115, 232)'
+                      }}>
                       <b>{monthAbbr}</b> {dayNumber}
                     </div>
                   </div>
-                  <div className="card-body px-1">
+                  <div className="card-body px-0">
+                    <span className="small fw-bold">
+                      {dayAppointments.length} RDV {dayAppointments.filter(apt => apt.statut === "Confirmer").length} Confirmés
+                    </span>
                     {dayAppointments.length > 0 ? (
                       dayAppointments.map(apt => <RdvCard key={apt.idRdv} apt={apt} />)
                     ) : (

@@ -11,7 +11,8 @@ import Users from "./users/UsersPage";
 import LoginPage from "../login/login";
 import PlanningPage from "./Planning/PlanningPage";
 import TestPage from "./test/TestPage";
-import ProfilePage from "./clientProfile/ProfilePage";
+// import ProfilePage from "./clientProfile/ProfilePage";
+import ProfileClientPage from "./profileClient/ProfileClientPage";
 
 const AppRoutes = ({ isLoggedIn }) => {
   return (
@@ -26,7 +27,7 @@ const AppRoutes = ({ isLoggedIn }) => {
       <Route path="/users" element={ <Users />} />
       <Route path="/rdv" element={<PlanningPage />} />
       <Route path="/test" element={<TestPage/>} />
-      <Route path="/client/:id" element={<ProfilePage />} />
+      <Route path="/client/:id" element={<ProfileClientPage />} />
 
       {/* <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
       <Route path="/clients" element={isLoggedIn ? <ClientComponent /> : <Navigate to="/login" />} />
