@@ -20,13 +20,14 @@ import clientsReducer from '../features/clientSlice';
 import userReducer    from '../features/userSlice';
 import equipeReducer  from '../features/equipeSlice';
 import fieldsReducer  from '../features/fieldsSlice';  // Import the dynamic fields reducer
-
+import historyDataReducer   from '../features/historyDataSlice'; 
 const store = configureStore({
   reducer: {
     clients: clientsReducer,
     equipe:  equipeReducer,
     user:    userReducer,
     fields:  fieldsReducer,   // Add the fields slice here
+    history: historyDataReducer, 
   },
 });
 

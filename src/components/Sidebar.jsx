@@ -14,6 +14,7 @@ export default function Sidebar() {
     // { label: 'Clients', icon: 'pi pi-fw pi-users', to: '/clients' },
     { label: 'RDV', icon: 'pi pi-fw pi-calendar', to: '/rdv' },
     { label: 'Users', icon: 'pi pi-fw pi-user', to: '/users' },
+    { label: 'History', icon: 'pi pi-fw pi-user', to: '/history' },
     
 
   ];

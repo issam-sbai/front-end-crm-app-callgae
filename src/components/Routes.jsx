@@ -13,6 +13,7 @@ import PlanningPage from "./Planning/PlanningPage";
 import TestPage from "./test/TestPage";
 // import ProfilePage from "./clientProfile/ProfilePage";
 import ProfileClientPage from "./profileClient/ProfileClientPage";
+import HistoryComponent from "../../historyData/HistoryComponent";
 
 const AppRoutes = ({ isLoggedIn }) => {
   return (
@@ -28,6 +29,7 @@ const AppRoutes = ({ isLoggedIn }) => {
       <Route path="/rdv" element={<PlanningPage />} />
       <Route path="/test" element={<TestPage/>} />
       <Route path="/client/:id" element={<ProfileClientPage />} />
+      <Route path="/history" element={<HistoryComponent />} />
 
       {/* <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
       <Route path="/clients" element={isLoggedIn ? <ClientComponent /> : <Navigate to="/login" />} />
