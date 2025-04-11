@@ -38,8 +38,8 @@ const ProfileClientPage = () => {
         // You can add additional logic here to save the data to your server if necessary
     };
 
-    if (loading) return <p>Loading client data...</p>;
-    if (error) return <p>{error}</p>;
+    if (loading) return <p style={{ fontSize: '0.75rem' }}>Loading client data...</p>;
+    if (error) return <p style={{ fontSize: '0.75rem' }}>{error}</p>;
 
     const {
         prenom = '',
@@ -88,7 +88,7 @@ const ProfileClientPage = () => {
                     {/* Left Column */}
                     <div className="col-lg-4">
                         <div className="card">
-                            <div className="card-body">
+                            <div className="card-body" style={{ fontSize: '0.75rem' }}>
                                 <div className="d-flex flex-column align-items-center text-center">
                                     <img
                                         src="https://bootdey.com/img/Content/avatar/avatar6.png"
@@ -100,15 +100,18 @@ const ProfileClientPage = () => {
                                         <h4>{prenom} {prenom}</h4>
                                         <p className="text-secondary mb-1">Client</p>
                                         <p className="text-muted font-size-sm">{adresse}</p>
+                                        <button className="btn btn-primary" onClick={handleEditToggle}>
+                                            {isEditing ? 'Cancel Edit' : 'Edit Client'}
+                                        </button>
                                     </div>
                                 </div>
                                 <hr className="my-4" />
                                 <ul className="list-group list-group-flush">
-                                    <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                    <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap" style={{ fontSize: '0.75rem' }}>
                                         <h6 className="mb-0">📧 Email</h6>
                                         <span className="text-secondary">{email}</span>
                                     </li>
-                                    <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                    <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap" style={{ fontSize: '0.75rem' }}>
                                         <h6 className="mb-0">📞 Téléphone</h6>
                                         <span className="text-secondary">{phone}</span>
                                     </li>
@@ -120,11 +123,9 @@ const ProfileClientPage = () => {
                     {/* Right Column */}
                     <div className="col-lg-8">
                         <div className="card mb-3">
-                            <div className="card-body">
-                                <button className="btn btn-primary" onClick={handleEditToggle}>
-                                    {isEditing ? 'Cancel Edit' : 'Edit Client'}
-                                </button>
-                                {[
+                            <div className="card-body" style={{ fontSize: '0.75rem' }}>
+                               
+                                {[ // form fields here
                                     { label: 'Nom', value: prenom, key: 'prenom' },
                                     { label: 'Code Postal', value: codepostal, key: 'codepostal' },
                                     { label: 'Téléphone', value: phone, key: 'phone' },
@@ -154,7 +155,7 @@ const ProfileClientPage = () => {
                                 ].map((field, i) => (
                                     <div className="row mb-3" key={i}>
                                         <div className="col-sm-3">
-                                            <h6 className="mb-0">{field.label}</h6>
+                                            <h6 className="mb-0" style={{ fontSize: '0.75rem' }}>{field.label}</h6>
                                         </div>
                                         <div className="col-sm-9 text-secondary">
                                             {isEditing ? (
@@ -168,6 +169,7 @@ const ProfileClientPage = () => {
                                                                 [field.key]: e.target.value,
                                                             });
                                                         }}
+                                                        style={{ fontSize: '0.75rem' }}
                                                     >
                                                         {field.enum.map((option, i) => (
                                                             <option key={i} value={option}>
@@ -186,6 +188,7 @@ const ProfileClientPage = () => {
                                                                 [field.key]: e.target.value,
                                                             });
                                                         }}
+                                                        style={{ fontSize: '0.75rem' }}
                                                     />
                                                 )
                                             ) : (
@@ -197,15 +200,13 @@ const ProfileClientPage = () => {
                                 {/* Save Button */}
                                 {isEditing && (
                                     <>
-                                    <button className="btn btn-success mr-2" onClick={handleSave}>
-                                        Save Data
-                                    </button>
-                                    <button className="btn btn-primary mx-2" onClick={handleEditToggle}>
+                                        <button className="btn btn-success mr-2" onClick={handleSave} style={{ fontSize: '0.75rem' }}>
+                                            Save Data
+                                        </button>
+                                        <button className="btn btn-primary mx-2" onClick={handleEditToggle} style={{ fontSize: '0.75rem' }}>
                                             {isEditing ? 'Cancel Edit' : 'Edit Client'}
-                                    </button>
+                                        </button>
                                     </>
-
-
                                 )}
                             </div>
                         </div>

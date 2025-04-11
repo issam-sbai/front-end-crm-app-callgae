@@ -144,47 +144,47 @@ const FilterComponenttest = () => {
     const [department, setDepartment] = useState('');
     const { filterClients } = useClient();
     const { getAllClients } = useClient();
- 
+
     const { equipes, loading: equipeLoading, error: equipeError } = useSelector((state) => state.equipe);
     const handleFilter = async (event) => {
         event.preventDefault();
         console.log(equipes);
-      
+
         console.log("Filter function executed, event prevented!");
-      
+
         const role = localStorage.getItem("role");
         const equipId = localStorage.getItem("equipId");
-      
+
         const filterData = {
-          nomPrenom: name,
-          telephone: phone,
-          department,
-          prenom,
-          agentId,
-          audit: audit?.value || '',
-          typeDossier: typeDossier?.value || '',
-          document: document?.value || '',
-          flag: flag?.value || '',
-          statusChantier: statusChantier?.value || '',
-          dateCreatedFrom: dateCreatedFrom,
-          dateCreatedTo: dateCreatedTo,
-          dateRdvFrom: dateRdvFrom,
-          dateRdvTo: dateRdvTo,
-          equipe: equipe?.value || ''
+            nomPrenom: name,
+            telephone: phone,
+            department,
+            prenom,
+            agentId,
+            audit: audit?.value || '',
+            typeDossier: typeDossier?.value || '',
+            document: document?.value || '',
+            flag: flag?.value || '',
+            statusChantier: statusChantier?.value || '',
+            dateCreatedFrom: dateCreatedFrom,
+            dateCreatedTo: dateCreatedTo,
+            dateRdvFrom: dateRdvFrom,
+            dateRdvTo: dateRdvTo,
+            equipe: equipe?.value || ''
         };
-      
+
         // Override equipe if the user is not admin
         if (role !== "admin" && equipId) {
-          filterData.equipe = equipId;
+            filterData.equipe = equipId;
         }
-      
+
         try {
-          filterClients(filterData);
-          // console.log(filterData)
+            filterClients(filterData);
+            // console.log(filterData)
         } catch (error) {
-          console.error('Error fetching filtered clients', error);
+            console.error('Error fetching filtered clients', error);
         }
-      };
+    };
 
     const handleCleanFilter = () => {
         setName('');
@@ -211,7 +211,7 @@ const FilterComponenttest = () => {
             equipeOptions.push({ value: eq._id, label: eq.name });
         });
     }
-    
+
 
     return (
         <div>
@@ -225,6 +225,7 @@ const FilterComponenttest = () => {
                             onChange={(e) => setPrenom(e.target.value)}
                             required
                             placeholder="Prénom"
+                            style={{ fontSize: '0.85rem', padding: '5px' }}
                         />
                     </div>
                     <div className="col-2">
@@ -235,104 +236,148 @@ const FilterComponenttest = () => {
                             onChange={(e) => setPhone(e.target.value)}
                             required
                             placeholder="Téléphone"
+                            style={{ fontSize: '0.85rem', padding: '5px' }}
                         />
                     </div>
-                    {/* <div className="col-2">
-                        <Form.Control
-                            type="text"
-                            name="codePostal"
-                            value={codePostal}
-                            onChange={(e) => setCodePostal(e.target.value)}
-                            required
-                            placeholder="Code Postal"
-                        />
-                    </div> */}
                     <div className="col-2">
                         <Form.Control
                             type="text"
                             value={department}
                             onChange={(e) => setDepartment(e.target.value)} // Update department state
                             placeholder="Dep (Ex: 24,33,40,47,64)"
+                            style={{ fontSize: '0.85rem', padding: '5px' }}
                         />
                     </div>
-                    {/* <div className="col-2">
-                        <Select options={options.civilite} value={civilite} placeholder="Civilité" onChange={setCivilite} />
-                    </div> */}
                     <div className="col-2">
-                        <Select options={options.audit} value={audit} placeholder="Audit" onChange={setAudit} />
+                        <Select
+                            options={options.audit}
+                            value={audit}
+                            placeholder="Audit"
+                            onChange={setAudit}
+                            styles={{
+                                control: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                    padding: '0px',
+                                    minHeight: '33px', // Reduced height
+                                    height: '33px', // Ensuring height consistency
+                                }),
+                                singleValue: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                }),
+                                option: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                    padding: '5px',
+                                }),
+                            }}
+                        />
                     </div>
                     <div className="col-2">
-                        <Select options={options.typeDossier} value={typeDossier} placeholder="Type Dossier" onChange={setTypeDossier} />
+                        <Select
+                            options={options.typeDossier}
+                            value={typeDossier}
+                            placeholder="Type Dossier"
+                            onChange={setTypeDossier}
+                            styles={{
+                                control: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                    padding: '0px',
+                                    minHeight: '33px', // Reduced height
+                                    height: '33px', // Ensuring height consistency
+                                }),
+                                singleValue: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                }),
+                                option: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                    padding: '0px',
+                                }),
+                            }}
+                        />
                     </div>
                     <div className="col-2">
-                        <Select options={options.document} value={document} placeholder="Document" onChange={setDocument} />
+                        <Select
+                            options={options.document}
+                            value={document}
+                            placeholder="Document"
+                            onChange={setDocument}
+                            styles={{
+                                control: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                    padding: '0px',
+                                    minHeight: '33px', // Reduced height
+                                    height: '33px', // Ensuring height consistency
+                                }),
+                                singleValue: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                }),
+                                option: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                    padding: '0px',
+                                }),
+                            }}
+                        />
                     </div>
                     <div className="col-2">
-                        <Select options={options.flag} value={flag} placeholder="Flag" onChange={setFlag} />
+                        <Select
+                            options={options.flag}
+                            value={flag}
+                            placeholder="Flag"
+                            onChange={setFlag}
+                            styles={{
+                                control: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                    padding: '0px',
+                                    minHeight: '33px', // Reduced height
+                                    height: '33px', // Ensuring height consistency
+                                }),
+                                singleValue: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                }),
+                                option: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                    padding: '0px',
+                                }),
+                            }}
+                        />
                     </div>
                     <div className="col-2">
-                        <Select options={options.statusChantier} value={statusChantier} placeholder="Status Chantier" onChange={setStatusChantier} />
+                        <Select
+                            options={options.statusChantier}
+                            value={statusChantier}
+                            placeholder="Status Chantier"
+                            onChange={setStatusChantier}
+                            styles={{
+                                control: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                    padding: '0px',
+                                    minHeight: '33px', // Reduced height
+                                    height: '33px', // Ensuring height consistency
+                                }),
+                                singleValue: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                }),
+                                option: (base) => ({
+                                    ...base,
+                                    fontSize: '0.85rem',
+                                    padding: '0px',
+                                }),
+                            }}
+                        />
                     </div>
-
-
-                    {/* date */}
-                    <div className="col-2">
-                        <div className="input-group d-flex">
-                            <label style={{ maxWidth: '14%' }} className="input-group-text" htmlFor="id_flt_clients_rdv_1">
-                                <i className="pi pi-calendar-plus" style={{ color: '#666' }}></i>
-                            </label>
-                            <div style={{ maxWidth: '43%' }}>
-                                <DatePicker
-                                    selected={dateRdvFrom}
-                                    onChange={(date) => setDateRdvFrom(date ? format(date, "yyyy-MM-dd") : null)}
-                                    placeholderText="Du... "
-                                    dateFormat="dd/MM/yyyy"
-                                    className="form-control"
-                                    style={{ width: '15px', marginRight: '8px' }}
-                                />
-                            </div>
-                            <div style={{ maxWidth: '43%' }}>
-                                <DatePicker
-                                    selected={dateRdvTo}
-                                    onChange={(date) => setDateRdvTo(date ? format(date, "yyyy-MM-dd") : null)}
-                                    placeholderText="Date RDV"
-                                    dateFormat="dd/MM/yyyy"
-                                    className="form-control"
-                                    style={{ maxWidth: '15px' }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-2">
-                        <div className="input-group d-flex">
-                            <label style={{ maxWidth: '14%' }} className="input-group-text" htmlFor="id_flt_clients_creation_1">
-                                <i className="pi pi-calendar" style={{ color: '#666' }}></i>
-                            </label>
-                            <div style={{ maxWidth: '43%' }}>
-                                <DatePicker
-                                    selected={dateCreatedFrom}
-                                    onChange={(date) => setDateCreatedFrom(date ? format(date, "yyyy-MM-dd") : null)}
-                                    placeholderText="Du... "
-                                    dateFormat="dd/MM/yyyy"
-                                    className="form-control"
-                                    style={{ width: '15px', marginRight: '8px' }}
-                                />
-                            </div>
-                            <div style={{ maxWidth: '43%' }}>
-                                <DatePicker
-                                    selected={dateCreatedTo}
-                                    onChange={(date) => setDateCreatedTo(date ? format(date, "yyyy-MM-dd") : null)}
-                                    placeholderText="Date Creation"
-                                    dateFormat="dd/MM/yyyy"
-                                    className="form-control"
-                                    style={{ maxWidth: '15px' }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* static select */}
                     <div className="col-2">
                         <Select
                             options={equipeOptions}
@@ -340,22 +385,138 @@ const FilterComponenttest = () => {
                             onChange={setEquipe}
                             placeholder="Équipe"
                             isLoading={equipeLoading}
+                            styles={{
+                                control: (base) => ({
+                                    ...base,
+                                    fontSize: '0.75rem', // Smaller font size
+                                    padding: '0px 0px', // Adjusted padding for a smaller height
+                                    minHeight: '33px', // Reduced height
+                                    height: '33px', // Ensuring height consistency
+                                }),
+                                singleValue: (base) => ({
+                                    ...base,
+                                    fontSize: '0.75rem', // Smaller font size for selected value
+                                }),
+                                option: (base) => ({
+                                    ...base,
+                                    fontSize: '0.75rem', // Smaller font size for options
+                                    padding: '0px', // Reduced padding for options
+                                }),
+                            }}
                         />
                     </div>
-                    {/* <div className="col-2">
-                        <Select options={options.civilite} value={civilite} placeholder="add selcet he" onChange={setCivilite} />
+
+                    <div className="col-2" title="Sélectionnez la date de  creation">
+                        <div className="input-group d-flex align-items-center">
+                            <label
+                                style={{ maxWidth: '14%', height: '33px' }}
+                                className="input-group-text"
+                                htmlFor="dateCreatedFrom"
+                            >
+                                <i className="pi pi-calendar" style={{ color: '#666' }}></i>
+                            </label>
+                            <div style={{ maxWidth: '43%' }}>
+                                <input
+                                    type="date"
+                                    id="dateCreatedFrom"
+                                    value={dateCreatedFrom}
+                                    onChange={(e) => setDateCreatedFrom(e.target.value)}
+                                    className="form-control"
+                                    style={{
+                                        fontSize: '0.75rem',
+                                        height: '33px',
+                                        padding: '0px 5px',
+                                        borderRadius:'0px'
+                                    }}
+                                />
+                            </div>
+                            <div style={{ maxWidth: '43%' }}>
+                                <input
+                                    type="date"
+                                    id="dateCreatedTo"
+                                    value={dateCreatedTo}
+                                    onChange={(e) => setDateCreatedTo(e.target.value)}
+                                    className="form-control"
+                                    style={{
+                                        fontSize: '0.75rem',
+                                        height: '33px',
+                                        padding: '0px 5px',
+                                        borderRadius:'0px'
+                                    }}
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div className="col-2">
-                        <Select options={options.civilite} value={civilite} placeholder="add selcet her" onChange={setCivilite} />
-                    </div> */}
+
+                    <div className="col-2" title="Sélectionnez la date de  RDV">
+                        <div className="input-group d-flex align-items-center justify-content-between">
+                            <label
+                                style={{ maxWidth: '14%', height: '33px' }}
+                                className="input-group-text"
+                                htmlFor="dateRdvFrom"
+                            >
+                                <i className="pi pi-calendar" style={{ color: '#666' }}></i>
+                            </label>
+
+                            <div style={{ maxWidth: '43%' }}>
+                                <input
+                                    type="date"
+                                    id="dateRdvFrom"
+                                    value={dateRdvFrom}
+                                    onChange={(e) => setDateRdvFrom(e.target.value)}
+                                    className="form-control"
+                                    style={{
+                                        fontSize: '0.75rem',
+                                        padding: '0px 5px',
+                                        height: '33px',
+                                        minHeight: '33px',
+                                        borderRadius:'0px'
+                                    }}
+                                />
+                            </div>
+
+                            <div style={{ maxWidth: '43%' }}>
+                                <input
+                                    type="date"
+                                    id="dateRdvTo"
+                                    value={dateRdvTo}
+                                    onChange={(e) => setDateRdvTo(e.target.value)}
+                                    className="form-control"
+                                    style={{
+                                        fontSize: '0.75rem',
+                                        padding: '0px 5px',
+                                        height: '33px',
+                                        minHeight: '33px',
+                                        borderRadius:'0px'
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
 
                     <div className="col-2">
-                        <Button variant="success" type="submit" onClick={handleFilter}>Appliquer</Button>
-                        <Button variant="warning" onClick={handleCleanFilter} className="mx-1">Réinitialiser</Button>
+                        <Button
+                            variant="success"
+                            type="submit"
+                            onClick={handleFilter}
+                            style={{ fontSize: '0.85rem', padding: '2% 4%' }}
+                        >
+                            Appliquer
+                        </Button>
+                        <Button
+                            variant="warning"
+                            onClick={handleCleanFilter}
+                            className="mx-1"
+                            style={{ fontSize: '0.85rem', padding: '5px 10px' }}
+                        >
+                            Réinitialiser
+                        </Button>
                     </div>
                 </div>
             </Form>
         </div>
+
+
     );
 };
 

@@ -6,10 +6,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal } from 'react-bootstrap';
 import SvgTest from './SvgTest';
 import AddClient from './AddClient';
-import useClient from '../../hooks/useClient'; 
+import useClient from '../../hooks/useClient';
 import { useDispatch } from "react-redux";
-import { addClient ,fetchClients, getClientsByEquipeThunk } from "../../features/clientSlice";
-import {fetchEquipes } from "../../features/equipeSlice";
+import { addClient, fetchClients, getClientsByEquipeThunk } from "../../features/clientSlice";
+import { fetchEquipes } from "../../features/equipeSlice";
 const TestPage = () => {
   const [showMap, setShowMap] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -23,7 +23,7 @@ const TestPage = () => {
   const handleAddClient = async (newClient) => {
     try {
       await dispatch(addClient(newClient)); // wait until the client is added
-  
+
       const role = localStorage.getItem('role');
       if (role === 'admin') {
         dispatch(fetchClients());
@@ -33,7 +33,7 @@ const TestPage = () => {
           dispatch(getClientsByEquipeThunk(equipId));
         }
       }
-  
+
       setShowAddModal(false);
     } catch (error) {
       console.error("Failed to add client:", error);
@@ -41,25 +41,38 @@ const TestPage = () => {
   };
   useEffect(() => {
     dispatch(fetchEquipes());  // Get the role from localStorage
-    }, []);
+  }, []);
 
 
   return (
     <>
       <FilterComponenttest />
-      <br />
-      <div className="d-flex justify-content-start align-items-center mb-3">
-        <Button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
+      <div className="d-flex justify-content-start align-items-center mt-3 mb-3">
+        <Button
+          className="btn btn-primary"
+          style={{ fontSize: '0.75rem' }}  // Use lowercase 'style'
+          onClick={() => setShowAddModal(true)}
+        >
           Add Client
         </Button>
 
-        <Button className="btn btn-primary mx-2" onClick={handleShowMap}>
+        <Button
+          className="btn btn-primary mx-2"
+          style={{ fontSize: '0.75rem' }}  // Use lowercase 'style'
+          onClick={handleShowMap}
+        >
           Show Department
         </Button>
-        <Button className="btn btn-primary" onClick={exportToCSV}>
+
+        <Button
+          className="btn btn-primary"
+          style={{ fontSize: '0.75rem' }}  // Use lowercase 'style'
+          onClick={exportToCSV}
+        >
           Export to CSV
         </Button>
       </div>
+
 
       {/* Pass clients as a prop to TestTable */}
       <TestTable />
@@ -76,7 +89,7 @@ const TestPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      
+
       <AddClient show={showAddModal} onAdd={handleAddClient} onHide={() => setShowAddModal(false)} />
     </>
   );

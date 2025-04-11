@@ -370,7 +370,7 @@ const TableComponent = ({ onRowClick }) => {
 
   return (
     <div className="card">
-      <DataTable stripedRows value={clients} size={'small'} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }} loading={status === 'loading'}>
+      <DataTable stripedRows value={clients} size={'small'} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '100%', fontSize: '0.75rem'  }} loading={status === 'loading'}>
         {columns.map((col, index) => (
           <Column
             key={index}

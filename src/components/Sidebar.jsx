@@ -11,12 +11,9 @@ export default function Sidebar() {
   const items = [
     { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
     { label: 'clients RDV', icon: 'pi pi-fw pi-user', to: '/test' },
-    // { label: 'Clients', icon: 'pi pi-fw pi-users', to: '/clients' },
     { label: 'RDV', icon: 'pi pi-fw pi-calendar', to: '/rdv' },
     { label: 'Users', icon: 'pi pi-fw pi-user', to: '/users' },
     { label: 'History', icon: 'pi pi-fw pi-user', to: '/history' },
-    
-
   ];
 
   const handleLogout = () => {
@@ -50,19 +47,19 @@ export default function Sidebar() {
 
   return (
     <div>
-      <Navbar bg="dark" variant="dark" expand="lg" fixed="top" className="p-3">
+      <Navbar bg="dark" variant="dark" expand="lg" fixed="top" className="p-3" style={{ fontSize: '0.75rem' }}>
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
-          <Nav className="d-flex justify-content-between w-100">
+          <Nav className="d-flex justify-content-between w-100" style={{ fontSize: '0.75rem' }}>
             {/* Left side links */}
-            <div className="d-flex">
+            <div className="d-flex" style={{ fontSize: '0.75rem' }}>
               {items.map((item, index) => (
                 <Nav.Link
                   key={index}
                   as={Link}
                   to={item.to}
                   className={`d-flex align-items-center mr-4 ml-4 ${location.pathname === item.to ? 'active' : ''}`}
-                  style={{ marginLeft: '30px', marginRight: '30px' }}
+                  style={{ marginLeft: '30px', marginRight: '30px', fontSize: '0.75rem' }}
                 >
                   <i className={item.icon} style={{ marginRight: '8px' }}></i>
                   {item.label}
@@ -72,12 +69,12 @@ export default function Sidebar() {
 
             {/* Right side profile */}
             <div className="d-flex align-items-center">
-              <Nav>
-                <NavDropdown title={<i className="pi pi-user" />} id="navbar-profile-dropdown" align="end">
-                  <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                  <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
+              <Nav style={{ fontSize: '0.75rem' }}>
+                <NavDropdown title={<i className="pi pi-user" />} id="navbar-profile-dropdown" align="end" style={{ fontSize: '0.75rem' }}>
+                  <NavDropdown.Item href="/profile" style={{ fontSize: '0.75rem' }}>Profile</NavDropdown.Item>
+                  <NavDropdown.Item href="/settings" style={{ fontSize: '0.75rem' }}>Settings</NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                  <NavDropdown.Item onClick={handleLogout} style={{ fontSize: '0.75rem' }}>Logout</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
             </div>
