@@ -50,7 +50,7 @@ const PlanningPage = () => {
       dateRdv: client.dateRdv, // Ensure this field exists
     })) : [];
 
-  const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const weekDays = dayNames.map((day, index) => {
     const dayDate = new Date(monday);
     dayDate.setDate(monday.getDate() + index);

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClients } from '../features/clientSlice';
-import { getAllUsersAsync } from '../features/userSlice';
-import { fetchEquipes } from '../features/equipeSlice';
-import ClientStateDoughnutChart from './dashboard/ClientStateDoughnutChart';
+import { fetchClients } from '../../features/clientSlice';
+import { getAllUsersAsync } from '../../features/userSlice';
+import { fetchEquipes } from '../../features/equipeSlice';
+import ClientStateDoughnutChart from './ClientStateDoughnutChart';
 
 const cardStyle = (bg) => ({
   backgroundColor: bg,

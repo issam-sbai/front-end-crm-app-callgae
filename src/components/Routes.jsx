@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Dashboard from "./Dashboard";
+//import Dashboard from "./Dashboard";
 // import Clients from "./Clients";
 import Users from "./users/UsersPage";
 // import Rdv from "./Rdv";
@@ -13,8 +13,8 @@ import PlanningPage from "./Planning/PlanningPage";
 import TestPage from "./test/TestPage";
 // import ProfilePage from "./clientProfile/ProfilePage";
 import ProfileClientPage from "./profileClient/ProfileClientPage";
-import HistoryComponent from "../../historyData/HistoryComponent";
-
+import HistoryComponent from './../components/hirstoryData/HistoryComponent';
+import DashboardPage from "../components/dashboard/DashboardPage";
 const AppRoutes = ({ isLoggedIn }) => {
   return (
     <Routes>
@@ -22,7 +22,7 @@ const AppRoutes = ({ isLoggedIn }) => {
       <Route path="/login" element={ <LoginPage />} />
 
       {/* Protected routes */}
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/" element={<DashboardPage/>} />
       {/* <Route path="/clients" element={<ClientComponent />} /> */}
       {/* <Route path="/client/:id" element={<ProfilePage /> } /> */}
       <Route path="/users" element={ <Users />} />
@@ -32,7 +32,7 @@ const AppRoutes = ({ isLoggedIn }) => {
       <Route path="/history" element={<HistoryComponent />} />
 
       {/* <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
-      <Route path="/clients" element={isLoggedIn ? <ClientComponent /> : <Navigate to="/login" />} />
+      <Route path="/clients" element={isLoggedIn ? <ClientComponent />  : <Navigate to="/login" />} />
       <Route path="/client/:id" element={isLoggedIn ? <ProfilePage /> : <Navigate to="/login" />} />
       <Route path="/users" element={isLoggedIn ? <Users /> : <Navigate to="/login" />} />
       <Route path="/rdv" element={isLoggedIn ? <PlanningPage /> : <Navigate to="/login" />} />
