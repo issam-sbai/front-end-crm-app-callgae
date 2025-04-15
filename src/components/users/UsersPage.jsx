@@ -23,8 +23,6 @@ const User = () => {
 
   return (
     <div>
-      <FilterComponenttest />
-      <br />
       {/* <div className="d-flex justify-content-end mb-3 px-4">
         <Button variant="success" onClick={() => setShowModal(true)}>
           <i className="pi pi-plus"></i> Add User

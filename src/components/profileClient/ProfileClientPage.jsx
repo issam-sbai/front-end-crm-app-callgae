@@ -75,10 +75,11 @@ const ProfileClientPage = () => {
     const enumOptions = {
         flag: ['Aucun(e)', 'OK', 'MANQUE CNI', 'MANQUE TAXE FONCIERE', 'MANQUE AVIS', 'DOCUMENTS VALIDES'],
         document: ['Aucun(e)', 'OK', 'MANQUE CNI', 'MANQUE TAXE FONCIERE', 'MANQUE AVIS', 'DOCUMENTS VALIDES'],
+        typeDossier: ['Aucun(e)', 'BAT EQ 127', 'Destratificateur', 'ITE + TOITURE', 'RES EC 104'],
         audit: ['Envoyé en VT', 'VT reçu', 'Envoyé en BAO', 'BAO reçu', 'VT à rectifier', 'BAO à rectifier'],
-        typeDossier: ['Aucun(e)', '145', 'AMPLEUR', 'Destratificateur', 'ITE', 'ITE + TOITURE', 'LED', 'LED INTERIEUR', 'Réno - ISO', 'Réno - ITE', 'Réno - PAC', 'Réno - PLACO'],
         statusChantier: ['A RAPPELER', 'NO STATUS', 'NRP', 'INJOIGNABLE', 'A RETRAITER', 'LEDS SOLAIRES', 'CONFIRMER RÉGIE', 'Confirmer', 'Chantier annuler', 'SAV', 'RENVOYER EQUIPE SUR PLACE', 'RETOURNER RECUPERER LEDS', 'MANQUE PIÈCES', 'LIVRAISON POSTALE', 'Chantier Terminé', 'MANQUES RÉGLETTES', 'MPR'],
     };
+    // typeDossier: ['Aucun(e)', '145', 'AMPLEUR', 'Destratificateur', 'ITE', 'ITE + TOITURE', 'LED', 'LED INTERIEUR', 'Réno - ISO', 'Réno - ITE', 'Réno - PAC', 'Réno - PLACO'],
 
     const readOnlyKeys = ['validePar', 'createdPar', 'dateCreation'];
 

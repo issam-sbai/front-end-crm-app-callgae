@@ -13,6 +13,19 @@ import { fetchEquipes } from "../../features/equipeSlice";
 const TestPage = () => {
   const [showMap, setShowMap] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [fieldsToShow, setFieldsToShow] = useState([
+    'prenom',
+    'phone',
+    'department',
+    'audit',
+    'typeDossier',
+    'document',
+    'flag',
+    'statusChantier',
+    'equipe',
+    'dateCreated',
+    'dateRdv',
+  ]);
   const dispatch = useDispatch();
 
   const { exportToCSV } = useClient();
@@ -46,7 +59,7 @@ const TestPage = () => {
 
   return (
     <>
-      <FilterComponenttest />
+      <FilterComponenttest fieldsToShow={fieldsToShow} />
       <div className="d-flex justify-content-start align-items-center mt-3 mb-3">
         <Button
           className="btn btn-primary"

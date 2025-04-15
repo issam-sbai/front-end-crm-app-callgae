@@ -20,7 +20,13 @@ const PlanningPage = () => {
   const dispatch = useDispatch();
   const clients = useSelector((state) => state.clients.clientsx) || []; // Ensure clients is an array
   const status = useSelector((state) => state.clients.status);
-
+  const [fieldsToShow, setFieldsToShow] = useState([
+    'prenom',
+    'department',
+    'typeDossier',
+    'statusChantier',
+    'equipe',
+  ]);
   const [weekOffset, setWeekOffset] = useState(0);
   const today = new Date();
   const currentMonday = getMonday(today);
@@ -59,7 +65,9 @@ const PlanningPage = () => {
 
   return (
     <>
-      <FilterComponenttest />
+      <FilterComponenttest
+fieldsToShow={fieldsToShow}
+    />
       <div className="container-fluid align-items-center px-1 my-4">
         <div className="d-flex align-items-center mb-4 px-0" style={{ gap: '10px' }}>
           <button onClick={() => setWeekOffset(weekOffset - 1)} className="btn btn-success">Previous Week</button>
