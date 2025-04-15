@@ -118,15 +118,10 @@ const TableComponent = ({ onRowClick }) => {
       body: (client) => (
         <div>
           <div><i className="pi pi-building-columns "></i>  {client.entreprise}</div>
-          <div><i className="pi pi-flag" style={{ fontSize: "0.8rem", color: "green" }} ></i> <span style={{ color: "green" }}>{client.flag}</span></div>
+          <div><i className="pi pi-users" style={{ fontSize: "0.8rem", color: "green" }} ></i>  {client.equipe ? client.equipe.name : 'No equipe'}    </div>
+          <div><i className="pi pi-flag" style={{ fontSize: "0.8rem"}} ></i> <span style={{ color: "green" }}>{client.flag}</span></div>
+          
         </div>
-      ),
-    },
-    {
-      field: 'equipe',
-      header: 'Equipe',
-      body: (client) => (
-        <div> {client.equipe ? client.equipe.name : 'No equipe'}    </div>
       ),
     },
     {
@@ -134,8 +129,8 @@ const TableComponent = ({ onRowClick }) => {
       header: 'Contact',
       body: (client) => (
         <div>
-          <div><i className="pi pi-phone "></i> {client.phone}</div>
-          <div><i className="pi pi-at "></i> {client.email}</div>
+          <div><i className="pi pi-phone " style={{ fontSize: "0.8rem"}}></i> {client.phone}</div>
+          <div>{client.email}</div>
         </div>
       ),
     },
@@ -207,7 +202,7 @@ const TableComponent = ({ onRowClick }) => {
             case 'NRP': return '#f1c40f'; // Yellow
             case 'INJOIGNABLE': return '#e74c3c'; // Red
             case 'A RETRAITER': return '#8e44ad'; // Purple
-            case 'CONFIRMER RÉGIE': return '#3498db'; // Blue
+            case 'CONFIRMER RÉGIE': return '#16a085'; // Blue
             case 'LEDS SOLAIRES': return '#2ecc71'; // Light Green
             case 'Chantier annuler': return '#95a5a6'; // Gray
             case 'SAV': return '#f39c12'; // Orange
@@ -215,7 +210,7 @@ const TableComponent = ({ onRowClick }) => {
             case 'RETOURNER RECUPERER LEDS': return '#1abc9c'; // Turquoise
             case 'MANQUE PIÈCES': return '#e67e22'; // Orange
             case 'LIVRAISON POSTALE': return '#9b59b6'; // Purple
-            case 'Chantier Terminé': return '#16a085'; // Teal
+            case 'Chantier Terminé': return '#3498db'; // Teal
             case 'MANQUES RÉGLETTES': return '#d1b800'; // Gold
             case 'MPR': return '#c0392b'; // Dark Red
             default: return '#808080'; // Gray for unknown status
@@ -272,6 +267,25 @@ const TableComponent = ({ onRowClick }) => {
       ),
     },
     {
+      field: 'historyStatus',
+      header: 'Historique',
+      body: (client) => (
+        <div>
+          {client.historyStatus && client.historyStatus.length > 0 ? (
+            client.historyStatus.map((status, index) => (
+              <div key={index} style={{ fontSize: "0.75rem", color: "rgb(13, 110, 253)" }}>
+                {status}
+              </div>
+            ))
+          ) : (
+            <span style={{ fontSize: "0.75rem", color: "gray" }}>Aucun</span>
+          )}
+        </div>
+      ),
+    },
+
+
+    {
       field: 'observations',
       header: 'Observations',
       body: (client) => (
@@ -282,7 +296,7 @@ const TableComponent = ({ onRowClick }) => {
             onClick={() => handleShow(client)}  // Open modal on click
             style={{ width: "18px", height: "18px" }}
           >
-            <i className="pi pi-plus-circle" style={{ fontSize: "0.8rem", color: "green" }}></i>
+            <i className="pi pi-plus-circle" style={{ fontSize: "0.7rem", color: "green" }}></i>
           </button>
           {client.observations && client.observations.length > 0 ? (
             client.observations.map((obs, index) => (
@@ -302,17 +316,21 @@ const TableComponent = ({ onRowClick }) => {
                     textOverflow: 'ellipsis' // Add ellipsis for truncated text
                   }}
                 >
-                  {/* Truncate text to 50 characters and add ellipsis if longer */}
-                  {obs.length > 50 ? `${obs.substring(0, 50)}...` : obs}
+                  {/* Truncate text to 15 characters and add ellipsis if longer */}
+                  <p className='p-0 m-0' >
+                    {obs.length > 15 ? `${obs.substring(0, 15)}...` : obs}
+                  </p>
                 </div>
               </OverlayTrigger>
             ))
           ) : (
-            <span style={{ fontSize: "0.85rem", color: "gray" }}>No observations</span>
+            <span style={{ fontSize: "0.7rem", color: "gray" }}>No observations</span>
           )}
         </div>
       ),
-    },
+    }
+    
+,
 
     {
       field: 'dateCreation',

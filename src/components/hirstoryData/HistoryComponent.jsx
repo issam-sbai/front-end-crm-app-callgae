@@ -56,37 +56,39 @@ export default function HistoryComponent() {
     };
 
     return (
-        <div className="card">
-            <h3 className="text-center mb-4">📋 History Logs</h3>
+        <>
+            <h3 className="text mb-4">History Logs</h3>
+            <div className="card">
+                <DataTable
+                    value={historyLogs}
+                    rowGroupMode="subheader"
+                    groupRowsBy="clientId"
+                    sortMode="single"
+                    sortField="clientName"
+                    sortOrder={1}
+                    expandableRowGroups
+                    expandedRows={expandedRows}
+                    onRowToggle={(e) => setExpandedRows(e.data)}
+                    rowGroupHeaderTemplate={rowGroupHeaderTemplate}
+                    rowGroupFooterTemplate={rowGroupFooterTemplate}
+                    tableStyle={{ minWidth: '70rem' }}
+                >
+                    <Column field="clientName" header="Client Name" style={{ width: '15%' }} body={(rowData) => rowData.clientName ?? ''} />
+                    <Column field="field" header="Field" style={{ width: '15%' }} body={(rowData) => rowData.field ?? ''} />
+                    <Column field="oldValue" header="Old Value" style={{ width: '15%' }} body={(rowData) => rowData.oldValue ?? ''} />
+                    <Column field="newValue" header="New Value" style={{ width: '15%' }} body={(rowData) => rowData.newValue ?? ''} />
+                    <Column
+                        field="updatedAt"
+                        header="Updated At"
+                        body={(rowData) =>
+                            rowData.updatedAt ? new Date(rowData.updatedAt).toLocaleString() : ''
+                        }
+                        style={{ width: '20%' }}
+                    />
+                    <Column field="updatedBy" header="Updated By" style={{ width: '20%' }} body={(rowData) => rowData.updatedBy ?? ''} />
+                </DataTable>
+            </div>
+        </>
 
-            <DataTable
-                value={historyLogs}
-                rowGroupMode="subheader"
-                groupRowsBy="clientId"
-                sortMode="single"
-                sortField="clientName"
-                sortOrder={1}
-                expandableRowGroups
-                expandedRows={expandedRows}
-                onRowToggle={(e) => setExpandedRows(e.data)}
-                rowGroupHeaderTemplate={rowGroupHeaderTemplate}
-                rowGroupFooterTemplate={rowGroupFooterTemplate}
-                tableStyle={{ minWidth: '70rem' }}
-            >
-                <Column field="clientName" header="Client Name" style={{ width: '15%' }} body={(rowData) => rowData.clientName ?? ''} />
-                <Column field="field" header="Field" style={{ width: '15%' }} body={(rowData) => rowData.field ?? ''} />
-                <Column field="oldValue" header="Old Value" style={{ width: '15%' }} body={(rowData) => rowData.oldValue ?? ''} />
-                <Column field="newValue" header="New Value" style={{ width: '15%' }} body={(rowData) => rowData.newValue ?? ''} />
-                <Column
-                    field="updatedAt"
-                    header="Updated At"
-                    body={(rowData) =>
-                        rowData.updatedAt ? new Date(rowData.updatedAt).toLocaleString() : ''
-                    }
-                    style={{ width: '20%' }}
-                />
-                <Column field="updatedBy" header="Updated By" style={{ width: '20%' }} body={(rowData) => rowData.updatedBy ?? ''} />
-            </DataTable>
-        </div>
     );
 }

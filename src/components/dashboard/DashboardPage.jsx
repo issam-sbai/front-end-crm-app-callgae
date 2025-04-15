@@ -4,6 +4,9 @@ import { fetchClients } from '../../features/clientSlice';
 import { getAllUsersAsync } from '../../features/userSlice';
 import { fetchEquipes } from '../../features/equipeSlice';
 import ClientStateDoughnutChart from './ClientStateDoughnutChart';
+import ChartEquipe from './ChartEquipe';
+import EquipeClientChart from './EquipeClientChart';
+import MonthlyEquipeClientChart from './MonthlyEquipeClientChart';
 
 const cardStyle = (bg) => ({
   backgroundColor: bg,
@@ -87,7 +90,26 @@ const Dashboard = () => {
         ))}
       </div>
       <br />
+      <h4>Client Status</h4>
       <ClientStateDoughnutChart />
+
+
+
+
+      <div style={{ display: 'flex', gap: '20px', height: '500px' }}>
+        <div style={{ flex: '1', height: '100%' }}>
+          <p>Clients Ajoutés par Équipe</p>
+          <EquipeClientChart />
+        </div>
+
+        <div style={{ flex: '1', height: '100%' }}>
+          <p>Clients Ajoutés Ce Mois par Équipe</p>
+          <MonthlyEquipeClientChart />
+        </div>
+      </div>
+      <br />
+
+
 
     </div>
 

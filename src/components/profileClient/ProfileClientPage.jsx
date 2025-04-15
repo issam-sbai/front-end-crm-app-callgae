@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 import './ProfileClientstyle.css';
 
 const ProfileClientPage = () => {
-    const { id } = useParams(); // Get the client ID from the URL
+    const { id } = useParams();
     const [clientData, setClientData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isEditing, setIsEditing] = useState(false); // State to toggle between view and edit
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const fetchClient = async () => {
@@ -15,7 +15,6 @@ const ProfileClientPage = () => {
                 const response = await fetch(`http://localhost:5000/api/clients/${id}`);
                 if (!response.ok) throw new Error('Client not found');
                 const data = await response.json();
-
                 console.log('Client Data:', data);
                 setClientData(data);
             } catch (err) {
@@ -32,45 +31,45 @@ const ProfileClientPage = () => {
         setIsEditing(!isEditing);
     };
 
-    // Handle Save Button Click
-    const handleSave = () => {
-        console.log('Updated Client Data:', clientData);
-        // You can add additional logic here to save the data to your server if necessary
+    const handleSave = async () => {
+        try {
+            const {
+                prenom, codepostal, phone, civilite, infoRdv, statusChantier, email, adresse,
+                ville, siret, dateRdv, typeRdv, agentId, entreprise, commentaire, department,
+                audit, document, flag, typeDossier
+            } = clientData;
+
+            const updatedClient = {
+                prenom, codepostal, phone, civilite, infoRdv, statusChantier, email, adresse,
+                ville, siret, dateRdv, typeRdv, agentId, entreprise, commentaire, department,
+                audit, document, flag, typeDossier
+            };
+
+            const response = await fetch(`http://localhost:5000/api/clients/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedClient),
+            });
+
+            if (!response.ok) throw new Error('Error updating client data');
+            const data = await response.json();
+            console.log('Client updated:', data);
+
+            setClientData(data);
+            setIsEditing(false);
+        } catch (err) {
+            setError('Error updating client: ' + err.message);
+        }
     };
 
     if (loading) return <p style={{ fontSize: '0.75rem' }}>Loading client data...</p>;
     if (error) return <p style={{ fontSize: '0.75rem' }}>{error}</p>;
 
     const {
-        prenom = '',
-        codepostal = '',
-        phone = '',
-        flag = '',
-        document = '',
-        civilite = '',
-        audit = '',
-        typeDossier = '',
-        infoRdv = '',
-        statusChantier = '',
-        equipe = '',
-        documents = '',
-        observations = [],
-        email = '',
-        adresse = '',
-        ville = '',
-        siret = '',
-        nrp = 0,
-        validePar = '',
-        createdPar = '',
-        dateCreation = '',
-        dateRdv = '',
-        typeRdv = '',
-        agentId = '',
-        entreprise = '',
-        department = '',
-        commentaire = '',
-        longitude = '',
-        latitude = '',
+        prenom = '', codepostal = '', phone = '', flag = '', document = '', civilite = '', audit = '', typeDossier = '',
+        infoRdv = '', statusChantier = '', equipe = '', documents = '', observations = [], email = '', adresse = '',
+        ville = '', siret = '', nrp = 0, validePar = '', createdPar = '', dateCreation = '', dateRdv = '', typeRdv = '',
+        agentId = '', entreprise = '', department = '', commentaire = '', longitude = '', latitude = '',
     } = clientData || {};
 
     const enumOptions = {
@@ -80,6 +79,8 @@ const ProfileClientPage = () => {
         typeDossier: ['Aucun(e)', '145', 'AMPLEUR', 'Destratificateur', 'ITE', 'ITE + TOITURE', 'LED', 'LED INTERIEUR', 'Réno - ISO', 'Réno - ITE', 'Réno - PAC', 'Réno - PLACO'],
         statusChantier: ['A RAPPELER', 'NO STATUS', 'NRP', 'INJOIGNABLE', 'A RETRAITER', 'LEDS SOLAIRES', 'CONFIRMER RÉGIE', 'Confirmer', 'Chantier annuler', 'SAV', 'RENVOYER EQUIPE SUR PLACE', 'RETOURNER RECUPERER LEDS', 'MANQUE PIÈCES', 'LIVRAISON POSTALE', 'Chantier Terminé', 'MANQUES RÉGLETTES', 'MPR'],
     };
+
+    const readOnlyKeys = ['validePar', 'createdPar', 'dateCreation'];
 
     return (
         <div className="container">
@@ -124,8 +125,7 @@ const ProfileClientPage = () => {
                     <div className="col-lg-8">
                         <div className="card mb-3">
                             <div className="card-body" style={{ fontSize: '0.75rem' }}>
-                               
-                                {[ // form fields here
+                                {[
                                     { label: 'Nom', value: prenom, key: 'prenom' },
                                     { label: 'Code Postal', value: codepostal, key: 'codepostal' },
                                     { label: 'Téléphone', value: phone, key: 'phone' },
@@ -137,12 +137,9 @@ const ProfileClientPage = () => {
                                     { label: 'Rdv Info', value: infoRdv, key: 'infoRdv' },
                                     { label: 'Status Chantier', value: statusChantier, key: 'statusChantier', enum: enumOptions.statusChantier },
                                     { label: 'Equipe', value: equipe, key: 'equipe' },
-                                    { label: 'Documents', value: documents, key: 'documents' },
-                                    { label: 'Observations', value: observations.join(', '), key: 'observations' },
                                     { label: 'Adresse', value: adresse, key: 'adresse' },
                                     { label: 'Ville', value: ville, key: 'ville' },
                                     { label: 'Siret', value: siret, key: 'siret' },
-                                    { label: 'NRP', value: nrp, key: 'nrp' },
                                     { label: 'Valide Par', value: validePar, key: 'validePar' },
                                     { label: 'Created By', value: createdPar, key: 'createdPar' },
                                     { label: 'Date Creation', value: dateCreation, key: 'dateCreation' },
@@ -158,23 +155,18 @@ const ProfileClientPage = () => {
                                             <h6 className="mb-0" style={{ fontSize: '0.75rem' }}>{field.label}</h6>
                                         </div>
                                         <div className="col-sm-9 text-secondary">
-                                            {isEditing ? (
+                                            {(isEditing && !readOnlyKeys.includes(field.key)) ? (
                                                 field.enum ? (
                                                     <select
                                                         className="form-control"
                                                         value={field.value}
                                                         onChange={(e) => {
-                                                            setClientData({
-                                                                ...clientData,
-                                                                [field.key]: e.target.value,
-                                                            });
+                                                            setClientData({ ...clientData, [field.key]: e.target.value });
                                                         }}
                                                         style={{ fontSize: '0.75rem' }}
                                                     >
-                                                        {field.enum.map((option, i) => (
-                                                            <option key={i} value={option}>
-                                                                {option}
-                                                            </option>
+                                                        {field.enum.map((option, idx) => (
+                                                            <option key={idx} value={option}>{option}</option>
                                                         ))}
                                                     </select>
                                                 ) : (
@@ -183,10 +175,7 @@ const ProfileClientPage = () => {
                                                         className="form-control"
                                                         value={field.value}
                                                         onChange={(e) => {
-                                                            setClientData({
-                                                                ...clientData,
-                                                                [field.key]: e.target.value,
-                                                            });
+                                                            setClientData({ ...clientData, [field.key]: e.target.value });
                                                         }}
                                                         style={{ fontSize: '0.75rem' }}
                                                     />
@@ -197,7 +186,7 @@ const ProfileClientPage = () => {
                                         </div>
                                     </div>
                                 ))}
-                                {/* Save Button */}
+
                                 {isEditing && (
                                     <>
                                         <button className="btn btn-success mr-2" onClick={handleSave} style={{ fontSize: '0.75rem' }}>

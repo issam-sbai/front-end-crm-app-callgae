@@ -45,35 +45,38 @@ export default function ClientStateDoughnutChart() {
         const labels = Object.keys(statusCounts);
         const values = Object.values(statusCounts);
 
+        // Color mapping for each status
+        const statusColors = {
+            'A RAPPELER': '#FF6347',  // Tomato
+            'NO STATUS': '#808080',   // Grey
+            'NRP': '#FF4500',         // OrangeRed
+            'INJOIGNABLE': '#00CED1', // DarkTurquoise
+            'A RETRAITER': '#FFD700', // Gold
+            'LEDS SOLAIRES': '#228B22', // ForestGreen
+            'CONFIRMER RÉGIE': '#DC143C', // Crimson
+            'Confirmer': '#32CD32',   // LimeGreen
+            'Chantier annuler': '#8B0000', // DarkRed
+            'SAV': '#4682B4',         // SteelBlue
+            'RENVOYER EQUIPE SUR PLACE': '#800080', // Purple
+            'RETOURNER RECUPERER LEDS': '#FFD700', // Gold
+            'MANQUE PIÈCES': '#8A2BE2', // BlueViolet
+            'LIVRAISON POSTALE': '#D2691E', // Chocolate
+            'Chantier Terminé': '#1E90FF', // DodgerBlue
+            'MANQUES RÉGLETTES': '#FF1493', // DeepPink
+            'MPR': '#00FA9A'          // MediumSpringGreen
+        };
+
+        // Map the status colors for each label
+        const backgroundColors = labels.map(status => statusColors[status] || '#808080'); // Default color if no specific match
+        const hoverBackgroundColors = labels.map(status => `${statusColors[status] ? statusColors[status] + '80' : '#80808080'}`); // Slightly darker shade for hover
+
         const data = {
             labels,
             datasets: [
                 {
                     data: values,
-                    backgroundColor: [
-                        documentStyle.getPropertyValue('--blue-500'),
-                        documentStyle.getPropertyValue('--yellow-500'),
-                        documentStyle.getPropertyValue('--green-500'),
-                        documentStyle.getPropertyValue('--pink-500'),
-                        documentStyle.getPropertyValue('--cyan-500'),
-                        documentStyle.getPropertyValue('--orange-500'),
-                        documentStyle.getPropertyValue('--purple-500'),
-                        documentStyle.getPropertyValue('--red-500'),
-                        documentStyle.getPropertyValue('--teal-500'),
-                        documentStyle.getPropertyValue('--indigo-500'),
-                    ],
-                    hoverBackgroundColor: [
-                        documentStyle.getPropertyValue('--blue-400'),
-                        documentStyle.getPropertyValue('--yellow-400'),
-                        documentStyle.getPropertyValue('--green-400'),
-                        documentStyle.getPropertyValue('--pink-400'),
-                        documentStyle.getPropertyValue('--cyan-400'),
-                        documentStyle.getPropertyValue('--orange-400'),
-                        documentStyle.getPropertyValue('--purple-400'),
-                        documentStyle.getPropertyValue('--red-400'),
-                        documentStyle.getPropertyValue('--teal-400'),
-                        documentStyle.getPropertyValue('--indigo-400'),
-                    ]
+                    backgroundColor: backgroundColors,
+                    hoverBackgroundColor: hoverBackgroundColors
                 }
             ]
         };
