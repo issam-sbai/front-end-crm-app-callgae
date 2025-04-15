@@ -79,7 +79,7 @@ const TestPage = () => {
       <br />
 
       {/* Modal Popup for the Department Map */}
-      <Modal show={showMap} onHide={handleCloseMap} size="lg">
+      <Modal show={showMap} fullscreen={true} onHide={handleCloseMap} size="lg">
         <Modal.Body>
           <SvgTest />
         </Modal.Body>

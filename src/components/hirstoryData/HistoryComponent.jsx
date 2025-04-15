@@ -24,26 +24,17 @@ export default function HistoryComponent() {
         }
     }, [historyLogs]);
 
-    // Show loading
-    if (status === 'loading') {
-        return <div>Loading history...</div>;
-    }
+    if (status === 'loading') return <div>Loading history...</div>;
+    if (status === 'failed') return <div>Error: {error}</div>;
 
-    // Show error
-    if (status === 'failed') {
-        return <div>Error: {error}</div>;
-    }
+    // Group header template
+    const rowGroupHeaderTemplate = (data) => (
+        <span className="font-bold text-lg ml-2">
+            👤 {data.clientName ?? 'Unknown Client'}
+        </span>
+    );
 
-    // Group header template: show client name
-    const rowGroupHeaderTemplate = (data) => {
-        return (
-            <span className="font-bold text-lg ml-2">
-                👤 {data.clientName ?? 'Unknown Client'}
-            </span>
-        );
-    };
-
-    // Group footer template: count rows
+    // Group footer template
     const rowGroupFooterTemplate = (data) => {
         const totalChanges = historyLogs.filter(log => log.clientId === data.clientId).length;
         return (
@@ -55,17 +46,31 @@ export default function HistoryComponent() {
         );
     };
 
+    // 🔥 Sort groups based on the latest `updatedAt`
+    const groupedByClient = Object.values(
+        historyLogs.reduce((acc, log) => {
+            if (!acc[log.clientId]) acc[log.clientId] = [];
+            acc[log.clientId].push(log);
+            return acc;
+        }, {})
+    );
+
+    const sortedGroupedLogs = groupedByClient
+        .sort((a, b) => {
+            const latestA = Math.max(...a.map(log => new Date(log.updatedAt).getTime()));
+            const latestB = Math.max(...b.map(log => new Date(log.updatedAt).getTime()));
+            return latestB - latestA;  // descending: latest first
+        })
+        .flat();
+
     return (
         <>
             <h3 className="text mb-4">History Logs</h3>
             <div className="card">
                 <DataTable
-                    value={historyLogs}
+                    value={sortedGroupedLogs}
                     rowGroupMode="subheader"
                     groupRowsBy="clientId"
-                    sortMode="single"
-                    sortField="clientName"
-                    sortOrder={1}
                     expandableRowGroups
                     expandedRows={expandedRows}
                     onRowToggle={(e) => setExpandedRows(e.data)}
@@ -80,15 +85,12 @@ export default function HistoryComponent() {
                     <Column
                         field="updatedAt"
                         header="Updated At"
-                        body={(rowData) =>
-                            rowData.updatedAt ? new Date(rowData.updatedAt).toLocaleString() : ''
-                        }
+                        body={(rowData) => rowData.updatedAt ? new Date(rowData.updatedAt).toLocaleString() : ''}
                         style={{ width: '20%' }}
                     />
                     <Column field="updatedBy" header="Updated By" style={{ width: '20%' }} body={(rowData) => rowData.updatedBy ?? ''} />
                 </DataTable>
             </div>
         </>
-
     );
 }

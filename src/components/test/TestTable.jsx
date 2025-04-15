@@ -202,17 +202,17 @@ const TableComponent = ({ onRowClick }) => {
             case 'NRP': return '#f1c40f'; // Yellow
             case 'INJOIGNABLE': return '#e74c3c'; // Red
             case 'A RETRAITER': return '#8e44ad'; // Purple
-            case 'CONFIRMER RÉGIE': return '#16a085'; // Blue
+            case 'CONFIRMER RÉGIE': return '#d1b800'; // Gold
             case 'LEDS SOLAIRES': return '#2ecc71'; // Light Green
-            case 'Chantier annuler': return '#95a5a6'; // Gray
+            case 'Chantier annuler': return '#c0392b'; // red 
             case 'SAV': return '#f39c12'; // Orange
             case 'RENVOYER EQUIPE SUR PLACE': return '#d35400'; // Dark Orange
             case 'RETOURNER RECUPERER LEDS': return '#1abc9c'; // Turquoise
             case 'MANQUE PIÈCES': return '#e67e22'; // Orange
             case 'LIVRAISON POSTALE': return '#9b59b6'; // Purple
             case 'Chantier Terminé': return '#3498db'; // Teal
-            case 'MANQUES RÉGLETTES': return '#d1b800'; // Gold
-            case 'MPR': return '#c0392b'; // Dark Red
+            case 'MANQUES RÉGLETTES': return '#16a085'; // Blue
+            case 'MPR': return '#95a5a6'; // grey 
             default: return '#808080'; // Gray for unknown status
           }
         };
@@ -388,7 +388,7 @@ const TableComponent = ({ onRowClick }) => {
 
   return (
     <div className="card">
-      <DataTable stripedRows value={clients} size={'small'} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '100%', fontSize: '0.75rem'  }} loading={status === 'loading'}>
+      <DataTable stripedRows value={clients} size={'small'} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '120%', fontSize: '0.75rem'  }} loading={status === 'loading'}>
         {columns.map((col, index) => (
           <Column
             key={index}

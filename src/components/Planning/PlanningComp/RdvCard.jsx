@@ -9,6 +9,10 @@ const RdvCard = ({ apt }) => {
       return { backgroundColor: '#28a745', color: '#fff' };
     } else if (statut === "NO STATUS") {
       return { backgroundColor: '#696969', color: '#fff' };
+    }else if (statut === "Chantier annuler") {
+      return { backgroundColor: '#c0392b', color: '#fff' };
+    }else if (statut === "CONFIRMER RÉGIE") {
+      return { backgroundColor: '#d1b800', color: '#fff' };
     }
     return {};
   };

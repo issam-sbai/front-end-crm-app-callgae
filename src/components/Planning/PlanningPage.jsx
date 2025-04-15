@@ -38,7 +38,7 @@ const PlanningPage = () => {
   const appointments = Array.isArray(clients) ?
     clients.map(client => ({
       idRdv: client._id,
-      nomPrenom: client.nomPrenom,
+      nomPrenom: client.prenom,
       entreprise: client.entreprise || "N/A",
       telephone: client.phone || "N/A",
       adresse: client.adresse || "N/A",
