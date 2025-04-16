@@ -1,36 +1,41 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loginUserAsync } from "../features/userSlice"; // Import the loginUserAsync action
+import { loginUserAsync } from "../features/userSlice";
+import { fetchClients, fetchClientsByAgentId, getClientsByEquipeThunk } from "../features/clientSlice";
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(""); // To show errors to the user
-    const dispatch = useDispatch(); // Redux dispatch
+    const [error, setError] = useState("");
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogin = async () => {
-        setError(""); // Reset error state on every login attempt
+        setError("");
         try {
-            // Dispatch the login action to Redux
-            const response = await dispatch(loginUserAsync({ username, password }))
-                .unwrap(); // This unwraps the promise to get the resolved value
+            const response = await dispatch(loginUserAsync({ username, password })).unwrap();
 
-            // On successful login, navigate to another page (e.g., dashboard)
-            localStorage.setItem("token", response.token); // Store the token
-            localStorage.setItem("username", response.user.username); // Store username
-            localStorage.setItem("role", response.user.role); // Store user role
-            localStorage.setItem("equip", JSON.stringify(response.user.equip)); // Store equip object as a string
-            localStorage.setItem("equipId", response.user.equip._id); // Store equipId directly
-            
-            // console.log(response.user.equip._id);  // Just to verify the equip object
-            
-            // Redirect to dashboard or other page after successful login
-            navigate("/test");
+            localStorage.setItem("token", response.token);
+            localStorage.setItem("username", response.user.username);
+            localStorage.setItem("role", response.user.role);
+            localStorage.setItem("equip", JSON.stringify(response.user.equip));
+            localStorage.setItem("equipId", response.user.equip._id);
+
+            const role = response.user.role;
+            const equipId = response.user.equip._id;
+
+            if (role === "admin") {
+                dispatch(fetchClients()); // Fetch all clients
+            } else if (role === "superviseur") {
+                dispatch(getClientsByEquipeThunk(equipId)); // Fetch clients by equipe
+            } else if (role === "agent") {
+                dispatch(fetchClientsByAgentId(username)); // Fetch clients by agent's equipe id
+            }
+
+            navigate("/test"); // Navigate to your page after data is loaded
 
         } catch (error) {
-            // Handle failed login
             if (error.response && error.response.data) {
                 setError(error.response.data.error || "Login failed. Please check your username and password.");
             } else {
@@ -68,12 +73,9 @@ const LoginPage = () => {
                         />
                     </div>
 
-                    {error && <div className="text-danger mb-3">{error}</div>} {/* Display error if exists */}
+                    {error && <div className="text-danger mb-3">{error}</div>}
 
-                    <button
-                        className="btn btn-primary w-100"
-                        onClick={handleLogin}
-                    >
+                    <button className="btn btn-primary w-100" onClick={handleLogin}>
                         Login
                     </button>
                 </div>

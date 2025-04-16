@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Offcanvas, Button, Form, Alert } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const AddClient = ({ show, onHide, onAdd }) => {
+
+    const { users, loading: userLoading, error: userError } = useSelector((state) => state.user);
 
     const [newClient, setNewClient] = useState({
         civilite: "M.",
@@ -44,12 +47,8 @@ const AddClient = ({ show, onHide, onAdd }) => {
             return;
         }
 
-        // 👉 Get role and equipe from localStorage
         const storedRole = localStorage.getItem("role");
         const storedEquipId = localStorage.getItem("equipId");
-
-        console.log("Role:", storedRole);
-        console.log("Equipe ID:", storedEquipId);
 
         const formData = {
             civilite: newClient.civilite,
@@ -69,14 +68,12 @@ const AddClient = ({ show, onHide, onAdd }) => {
             statusChantier: "NO STATUS",
         };
 
-        // 👉 Add equipe only if NOT admin
         if (storedRole !== "admin") {
             formData.equipe = storedEquipId || null;
         }
 
         onAdd(formData);
 
-        // Reset form
         setNewClient({
             civilite: "M.",
             prenom: "",
@@ -97,15 +94,13 @@ const AddClient = ({ show, onHide, onAdd }) => {
         onHide();
     };
 
-
     return (
         <Offcanvas
             show={show}
             onHide={onHide}
-            placement="end"       // slide in from right
-            backdrop={false}    
+            placement="end"
+            backdrop={false}
             style={{ width: '700px', backgroundColor: '#DCDCDC' }}
-
         >
             <Offcanvas.Header closeButton>
                 <Offcanvas.Title>Add New Client</Offcanvas.Title>
@@ -113,7 +108,9 @@ const AddClient = ({ show, onHide, onAdd }) => {
 
             <Offcanvas.Body style={{ padding: 0 }}>
                 {error && <Alert variant="danger">{error}</Alert>}
+                {userError && <Alert variant="danger">Error loading agents</Alert>}
                 <Form>
+
                     <Form.Group className="mx-2 mb-3">
                         <Form.Label>Civilité</Form.Label>
                         <Form.Control
@@ -237,15 +234,29 @@ const AddClient = ({ show, onHide, onAdd }) => {
                         </Form.Control>
                     </Form.Group>
 
+                    {/* Agent Select Dropdown */}
                     <Form.Group className="mx-2 mb-3">
-                        <Form.Label>Agent ID</Form.Label>
+                        <Form.Label>Agent</Form.Label>
                         <Form.Control
-                            type="text"
+                            as="select"
                             name="agentId"
                             value={newClient.agentId}
                             onChange={handleChange}
                             required
-                        />
+                        >
+                            <option value="">-- Sélectionner un Agent --</option>
+                            {userLoading ? (
+                                <option disabled>Chargement...</option>
+                            ) : (
+                                users && users
+                                    .filter(user => user.role === "agent")
+                                    .map(agent => (
+                                        <option key={agent._id} value={agent.username}>
+                                            {agent.username}
+                                        </option>
+                                    ))
+                            )}
+                        </Form.Control>
                     </Form.Group>
 
                     <Form.Group className="mx-2 mb-3">
@@ -270,12 +281,11 @@ const AddClient = ({ show, onHide, onAdd }) => {
                         />
                     </Form.Group>
                 </Form>
+
                 <div className="d-flex justify-content-start align-items-center mt-3 mb-3">
                     <Button className="mx-2" variant="secondary" onClick={onHide}>Close</Button>
-                    <Button  className="mx-2" variant="primary" onClick={handleSubmit}>Add Client</Button>
+                    <Button className="mx-2" variant="primary" onClick={handleSubmit}>Add Client</Button>
                 </div>
-
-
 
             </Offcanvas.Body>
         </Offcanvas>

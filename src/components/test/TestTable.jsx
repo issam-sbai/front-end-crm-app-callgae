@@ -8,7 +8,7 @@ import 'primeicons/primeicons.css';
 import Modal from 'react-bootstrap/Modal';
 import { Button as BootstrapButton } from 'react-bootstrap';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-
+import {getAllUsersAsync} from '../../features/userSlice';
 const TableComponent = ({ onRowClick }) => {
   const dispatch = useDispatch();
 
@@ -81,6 +81,7 @@ const TableComponent = ({ onRowClick }) => {
 
   useEffect(() => {
     const role = localStorage.getItem('role');  // Get the role from localStorage
+    dispatch(getAllUsersAsync());
     if (role === 'admin') {
       // Admin: Fetch all clients
       dispatch(fetchClients());
@@ -95,6 +96,7 @@ const TableComponent = ({ onRowClick }) => {
       }
     }
   }, [dispatch]);
+
 
   // Runs every time clients are updated
 
