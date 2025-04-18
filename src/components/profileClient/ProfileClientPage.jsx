@@ -105,9 +105,10 @@ const ProfileClientPage = () => {
                                         width="110"
                                     />
                                     <div className="mt-3">
-                                        <h4>{prenom} {prenom}</h4>
-                                        <p className="text-secondary mb-1">Client</p>
-                                        <p className="text-muted font-size-sm">{adresse}</p>
+                                        <h4>{entreprise} </h4>
+                                        <p className="text-secondary mb-1">Client : {prenom}</p>
+                                        <p className="text-muted mb-0 ">{adresse}</p>
+                                        <p className="text-muted  ">{ville} {codepostal}</p>
                                         <button className="btn btn-primary" onClick={handleEditToggle}>
                                             {isEditing ? 'Cancel Edit' : 'Edit Client'}
                                         </button>
@@ -122,6 +123,10 @@ const ProfileClientPage = () => {
                                     <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap" style={{ fontSize: '0.75rem' }}>
                                         <h6 className="mb-0">📞 Téléphone</h6>
                                         <span className="text-secondary">{phone}</span>
+                                    </li>
+                                    <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap" style={{ fontSize: '0.75rem' }}>
+                                        <h6 className="mb-0">🪪 siret</h6>
+                                        <span className="text-secondary">{siret}</span>
                                     </li>
                                 </ul>
                             </div>
