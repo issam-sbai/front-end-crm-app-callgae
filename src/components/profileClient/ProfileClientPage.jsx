@@ -117,16 +117,17 @@ const ProfileClientPage = () => {
                                 <hr className="my-4" />
                                 <ul className="list-group list-group-flush">
                                     <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap" style={{ fontSize: '0.75rem' }}>
-                                        <h6 className="mb-0">📧 Email</h6>
-                                        <span className="text-secondary">{email}</span>
+                                        <h6 className="mb-0">🪪 siret</h6>
+                                        <span className="text-secondary">{siret}</span>
                                     </li>
+                                    
                                     <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap" style={{ fontSize: '0.75rem' }}>
                                         <h6 className="mb-0">📞 Téléphone</h6>
                                         <span className="text-secondary">{phone}</span>
                                     </li>
                                     <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap" style={{ fontSize: '0.75rem' }}>
-                                        <h6 className="mb-0">🪪 siret</h6>
-                                        <span className="text-secondary">{siret}</span>
+                                        <h6 className="mb-0">📧 Email</h6>
+                                        <span className="text-secondary">{email}</span>
                                     </li>
                                 </ul>
                             </div>

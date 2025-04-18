@@ -7,13 +7,16 @@ import '../../src/App.css'; // Ensure to import custom CSS
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate(); // Initialize navigate function
+  const userRole = localStorage.getItem("role");
 
   const items = [
     { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
     { label: 'clients RDV', icon: 'pi pi-fw pi-user', to: '/test' },
     { label: 'RDV', icon: 'pi pi-fw pi-calendar', to: '/rdv' },
-    { label: 'Users', icon: 'pi pi-fw pi-user', to: '/users' },
-    { label: 'History', icon: 'pi pi-fw pi-user', to: '/history' },
+    ...(userRole === 'admin' ? [
+      { label: 'Users', icon: 'pi pi-fw pi-user', to: '/users' },
+      { label: 'History', icon: 'pi pi-fw pi-user', to: '/history' }
+    ] : []),
   ];
 
   const handleLogout = () => {

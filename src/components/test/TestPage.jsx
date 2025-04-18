@@ -8,8 +8,9 @@ import SvgTest from './SvgTest';
 import AddClient from './AddClient';
 import useClient from '../../hooks/useClient';
 import { useDispatch } from "react-redux";
-import { addClient, fetchClients, getClientsByEquipeThunk } from "../../features/clientSlice";
+import { addClient, fetchClients, fetchClientsByAgentId, getClientsByEquipeThunk } from "../../features/clientSlice";
 import { fetchEquipes } from "../../features/equipeSlice";
+
 const TestPage = () => {
   const [showMap, setShowMap] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -26,8 +27,8 @@ const TestPage = () => {
     'dateCreated',
     'dateRdv',
   ]);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const { exportToCSV } = useClient();
 
   const handleShowMap = () => setShowMap(true);
@@ -35,7 +36,7 @@ const TestPage = () => {
 
   const handleAddClient = async (newClient) => {
     try {
-      await dispatch(addClient(newClient)); // wait until the client is added
+      await dispatch(addClient(newClient));
 
       const role = localStorage.getItem('role');
       if (role === 'admin') {
@@ -46,24 +47,43 @@ const TestPage = () => {
           dispatch(getClientsByEquipeThunk(equipId));
         }
       }
-
       setShowAddModal(false);
     } catch (error) {
       console.error("Failed to add client:", error);
     }
   };
-  useEffect(() => {
-    dispatch(fetchEquipes());  // Get the role from localStorage
-  }, []);
 
+  useEffect(() => {
+    dispatch(fetchEquipes());  // Always fetch equipes first
+
+    const role = localStorage.getItem("role");
+    const equipId = localStorage.getItem("equipId");
+    const username = localStorage.getItem("username");
+
+    if (role === "admin") {
+      dispatch(fetchClients());
+    } else if (role === "superviseur") {
+      if (equipId) {
+        dispatch(getClientsByEquipeThunk(equipId));
+      }
+    } else if (role === "agent") {
+      if (username) {
+        dispatch(fetchClientsByAgentId(username));
+      }
+    }
+  }, [dispatch]);
+
+  const role = localStorage.getItem("role");  // Get role here for rendering
 
   return (
     <>
-      <FilterComponenttest fieldsToShow={fieldsToShow} />
+      {/* Only show filter if not agent */}
+      {role !== 'agent' && <FilterComponenttest fieldsToShow={fieldsToShow} />}
+
       <div className="d-flex justify-content-start align-items-center mt-3 mb-3">
         <Button
           className="btn btn-primary"
-          style={{ fontSize: '0.75rem' }}  // Use lowercase 'style'
+          style={{ fontSize: '0.75rem' }}
           onClick={() => setShowAddModal(true)}
         >
           Add Client
@@ -71,27 +91,28 @@ const TestPage = () => {
 
         <Button
           className="btn btn-primary mx-2"
-          style={{ fontSize: '0.75rem' }}  // Use lowercase 'style'
+          style={{ fontSize: '0.75rem' }}
           onClick={handleShowMap}
         >
           Show Department
         </Button>
 
-        <Button
-          className="btn btn-primary"
-          style={{ fontSize: '0.75rem' }}  // Use lowercase 'style'
-          onClick={exportToCSV}
-        >
-          Export to CSV
-        </Button>
+        {
+          role === 'admin' && (
+            <Button
+              className="btn btn-primary"
+              style={{ fontSize: '0.75rem' }}
+              onClick={exportToCSV}
+            >
+              Export to CSV
+            </Button>
+          )
+        }
       </div>
 
-
-      {/* Pass clients as a prop to TestTable */}
       <TestTable />
       <br />
 
-      {/* Modal Popup for the Department Map */}
       <Modal show={showMap} fullscreen={true} onHide={handleCloseMap} size="lg">
         <Modal.Body>
           <SvgTest />

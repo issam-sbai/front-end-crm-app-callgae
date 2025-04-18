@@ -74,7 +74,7 @@ const TableComponent = ({ onRowClick }) => {
     });
   };
 
-
+  const userRole = localStorage.getItem('role');
   useEffect(() => {
     const role = localStorage.getItem('role');  // Get the role from localStorage
     dispatch(getAllUsersAsync());
@@ -218,31 +218,39 @@ const TableComponent = ({ onRowClick }) => {
       header: 'NRP',
       body: (client) => (
         <div className="d-flex align-items-center gap-1">
-          {/* Minus Button */}
-          <button
-            className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
-            aria-label="Decrease NRP"
-            onClick={() => handelUpdateClientNRP(client._id, client.nrp - 1)}
-            style={{ width: "18px", height: "18px" }}
-            disabled={client.nrp === 0}  // Disable the button if NRP is 0
-          >
-            <i className="pi pi-minus-circle" style={{ fontSize: "0.8rem", color: "red" }}></i>
-          </button>
-          <span style={{ minWidth: "20px", fontSize: "0.9rem", textAlign: "center" }}>
-            {client.nrp ?? 0}
-          </span>
-          <button
-            className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
-            aria-label="Increase NRP"
-            onClick={() => handelUpdateClientNRP(client._id, client.nrp + 1)}
-            style={{ width: "18px", height: "18px" }}
-          >
-            <i className="pi pi-plus-circle" style={{ fontSize: "0.8rem", color: "green" }}></i>
-          </button>
-
+          {(userRole === 'admin' || userRole === 'supervisor') ? (
+            <>
+              {/* Minus Button */}
+              <button
+                className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
+                aria-label="Decrease NRP"
+                onClick={() => handelUpdateClientNRP(client._id, client.nrp - 1)}
+                style={{ width: "18px", height: "18px" }}
+                disabled={client.nrp === 0}
+              >
+                <i className="pi pi-minus-circle" style={{ fontSize: "0.8rem", color: "red" }}></i>
+              </button>
+    
+              <span style={{ minWidth: "20px", fontSize: "0.9rem", textAlign: "center" }}>
+                {client.nrp ?? 0}
+              </span>
+    
+              <button
+                className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
+                aria-label="Increase NRP"
+                onClick={() => handelUpdateClientNRP(client._id, client.nrp + 1)}
+                style={{ width: "18px", height: "18px" }}
+              >
+                <i className="pi pi-plus-circle" style={{ fontSize: "0.8rem", color: "green" }}></i>
+              </button>
+            </>
+          ) : (
+            <span style={{ minWidth: "20px", fontSize: "0.9rem", textAlign: "center" }}>
+              {client.nrp ?? 0}
+            </span>
+          )}
         </div>
-
-      ),
+      )
     },
     {
       field: 'historyStatus',
@@ -279,35 +287,37 @@ const TableComponent = ({ onRowClick }) => {
       field: 'observations',
       header: 'Observations',
       body: (client) => (
-        <div>
-          <button
-            className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
-            aria-label="Add Observation"
-            onClick={() => handleShow(client)}  // Open modal on click
-            style={{ width: "18px", height: "18px" }}
-          >
-            <i className="pi pi-plus-circle" style={{ fontSize: "0.7rem", color: "green" }}></i>
-          </button>
+        <div className="d-flex align-items-center gap-1 flex-wrap">
+          {(userRole === 'admin' || userRole === 'supervisor') && (
+            <button
+              className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
+              aria-label="Add Observation"
+              onClick={() => handleShow(client)}
+              style={{ width: "18px", height: "18px" }}
+            >
+              <i className="pi pi-plus-circle" style={{ fontSize: "0.7rem", color: "green" }}></i>
+            </button>
+          )}
+    
           {client.observations && client.observations.length > 0 ? (
             client.observations.map((obs, index) => (
               <OverlayTrigger
                 key={index}
-                placement="top"  // You can change to "right", "bottom", or "left"
-                overlay={<Tooltip id={`tooltip-${index}`}>{obs}</Tooltip>} // Show the full observation text
+                placement="top"
+                overlay={<Tooltip id={`tooltip-${index}`}>{obs}</Tooltip>}
               >
                 <div
                   style={{
                     fontSize: "0.8rem",
                     color: "rgb(13, 110, 253)",
                     cursor: 'pointer',
-                    maxWidth: '150px',    // Adjust based on your design
-                    whiteSpace: 'nowrap', // Prevent wrapping
-                    overflow: 'hidden',   // Hide overflowed text
-                    textOverflow: 'ellipsis' // Add ellipsis for truncated text
+                    maxWidth: '150px',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
                   }}
                 >
-                  {/* Truncate text to 15 characters and add ellipsis if longer */}
-                  <p className='p-0 m-0' >
+                  <p className='p-0 m-0'>
                     {obs.length > 15 ? `${obs.substring(0, 15)}...` : obs}
                   </p>
                 </div>
@@ -317,7 +327,7 @@ const TableComponent = ({ onRowClick }) => {
             <span style={{ fontSize: "0.7rem", color: "gray" }}>No observations</span>
           )}
         </div>
-      ),
+      )
     },
     {
       field: 'updatedAt',
@@ -367,7 +377,7 @@ const TableComponent = ({ onRowClick }) => {
         return formattedDateRdv;
       },
     },
-    {
+    ...(userRole === 'admin' ? [{
       header: 'Delete',
       body: (client) => (
         <button
@@ -383,8 +393,8 @@ const TableComponent = ({ onRowClick }) => {
         >
           <i className="pi pi-times-circle" style={{ fontSize: "1.2rem", color: 'red' }}></i>
         </button>
-      ),
-    },
+      )
+    }] : []),
   ];
 
   // Handle delete client action
