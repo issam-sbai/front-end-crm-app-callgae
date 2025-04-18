@@ -15,7 +15,6 @@ const TestPage = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [fieldsToShow, setFieldsToShow] = useState([
     'prenom',
-    'phone',
     'department',
     'audit',
     'typeDossier',
@@ -23,6 +22,7 @@ const TestPage = () => {
     'flag',
     'statusChantier',
     'equipe',
+    'agent',
     'dateCreated',
     'dateRdv',
   ]);

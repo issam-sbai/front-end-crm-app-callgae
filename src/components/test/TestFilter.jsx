@@ -120,7 +120,7 @@ const options = {
 const FilterComponenttest = ({ fieldsToShow = [] }) => {
   // form state
   const [prenom, setPrenom] = useState('');
-  const [phone, setPhone] = useState('');
+  // const [phone, setPhone] = useState('');
   const [department, setDepartment] = useState('');
   const [audit, setAudit] = useState(null);
   const [typeDossier, setTypeDossier] = useState(null);
@@ -128,6 +128,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
   const [flag, setFlag] = useState(null);
   const [statusChantier, setStatusChantier] = useState(null);
   const [equipe, setEquipe] = useState(null);
+  const [user, setUser] = useState(null);
   const [dateCreatedFrom, setDateCreatedFrom] = useState('');
   const [dateCreatedTo, setDateCreatedTo] = useState('');
   const [dateRdvFrom, setDateRdvFrom] = useState('');
@@ -135,7 +136,8 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
 
   const { filterClients, getAllClients } = useClient();
   const { equipes, loading: equipeLoading } = useSelector(s => s.equipe);
-
+  const { users, loading: userLoading, error: userError } = useSelector((state) => state.user);
+  
   // helper
   const isVisible = key => fieldsToShow.includes(key);
 
@@ -143,13 +145,16 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
   const equipeOptions = [{ value: '', label: 'Aucun(e)' }];
   equipes?.forEach(eq => equipeOptions.push({ value: eq._id, label: eq.name }));
 
+  const userOptions = [{ value: '', label: 'Aucun(e)' }];
+  users?.forEach(us => userOptions.push({ value: us.username, label: us.username }));
+
   const handleFilter = e => {
     e.preventDefault();
     const role = localStorage.getItem('role');
     const equipId = localStorage.getItem('equipId');
     const filterData = {
       prenom,
-      telephone: phone,
+      // telephone: phone,
       department,
       audit: audit?.value || '',
       typeDossier: typeDossier?.value || '',
@@ -161,6 +166,8 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
       dateRdvFrom,
       dateRdvTo,
       equipe: equipe?.value || '',
+      agentId: user?.value || '',
+
     };
     if (role !== 'admin' && equipId) filterData.equipe = equipId;
     filterClients(filterData);
@@ -168,7 +175,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
 
   const handleCleanFilter = () => {
     setPrenom('');
-    setPhone('');
+    // setPhone('');
     setDepartment('');
     setAudit(null);
     setTypeDossier(null);
@@ -176,6 +183,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
     setFlag(null);
     setStatusChantier(null);
     setEquipe({ value: '', label: 'Aucun(e)' });
+    setUser({ value: '', label: 'Aucun(e)' });
     setDateCreatedFrom('');
     setDateCreatedTo('');
     setDateRdvFrom('');
@@ -200,7 +208,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
           </div>
         )}
 
-        {isVisible('phone') && (
+        {/* {isVisible('phone') && (
           <div className="col-2">
             <Form.Control
               type="text"
@@ -212,7 +220,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
               style={{ fontSize: '0.85rem', padding: '5px' }}
             />
           </div>
-        )}
+        )} */}
 
         {isVisible('department') && (
           <div className="col-2">
@@ -335,6 +343,30 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
             />
           </div>
         )}
+        
+        {isVisible('agent') && (
+          <div className="col-2">
+            <Select
+              options={userOptions}
+              value={userOptions.find(opt => opt.value === user?.value)}
+              onChange={setUser}
+              placeholder="Agent"
+              isLoading={userLoading}
+              styles={{
+                control: base => ({
+                  ...base,
+                  fontSize: '0.75rem',
+                  padding: '0px 0px',
+                  minHeight: '33px',
+                  height: '33px',
+                }),
+                singleValue: base => ({ ...base, fontSize: '0.75rem' }),
+                option: base => ({ ...base, fontSize: '0.75rem', padding: '0px' }),
+              }}
+            />
+          </div>
+        )}
+
 
         {isVisible('equipe') && (
           <div className="col-2">

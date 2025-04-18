@@ -6,6 +6,9 @@ const AddClient = ({ show, onHide, onAdd }) => {
 
     const { users, loading: userLoading, error: userError } = useSelector((state) => state.user);
 
+    const storedUsername = localStorage.getItem("username");
+    const storedRole = localStorage.getItem("role");
+
     const [newClient, setNewClient] = useState({
         civilite: "M.",
         prenom: "",
@@ -18,7 +21,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
         ville: "",
         dateRdv: "",
         typeRdv: "Intérieur",
-        agentId: "",
+        agentId: storedRole === "agent" ? storedUsername : "",
         infoRdv: "",
         commentaire: ""
     });
@@ -47,9 +50,6 @@ const AddClient = ({ show, onHide, onAdd }) => {
             return;
         }
 
-        const storedRole = localStorage.getItem("role");
-        const storedEquipId = localStorage.getItem("equipId");
-
         const formData = {
             civilite: newClient.civilite,
             prenom: newClient.prenom,
@@ -69,7 +69,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
         };
 
         if (storedRole !== "admin") {
-            formData.equipe = storedEquipId || null;
+            formData.equipe = localStorage.getItem("equipId") || null;
         }
 
         onAdd(formData);
@@ -86,9 +86,9 @@ const AddClient = ({ show, onHide, onAdd }) => {
             ville: "",
             dateRdv: "",
             typeRdv: "Intérieur",
-            agentId: "",
+            agentId: storedRole === "agent" ? storedUsername : "",
             infoRdv: "",
-            commentaire: "",
+            commentaire: ""
         });
 
         onHide();
@@ -234,30 +234,32 @@ const AddClient = ({ show, onHide, onAdd }) => {
                         </Form.Control>
                     </Form.Group>
 
-                    {/* Agent Select Dropdown */}
-                    <Form.Group className="mx-2 mb-3">
-                        <Form.Label>Agent</Form.Label>
-                        <Form.Control
-                            as="select"
-                            name="agentId"
-                            value={newClient.agentId}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">-- Sélectionner un Agent --</option>
-                            {userLoading ? (
-                                <option disabled>Chargement...</option>
-                            ) : (
-                                users && users
-                                    .filter(user => user.role === "agent")
-                                    .map(agent => (
-                                        <option key={agent._id} value={agent.username}>
-                                            {agent.username}
-                                        </option>
-                                    ))
-                            )}
-                        </Form.Control>
-                    </Form.Group>
+                    {/* Agent Dropdown (hidden for agent role) */}
+                    {storedRole !== "agent" && (
+                        <Form.Group className="mx-2 mb-3">
+                            <Form.Label>Agent</Form.Label>
+                            <Form.Control
+                                as="select"
+                                name="agentId"
+                                value={newClient.agentId}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">-- Sélectionner un Agent --</option>
+                                {userLoading ? (
+                                    <option disabled>Chargement...</option>
+                                ) : (
+                                    users && users
+                                        .filter(user => user.role === "agent")
+                                        .map(agent => (
+                                            <option key={agent._id} value={agent.username}>
+                                                {agent.username}
+                                            </option>
+                                        ))
+                                )}
+                            </Form.Control>
+                        </Form.Group>
+                    )}
 
                     <Form.Group className="mx-2 mb-3">
                         <Form.Label>Commentaire Agent</Form.Label>
