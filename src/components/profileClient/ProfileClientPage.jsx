@@ -33,18 +33,25 @@ const ProfileClientPage = () => {
 
     const handleSave = async () => {
         try {
+            // Get the username from localStorage
+            const username = localStorage.getItem('username'); // assuming the username is stored under 'username'
+
+            // Destructure clientData and prepare the updated client object
             const {
                 prenom, codepostal, phone, civilite, infoRdv, statusChantier, email, adresse,
                 ville, siret, dateRdv, typeRdv, agentId, entreprise, commentaire, department,
                 audit, document, flag, typeDossier
             } = clientData;
 
+            // Add updatePar field with username
             const updatedClient = {
                 prenom, codepostal, phone, civilite, infoRdv, statusChantier, email, adresse,
                 ville, siret, dateRdv, typeRdv, agentId, entreprise, commentaire, department,
-                audit, document, flag, typeDossier
+                audit, document, flag, typeDossier,
+                updatePar: username // Add updatePar with the username
             };
 
+            // Make the PUT request to update the client data
             const response = await fetch(`http://localhost:5000/api/clients/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -55,6 +62,7 @@ const ProfileClientPage = () => {
             const data = await response.json();
             console.log('Client updated:', data);
 
+            // Update the client data state
             setClientData(data);
             setIsEditing(false);
         } catch (err) {
@@ -78,7 +86,6 @@ const ProfileClientPage = () => {
         audit: ['Envoyé en VT', 'VT reçu', 'Envoyé en BAO', 'BAO reçu', 'VT à rectifier', 'BAO à rectifier'],
         statusChantier: ['A RAPPELER', 'NO STATUS', 'NRP', 'INJOIGNABLE', 'A RETRAITER', 'LEDS SOLAIRES', 'CONFIRMER RÉGIE', 'Confirmer', 'Chantier annuler', 'SAV', 'RENVOYER EQUIPE SUR PLACE', 'RETOURNER RECUPERER LEDS', 'MANQUE PIÈCES', 'LIVRAISON POSTALE', 'Chantier Terminé', 'MANQUES RÉGLETTES', 'MPR'],
     };
-        // typeDossier: ['Aucun(e)', '145', 'AMPLEUR', 'Destratificateur', 'ITE', 'ITE + TOITURE', 'LED', 'LED INTERIEUR', 'Réno - ISO', 'Réno - ITE', 'Réno - PAC', 'Réno - PLACO'],
 
     const readOnlyKeys = ['validePar', 'createdPar', 'dateCreation'];
 

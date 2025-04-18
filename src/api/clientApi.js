@@ -42,8 +42,8 @@ export const filterClients = (filterData) => {
   return axios.post(`${API_URL}/filter`, filterData);
 };
 
-export const updateClientNRP = (id, nrpData) => {
-  return axios.patch(`${API_URL}/${id}/nrp`, nrpData);  // Full URL with API_URL
+export const updateClientNRPApi = (id, { nrp, updatePar }) => {
+  return axios.patch(`${API_URL}/${id}/nrp`, { nrp, updatePar });
 };
 
 export const addObservation = (id, newObservation) => {

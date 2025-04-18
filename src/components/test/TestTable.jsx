@@ -8,7 +8,8 @@ import 'primeicons/primeicons.css';
 import Modal from 'react-bootstrap/Modal';
 import { Button as BootstrapButton } from 'react-bootstrap';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import {getAllUsersAsync} from '../../features/userSlice';
+import { getAllUsersAsync } from '../../features/userSlice';
+import StatusEditor from './StatusEditor';
 const TableComponent = ({ onRowClick }) => {
   const dispatch = useDispatch();
 
@@ -53,31 +54,26 @@ const TableComponent = ({ onRowClick }) => {
     }
   };
 
+  // inside your component
   const handelUpdateClientNRP = (clientId, newNRP) => {
-    // First, confirm with the user if they are sure about the NRP change
+    const updatePar = localStorage.getItem('username');  // ← get it here
+
     Swal.fire({
       title: 'Are you sure?',
       text: `You are about to change NRP to ${newNRP}`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, update it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Dispatch the action to update NRP if the user confirmed
-        dispatch(updateClientNRP({ id: clientId, nrpData: newNRP }))
-          .then(() => {
-            // Success alert
-            Swal.fire('Updated!', 'The NRP has been updated.', 'success');
-          })
-          .catch((error) => {
-            // Error alert
-            Swal.fire('Error!', 'There was an issue updating the NRP.', 'error');
-          });
+        dispatch(updateClientNRP({ id: clientId, nrpData: newNRP, updatePar }))
+          .unwrap()
+          .then(() => Swal.fire('Updated!', 'The NRP has been updated.', 'success'))
+          .catch(() => Swal.fire('Error!', 'There was an issue updating the NRP.', 'error'));
       }
     });
   };
+
 
   useEffect(() => {
     const role = localStorage.getItem('role');  // Get the role from localStorage
@@ -92,38 +88,53 @@ const TableComponent = ({ onRowClick }) => {
 
       if (equipId) {
         dispatch(getClientsByEquipeThunk(equipId));
-        
+
       }
     }
   }, [dispatch]);
 
-
   // Runs every time clients are updated
-
-
   const columns = [
     {
-      field: 'prenom',
-      header: 'Nom',
+      field: 'clientID',
+      header: 'ID',
       body: (client) => (
         <>
-          <a href={`/client/${client._id}`} className="text-primary hover:underline">
-            <b>{client.prenom}</b>
-          </a>
-          <div><i className="pi" style={{ color: "green" }}>siret:</i> {client.siret}</div>
+          <p style={{ fontSize: "0.8rem", paddingRight: "15px", margin: "5px" }} > <b>{client.clientID}</b></p>
         </>
       ),
     },
     {
-      field: 'entreprise',
-      header: 'Entreprise',
+      field: 'prenom',
+      header: 'Nom/Prenom ',
       body: (client) => (
         <div>
-          <div><i className="pi pi-building-columns "></i>  {client.entreprise}</div>
-          <div><i className="pi pi-users" style={{ fontSize: "0.8rem", color: "green" }} ></i>  {client.equipe ? client.equipe.name : 'No equipe'}    </div>
-          <div><i className="pi pi-flag" style={{ fontSize: "0.8rem"}} ></i> <span style={{ color: "green" }}>{client.flag}</span></div>
-          
+          <div style={{ whiteSpace: 'nowrap' }}>
+            <a href={`/client/${client._id}`} className="text-primary hover:underline"> <b>{client.prenom}</b></a> {client.entreprise}
+          </div>
+          <div style={{ whiteSpace: 'nowrap' }} ><i className="pi" style={{ color: "green" }}>siret:</i> {client.siret}</div>
+          <div style={{ whiteSpace: 'nowrap' }}><i className="pi pi-flag" style={{ fontSize: "0.8rem",color: "green" }} ></i> <span >{client.typeRdv}</span></div>
         </div>
+      ),
+    },
+    {
+      field: 'equipe',
+      header: 'Equipe',
+      body: (client) => (
+        <>
+          <div style={{ whiteSpace: 'nowrap' }}>
+            <i className="pi pi-bookmark" style={{ fontSize: "0.8rem", color: "rgb(13, 110, 253)", marginRight: '5px' }}></i>
+            {client.equipe ? ` ${client.equipe.name}` : 'No equipe'}
+          </div>
+          <div style={{ whiteSpace: 'nowrap' }}>
+            <i className="pi pi-check" style={{ fontSize: "0.8rem", color: "green", marginRight: '5px' }}></i>
+            {client.updatePar ? ` ${client.updatePar}` : ''}
+          </div>
+          <div style={{ whiteSpace: 'nowrap' }}>
+            <i className="pi pi-file-import" style={{ fontSize: "0.8rem", color: "#d1b800", marginRight: '5px' }}></i>
+            {client.agentId ? ` ${client.agentId}` : ''}
+          </div>
+        </>
       ),
     },
     {
@@ -131,7 +142,7 @@ const TableComponent = ({ onRowClick }) => {
       header: 'Contact',
       body: (client) => (
         <div>
-          <div><i className="pi pi-phone " style={{ fontSize: "0.8rem"}}></i> {client.phone}</div>
+          <div><i className="pi pi-phone " style={{ fontSize: "0.8rem" }}></i> {client.phone}</div>
           <div>{client.email}</div>
         </div>
       ),
@@ -195,47 +206,12 @@ const TableComponent = ({ onRowClick }) => {
     {
       field: 'statusChantier',
       header: 'Statut',
-      body: (client) => {
-        const getStatusColor = (status) => {
-          switch (status) {
-            case 'A RAPPELER': return '#FF6347'; // Red
-            case 'NO STATUS': return '#808080'; // Gray
-            case 'Confirmer': return '#26ba12'; // Green
-            case 'NRP': return '#f1c40f'; // Yellow
-            case 'INJOIGNABLE': return '#e74c3c'; // Red
-            case 'A RETRAITER': return '#8e44ad'; // Purple
-            case 'CONFIRMER RÉGIE': return '#d1b800'; // Gold
-            case 'LEDS SOLAIRES': return '#2ecc71'; // Light Green
-            case 'Chantier annuler': return '#c0392b'; // red 
-            case 'SAV': return '#f39c12'; // Orange
-            case 'RENVOYER EQUIPE SUR PLACE': return '#d35400'; // Dark Orange
-            case 'RETOURNER RECUPERER LEDS': return '#1abc9c'; // Turquoise
-            case 'MANQUE PIÈCES': return '#e67e22'; // Orange
-            case 'LIVRAISON POSTALE': return '#9b59b6'; // Purple
-            case 'Chantier Terminé': return '#3498db'; // Teal
-            case 'MANQUES RÉGLETTES': return '#16a085'; // Blue
-            case 'MPR': return '#95a5a6'; // grey 
-            default: return '#808080'; // Gray for unknown status
-          }
-        };
-
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <i
-              className="fas fa-circle"
-              style={{
-                backgroundColor: getStatusColor(client.statusChantier),
-                color: 'white',
-                width: '12px',
-                height: '12px',
-                borderRadius: '50%',
-                marginRight: '8px',
-              }}
-            ></i>
-            {client.statusChantier}
-          </div>
-        );
-      },
+      body: (client) => (
+        <StatusEditor
+          clientId={client._id}  // Ensure client._id is available
+          currentStatus={client.statusChantier}  // current status
+        />
+      )
     },
     {
       field: 'nrp',
@@ -272,10 +248,23 @@ const TableComponent = ({ onRowClick }) => {
       field: 'historyStatus',
       header: 'Historique',
       body: (client) => (
-        <div>
+        <div
+          style={{
+            maxHeight: '3.4rem',           // height for ~2 lines
+            overflowY: client.historyStatus?.length > 4 ? 'auto' : 'hidden',
+            overflowX: 'hidden',           // prevent horizontal scrollbar
+          }}
+        >
           {client.historyStatus && client.historyStatus.length > 0 ? (
-            client.historyStatus.map((status, index) => (
-              <div key={index} style={{ fontSize: "0.75rem", color: "rgb(13, 110, 253)" }}>
+            [...client.historyStatus].reverse().map((status, index) => (  // reversed here
+              <div
+                key={index}
+                style={{
+                  fontSize: "0.75rem",
+                  color: "rgb(13, 110, 253)",
+                  whiteSpace: "nowrap",
+                }}
+              >
                 {status}
               </div>
             ))
@@ -283,10 +272,9 @@ const TableComponent = ({ onRowClick }) => {
             <span style={{ fontSize: "0.75rem", color: "gray" }}>Aucun</span>
           )}
         </div>
-      ),
-    },
-
-
+      )
+    }
+    ,
     {
       field: 'observations',
       header: 'Observations',
@@ -330,16 +318,45 @@ const TableComponent = ({ onRowClick }) => {
           )}
         </div>
       ),
-    }
-    
-,
+    },
+    {
+      field: 'updatedAt',
+      header: 'Modifié',
+      body: (client) => {
+        const date = new Date(client.updatedAt);
 
+        const day = String(date.getDate()).padStart(2, '0');      // 17
+        const month = String(date.getMonth() + 1).padStart(2, '0');  // 04
+        const hours = String(date.getHours()).padStart(2, '0');   // 15
+        const minutes = String(date.getMinutes()).padStart(2, '0'); // 44
+
+        return (
+          <>
+            <p style={{ margin: 0 }}>{`${day}/${month} ${hours}h${minutes}`}</p>
+            <p style={{ color: "rgb(13, 110, 253)" }} >{client.updatePar}</p>
+
+          </>
+
+        );
+      },
+    },
     {
       field: 'dateCreation',
       header: 'Dates',
       body: (client) => {
-        const formattedDateCreation = new Date(client.dateCreation).toLocaleDateString('en-CA');
-        return formattedDateCreation;
+        const date = new Date(client.dateCreation);
+
+        const day = String(date.getDate()).padStart(2, '0');      // 17
+        const month = String(date.getMonth() + 1).padStart(2, '0');  // 04
+        const hours = String(date.getHours()).padStart(2, '0');   // 11
+        const minutes = String(date.getMinutes()).padStart(2, '0'); // 17
+
+        return (
+          <>
+            <p style={{ margin: 0 }}>{`${day}/${month} ${hours}h${minutes}`}</p>
+          </>
+
+        );
       },
     },
     {
@@ -390,7 +407,7 @@ const TableComponent = ({ onRowClick }) => {
 
   return (
     <div className="card">
-      <DataTable stripedRows value={clients} size={'small'} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '120%', fontSize: '0.75rem'  }} loading={status === 'loading'}>
+      <DataTable stripedRows value={clients} size={'small'} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '120%', fontSize: '0.75rem' }} loading={status === 'loading'}>
         {columns.map((col, index) => (
           <Column
             key={index}

@@ -7,7 +7,7 @@ import {
   deleteClient, 
   getClientsByAgentId, 
   filterClients,
-  updateClientNRP as updateClientNRPApi ,// Renamed the imported updateClientNRP to avoid conflict
+  updateClientNRPApi ,// Renamed the imported updateClientNRP to avoid conflict
   addObservation as addObservationApi, // Import addObservation
   getClientsByEquipe
 } from '../api/clientApi';
@@ -70,14 +70,12 @@ export const filterClientsByCriteria = createAsyncThunk(
 // New async thunk to update the NRP of a client
 export const updateClientNRP = createAsyncThunk(
   'clients/updateClientNRP',
-  async ({ id, nrpData }) => {
-    // Ensure nrpData is correctly structured with 'nrp' key
-    const formattedData = { nrp: Number(nrpData) }; // Converting nrpData to a number and wrapping in the object
-    
-    // Call the API to update the client NRP
-    const response = await updateClientNRPApi(id, formattedData);
-    
-    // Return the updated client data from the response
+  async ({ id, nrpData, updatePar }) => {
+    // pass both fields to the API
+    const response = await updateClientNRPApi(id, {
+      nrp: Number(nrpData),
+      updatePar
+    });
     return response.data;
   }
 );
