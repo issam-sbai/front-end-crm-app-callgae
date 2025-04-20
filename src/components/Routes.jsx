@@ -1,20 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-//import Dashboard from "./Dashboard";
-// import Clients from "./Clients";
 import Users from "./users/UsersPage";
-// import Rdv from "./Rdv";
-// import ClientComponent from "./client/ClientComponent";
-// import ClientProfile from "./clientProfile/ClientProfile";
-// 
-// import ClientsList from "./client/ClientsList ";
-// import ClientDetails from "./clientProfile/ClientDetails";
 import LoginPage from "../login/login";
 import PlanningPage from "./Planning/PlanningPage";
 import TestPage from "./test/TestPage";
-// import ProfilePage from "./clientProfile/ProfilePage";
 import ProfileClientPage from "./profileClient/ProfileClientPage";
 import HistoryComponent from './../components/hirstoryData/HistoryComponent';
 import DashboardPage from "../components/dashboard/DashboardPage";
+import HelloPage from "./HelloPage";
 const AppRoutes = ({ isLoggedIn }) => {
   return (
     <Routes>
@@ -22,14 +14,14 @@ const AppRoutes = ({ isLoggedIn }) => {
       <Route path="/login" element={ <LoginPage />} />
 
       {/* Protected routes */}
-      <Route path="/" element={<DashboardPage/>} />
-      {/* <Route path="/clients" element={<ClientComponent />} /> */}
-      {/* <Route path="/client/:id" element={<ProfilePage /> } /> */}
+      <Route path="/" element={<HelloPage/>} />
+      <Route path="/dashboard" element={<DashboardPage/>} />
       <Route path="/users" element={ <Users />} />
       <Route path="/rdv" element={<PlanningPage />} />
       <Route path="/test" element={<TestPage/>} />
       <Route path="/client/:id" element={<ProfileClientPage />} />
       <Route path="/history" element={<HistoryComponent />} />
+
 
 
       {/* If trying to access a non-existent route */}

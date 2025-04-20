@@ -8,6 +8,7 @@ import { resetEquipe } from '../features/equipeSlice';
 import { resetClient } from '../features/clientSlice';
 import { resetField } from '../features/fieldsSlice';
 import { resetHistoryData } from '../features/historyDataSlice';
+import axios from 'axios';
 
 export default function Sidebar() {
   const location = useLocation();
@@ -15,7 +16,7 @@ export default function Sidebar() {
   const userRole = localStorage.getItem("role");
   const dispatch = useDispatch();
   const items = [
-    { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+    { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard' },
     { label: 'clients RDV', icon: 'pi pi-fw pi-user', to: '/test' },
     { label: 'RDV', icon: 'pi pi-fw pi-calendar', to: '/rdv' },
     ...(userRole === 'admin' ? [
@@ -23,8 +24,8 @@ export default function Sidebar() {
       { label: 'History', icon: 'pi pi-fw pi-user', to: '/history' }
     ] : []),
   ];
-
   const handleLogout = () => {
+  
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -35,25 +36,36 @@ export default function Sidebar() {
       confirmButtonText: "Yes, logout!"
     }).then((result) => {
       if (result.isConfirmed) {
-        // Clear user data from localStorage
-        localStorage.removeItem("username");
-        localStorage.removeItem("role");
-        localStorage.removeItem("token"); // Clear the token as well
-        localStorage.clear(); 
-        
-        dispatch(resetEquipe());
-        dispatch(resetClient());
-        dispatch(resetField());
-        dispatch(resetHistoryData());
-        // Show success message after logout
-        Swal.fire({
-          title: "Logged out!",
-          text: "You have successfully logged out.",
-          icon: "success"
-        }).then(() => {
-          // Redirect to the login page after logout
-          navigate("/login", { replace: true }); 
-        });
+        // Send a request to the backend to clear the cookie
+        axios.post('http://localhost:5000/api/users/logout', {}, { withCredentials: true })
+          .then(() => {
+            // Clear localStorage or Redux state if necessary
+            localStorage.clear();
+  
+            // Reset Redux state (if applicable)
+            dispatch(resetEquipe());
+            dispatch(resetClient());
+            dispatch(resetField());
+            dispatch(resetHistoryData());
+  
+            // Show success message after logout
+            Swal.fire({
+              title: "Logged out!",
+              text: "You have successfully logged out.",
+              icon: "success"
+            }).then(() => {
+              // Redirect to the login page after logout
+              navigate("/login", { replace: true });
+            });
+          })
+          .catch((error) => {
+            console.error("Logout error:", error);
+            Swal.fire({
+              title: "Error!",
+              text: "There was an issue logging out. Please try again later.",
+              icon: "error"
+            });
+          });
       }
     });
   };

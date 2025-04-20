@@ -12,7 +12,9 @@ const ProfileClientPage = () => {
     useEffect(() => {
         const fetchClient = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/clients/${id}`);
+                const response = await fetch(`http://localhost:5000/api/clients/${id}`,{
+                    credentials: 'include' // ⬅️ this includes the cookie with the request
+                  });
                 if (!response.ok) throw new Error('Client not found');
                 const data = await response.json();
                 console.log('Client Data:', data);
@@ -55,6 +57,7 @@ const ProfileClientPage = () => {
             const response = await fetch(`http://localhost:5000/api/clients/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify(updatedClient),
             });
 

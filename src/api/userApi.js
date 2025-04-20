@@ -5,7 +5,9 @@ const API_URL = 'http://localhost:5000/api/users'; // Change this to your backen
 // Register user
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/register`, userData);
+    const response = await axios.post(`${API_URL}/register`, userData,{
+      withCredentials: true, // Include cookies (if any)
+    });
     return response.data;
   } catch (error) {
     throw error;
@@ -15,7 +17,9 @@ export const registerUser = async (userData) => {
 // Login user
 export const loginUser = async (credentials) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, credentials);
+    const response = await axios.post(`${API_URL}/login`, credentials,{
+      withCredentials: true, // Include cookies (if any)
+    });
     return response.data;
   } catch (error) {
     throw error;
@@ -25,7 +29,9 @@ export const loginUser = async (credentials) => {
 // Get the current user (me)
 export const getUserById = async () => {
   try {
-    const response = await axios.get(`${API_URL}/me`);
+    const response = await axios.get(`${API_URL}/me`,{
+      withCredentials: true, // Include cookies (if any)
+    });
     return response.data;
   } catch (error) {
     throw error;
@@ -35,7 +41,9 @@ export const getUserById = async () => {
 // Get all users
 export const getAllUsers = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await axios.get(API_URL,{
+      withCredentials: true, // Include cookies (if any)
+    });
     return response.data;
   } catch (error) {
     throw error;
@@ -45,7 +53,9 @@ export const getAllUsers = async () => {
 // Update user by ID
 export const updateUser = async (id, updatedUser) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, updatedUser);
+    const response = await axios.put(`${API_URL}/${id}`, updatedUser,{
+      withCredentials: true, // Include cookies (if any)
+    });
     return response.data;
   } catch (error) {
     throw error;
@@ -55,7 +65,9 @@ export const updateUser = async (id, updatedUser) => {
 // Delete user by ID
 export const deleteUser = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/${id}`);
+    const response = await axios.delete(`${API_URL}/${id}`,{
+      withCredentials: true, // Include cookies (if any)
+    });
     return id;
   } catch (error) {
     throw error;

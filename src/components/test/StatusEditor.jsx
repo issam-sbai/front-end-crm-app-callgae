@@ -67,6 +67,7 @@ const StatusEditor = ({ clientId, currentStatus }) => {
             const response = await fetch(`http://localhost:5000/api/clients/${clientId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({
                     statusChantier: newStatus,
                     updatePar: updatePar
