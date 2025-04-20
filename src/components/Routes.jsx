@@ -31,12 +31,6 @@ const AppRoutes = ({ isLoggedIn }) => {
       <Route path="/client/:id" element={<ProfileClientPage />} />
       <Route path="/history" element={<HistoryComponent />} />
 
-      {/* <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
-      <Route path="/clients" element={isLoggedIn ? <ClientComponent />  : <Navigate to="/login" />} />
-      <Route path="/client/:id" element={isLoggedIn ? <ProfilePage /> : <Navigate to="/login" />} />
-      <Route path="/users" element={isLoggedIn ? <Users /> : <Navigate to="/login" />} />
-      <Route path="/rdv" element={isLoggedIn ? <PlanningPage /> : <Navigate to="/login" />} />
-      <Route path="/test" element={isLoggedIn ? <TestPage/> : <Navigate to="/login" />} /> */}
 
       {/* If trying to access a non-existent route */}
       <Route path="*" element={<Navigate to="/login" />} />

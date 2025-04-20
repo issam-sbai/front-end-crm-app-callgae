@@ -3,12 +3,17 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 import '../../src/App.css'; // Ensure to import custom CSS
+import { useDispatch } from 'react-redux';
+import { resetEquipe } from '../features/equipeSlice';
+import { resetClient } from '../features/clientSlice';
+import { resetField } from '../features/fieldsSlice';
+import { resetHistoryData } from '../features/historyDataSlice';
 
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate(); // Initialize navigate function
   const userRole = localStorage.getItem("role");
-
+  const dispatch = useDispatch();
   const items = [
     { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
     { label: 'clients RDV', icon: 'pi pi-fw pi-user', to: '/test' },
@@ -34,7 +39,12 @@ export default function Sidebar() {
         localStorage.removeItem("username");
         localStorage.removeItem("role");
         localStorage.removeItem("token"); // Clear the token as well
-  
+        localStorage.clear(); 
+        
+        dispatch(resetEquipe());
+        dispatch(resetClient());
+        dispatch(resetField());
+        dispatch(resetHistoryData());
         // Show success message after logout
         Swal.fire({
           title: "Logged out!",
@@ -42,7 +52,7 @@ export default function Sidebar() {
           icon: "success"
         }).then(() => {
           // Redirect to the login page after logout
-          navigate("/login");
+          navigate("/login", { replace: true }); 
         });
       }
     });

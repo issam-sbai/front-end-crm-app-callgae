@@ -16,7 +16,9 @@ export const fetchHistoryLogs = createAsyncThunk('history/fetchHistoryLogs', asy
 const historyDataSlice = createSlice({
   name: 'history',
   initialState,
-  reducers: {},
+  reducers: {
+    resetHistoryData: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchHistoryLogs.pending, (state) => {
@@ -32,5 +34,5 @@ const historyDataSlice = createSlice({
       });
   },
 });
-
+export const { resetHistoryData } = historyDataSlice.actions;
 export default historyDataSlice.reducer;

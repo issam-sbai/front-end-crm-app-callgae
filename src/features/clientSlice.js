@@ -100,7 +100,9 @@ export const getClientsByEquipeThunk = createAsyncThunk(
 const clientsSlice = createSlice({
   name: 'clients',
   initialState,
-  reducers: {},
+  reducers: {
+    resetClient: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchClients.pending, (state) => {
@@ -201,4 +203,5 @@ const clientsSlice = createSlice({
   },
 });
 
+export const { resetClient } = clientsSlice.actions;
 export default clientsSlice.reducer;

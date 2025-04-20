@@ -10,7 +10,9 @@ const initialState = {
 const groupSlice = createSlice({
   name: 'group',
   initialState,
-  reducers: {},
+  reducers: {
+    resetGroup: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGroups.pending, (state) => {
@@ -38,5 +40,7 @@ const groupSlice = createSlice({
       });
   },
 });
+
+export const { resetGroup } = groupSlice.actions;
 
 export default groupSlice.reducer;

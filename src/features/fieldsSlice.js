@@ -57,7 +57,9 @@ export const removeField = createAsyncThunk(
 const fieldsSlice = createSlice({
   name: 'fields',
   initialState,
-  reducers: {},
+  reducers: {
+    resetField: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       // Fetch all
@@ -130,5 +132,7 @@ const fieldsSlice = createSlice({
       });
   }
 });
+
+export const { resetField } = fieldsSlice.actions;
 
 export default fieldsSlice.reducer;

@@ -56,7 +56,9 @@ export const getClientsByEquipeThunk = createAsyncThunk('equipes/getClientsByEqu
 const equipesSlice = createSlice({
   name: 'equipes',
   initialState,
-  reducers: {},
+  reducers: {
+    resetEquipe: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       // Fetch all equipes
@@ -113,4 +115,5 @@ const equipesSlice = createSlice({
   },
 });
 
+export const { resetEquipe } = equipesSlice.actions;
 export default equipesSlice.reducer;
