@@ -1,38 +1,60 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-//import Dashboard from "./Dashboard";
-// import Clients from "./Clients";
 import Users from "./users/UsersPage";
-// import Rdv from "./Rdv";
-// import ClientComponent from "./client/ClientComponent";
-// import ClientProfile from "./clientProfile/ClientProfile";
-// 
-// import ClientsList from "./client/ClientsList ";
-// import ClientDetails from "./clientProfile/ClientDetails";
 import LoginPage from "../login/login";
 import PlanningPage from "./Planning/PlanningPage";
 import TestPage from "./test/TestPage";
-// import ProfilePage from "./clientProfile/ProfilePage";
 import ProfileClientPage from "./profileClient/ProfileClientPage";
 import HistoryComponent from './../components/hirstoryData/HistoryComponent';
 import DashboardPage from "../components/dashboard/DashboardPage";
-const AppRoutes = ({ isLoggedIn }) => {
+import PrivateRoute from "./PrivateRoute";
+
+  // import your PrivateRoute
+
+const AppRoutes = () => {
   return (
     <Routes>
       {/* Public route */}
-      <Route path="/login" element={ <LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
 
       {/* Protected routes */}
-      <Route path="/" element={<DashboardPage/>} />
-      {/* <Route path="/clients" element={<ClientComponent />} /> */}
-      {/* <Route path="/client/:id" element={<ProfilePage /> } /> */}
-      <Route path="/users" element={ <Users />} />
-      <Route path="/rdv" element={<PlanningPage />} />
-      <Route path="/test" element={<TestPage/>} />
-      <Route path="/client/:id" element={<ProfileClientPage />} />
-      <Route path="/history" element={<HistoryComponent />} />
+      <Route path="/" element={
+        <PrivateRoute>
+          <DashboardPage />
+        </PrivateRoute>
+      } />
 
 
-      {/* If trying to access a non-existent route */}
+      <Route path="/users" element={
+        <PrivateRoute>
+          <Users />
+        </PrivateRoute>
+      } />
+
+      <Route path="/rdv" element={
+        <PrivateRoute>
+          <PlanningPage />
+        </PrivateRoute>
+      } />
+
+      <Route path="/test" element={
+        <PrivateRoute>
+          <TestPage />
+        </PrivateRoute>
+      } />
+
+      <Route path="/client/:id" element={
+        <PrivateRoute>
+          <ProfileClientPage />
+        </PrivateRoute>
+      } />
+
+      <Route path="/history" element={
+        <PrivateRoute>
+          <HistoryComponent />
+        </PrivateRoute>
+      } />
+
+      {/* Fallback to login if route not found */}
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );

@@ -1,17 +1,14 @@
+import { useSelector } from 'react-redux';
 import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
 
 
+  const token = localStorage.getItem('token') || useSelector(state => state.user.token);
+
   return (
     <div>
-      {/* Conditionally render Navbar if needed */}
-      {/* <Navbar /> */}
-
-      {/* Conditionally render Sidebar only if logged in */}
-      {/* {isLoggedIn && <Sidebar /> } */}
-      <Sidebar />
-      {/* Main content */}
+      {token && <Sidebar />}
       <div style={{ padding: '20px', width: '100%' }}>
         {children}
       </div>

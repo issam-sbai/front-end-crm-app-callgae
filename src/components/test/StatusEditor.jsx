@@ -62,11 +62,15 @@ const StatusEditor = ({ clientId, currentStatus }) => {
         const newStatus = e.target.value;
         setStatus(newStatus);
         const updatePar = localStorage.getItem('username');
+        const token = localStorage.getItem('token'); // Get token here!
     
         try {
             const response = await fetch(`http://localhost:5000/api/clients/${clientId}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`  // Add token here
+                },
                 body: JSON.stringify({
                     statusChantier: newStatus,
                     updatePar: updatePar
@@ -98,6 +102,7 @@ const StatusEditor = ({ clientId, currentStatus }) => {
             setError('Error updating status: ' + err.message);
         }
     };
+    
     
 
     useEffect(() => {

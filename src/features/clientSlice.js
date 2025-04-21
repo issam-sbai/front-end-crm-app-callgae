@@ -102,6 +102,14 @@ const clientsSlice = createSlice({
   initialState,
   reducers: {
     resetClient: () => initialState,
+    setUser: (state, action) => {
+      state.token = action.payload.token;
+      state.currentUser = action.payload.user;
+    },
+    logout: (state) => {
+      state.token = null;
+      state.currentUser = null;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -203,5 +211,5 @@ const clientsSlice = createSlice({
   },
 });
 
-export const { resetClient } = clientsSlice.actions;
+export const { resetClient ,setUser} = clientsSlice.actions;
 export default clientsSlice.reducer;

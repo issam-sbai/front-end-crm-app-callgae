@@ -1,10 +1,9 @@
-import axios from 'axios';
+import axiosInstance from "./axiosInstance.JS";
 
-const BASE_URL = 'http://localhost:5000/api/dynamic-fields';
 
 // Add a dynamic field
 export const addField = async ({ tableName, fieldName, fieldType, defaultValue }) => {
-  const response = await axios.post(`${BASE_URL}/add`, {
+  const response = await axiosInstance.post(`dynamic-fields/add`, {
     tableName,
     fieldName,
     fieldType,
@@ -13,21 +12,21 @@ export const addField = async ({ tableName, fieldName, fieldType, defaultValue }
   return response.data;
 };
 
-// Get all dynamic fields (across all tables)
+// Get all dynamic fields
 export const getAllFields = async () => {
-  const response = await axios.get(BASE_URL);
-  return response.data; // returns an array of all field objects
+  const response = await axiosInstance.get(`dynamic-fields`);
+  return response.data;
 };
 
 // Get fields for a specific table
 export const getFieldsByTable = async (tableName) => {
-  const response = await axios.get(`${BASE_URL}/${tableName}`);
-  return response.data; // returns an array of field objects for that table
+  const response = await axiosInstance.get(`dynamic-fields/${tableName}`);
+  return response.data;
 };
 
 // Update a dynamic field
 export const updateField = async ({ fieldId, fieldName, fieldType, defaultValue }) => {
-  const response = await axios.put(`${BASE_URL}/update`, {
+  const response = await axiosInstance.put(`dynamic-fields/update`, {
     fieldId,
     fieldName,
     fieldType,
@@ -38,7 +37,7 @@ export const updateField = async ({ fieldId, fieldName, fieldType, defaultValue 
 
 // Delete a dynamic field
 export const deleteField = async ({ tableName, fieldName }) => {
-  const response = await axios.delete(`${BASE_URL}/delete`, {
+  const response = await axiosInstance.delete(`dynamic-fields/delete`, {
     data: { tableName, fieldName }
   });
   return response.data;

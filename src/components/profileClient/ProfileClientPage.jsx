@@ -12,7 +12,17 @@ const ProfileClientPage = () => {
     useEffect(() => {
         const fetchClient = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/clients/${id}`);
+                const token = localStorage.getItem('token');
+                if (!token) throw new Error('No token found — please log in.');
+
+                const response = await fetch(`http://localhost:5000/api/clients/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
                 if (!response.ok) throw new Error('Client not found');
                 const data = await response.json();
                 console.log('Client Data:', data);
@@ -33,28 +43,30 @@ const ProfileClientPage = () => {
 
     const handleSave = async () => {
         try {
-            // Get the username from localStorage
-            const username = localStorage.getItem('username'); // assuming the username is stored under 'username'
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('username');
 
-            // Destructure clientData and prepare the updated client object
+            if (!token) throw new Error('No token found — please log in.');
+
             const {
                 prenom, codepostal, phone, civilite, infoRdv, statusChantier, email, adresse,
                 ville, siret, dateRdv, typeRdv, agentId, entreprise, commentaire, department,
                 audit, document, flag, typeDossier
             } = clientData;
 
-            // Add updatePar field with username
             const updatedClient = {
                 prenom, codepostal, phone, civilite, infoRdv, statusChantier, email, adresse,
                 ville, siret, dateRdv, typeRdv, agentId, entreprise, commentaire, department,
                 audit, document, flag, typeDossier,
-                updatePar: username // Add updatePar with the username
+                updatePar: username
             };
 
-            // Make the PUT request to update the client data
             const response = await fetch(`http://localhost:5000/api/clients/${id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(updatedClient),
             });
 
@@ -62,7 +74,6 @@ const ProfileClientPage = () => {
             const data = await response.json();
             console.log('Client updated:', data);
 
-            // Update the client data state
             setClientData(data);
             setIsEditing(false);
         } catch (err) {
@@ -105,10 +116,10 @@ const ProfileClientPage = () => {
                                         width="110"
                                     />
                                     <div className="mt-3">
-                                        <h4>{entreprise} </h4>
+                                        <h4>{entreprise}</h4>
                                         <p className="text-secondary mb-1">Client : {prenom}</p>
                                         <p className="text-muted mb-0 ">{adresse}</p>
-                                        <p className="text-muted  ">{ville} {codepostal}</p>
+                                        <p className="text-muted">{ville} {codepostal}</p>
                                         <button className="btn btn-primary" onClick={handleEditToggle}>
                                             {isEditing ? 'Cancel Edit' : 'Edit Client'}
                                         </button>
@@ -120,7 +131,6 @@ const ProfileClientPage = () => {
                                         <h6 className="mb-0">🪪 siret</h6>
                                         <span className="text-secondary">{siret}</span>
                                     </li>
-                                    
                                     <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap" style={{ fontSize: '0.75rem' }}>
                                         <h6 className="mb-0">📞 Téléphone</h6>
                                         <span className="text-secondary">{phone}</span>
@@ -168,7 +178,7 @@ const ProfileClientPage = () => {
                                             <h6 className="mb-0" style={{ fontSize: '0.75rem' }}>{field.label}</h6>
                                         </div>
                                         <div className="col-sm-9 text-secondary">
-                                            {(isEditing && !readOnlyKeys.includes(field.key)) ? (
+                                            {isEditing && !readOnlyKeys.includes(field.key) ? (
                                                 field.enum ? (
                                                     <select
                                                         className="form-control"
@@ -206,7 +216,7 @@ const ProfileClientPage = () => {
                                             Save Data
                                         </button>
                                         <button className="btn btn-primary mx-2" onClick={handleEditToggle} style={{ fontSize: '0.75rem' }}>
-                                            {isEditing ? 'Cancel Edit' : 'Edit Client'}
+                                            Cancel Edit
                                         </button>
                                     </>
                                 )}

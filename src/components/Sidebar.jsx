@@ -52,7 +52,7 @@ export default function Sidebar() {
           icon: "success"
         }).then(() => {
           // Redirect to the login page after logout
-          navigate("/login", { replace: true }); 
+          window.location.href = "/login"; 
         });
       }
     });
@@ -84,9 +84,8 @@ export default function Sidebar() {
             <div className="d-flex align-items-center">
               <Nav style={{ fontSize: '0.75rem' }}>
                 <NavDropdown title={<i className="pi pi-user" />} id="navbar-profile-dropdown" align="end" style={{ fontSize: '0.75rem' }}>
-                  <NavDropdown.Item href="/profile" style={{ fontSize: '0.75rem' }}>Profile</NavDropdown.Item>
-                  <NavDropdown.Item href="/settings" style={{ fontSize: '0.75rem' }}>Settings</NavDropdown.Item>
-                  <NavDropdown.Divider />
+                  {/* <NavDropdown.Item href="/profile" style={{ fontSize: '0.75rem' }}>Profile</NavDropdown.Item> */}
+                  {/* <NavDropdown.Divider /> */}
                   <NavDropdown.Item onClick={handleLogout} style={{ fontSize: '0.75rem' }}>Logout</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
