@@ -9,7 +9,9 @@ import {
   filterClients,
   updateClientNRPApi ,// Renamed the imported updateClientNRP to avoid conflict
   addObservation as addObservationApi, // Import addObservation
-  getClientsByEquipe
+  getClientsByEquipe,
+  checkDuplicatesAndUpdate as checkDuplicatesAndUpdateApi // <-- ADD THIS!
+
 } from '../api/clientApi';
 
 const initialState = {
@@ -94,6 +96,14 @@ export const getClientsByEquipeThunk = createAsyncThunk(
     // console.log('Equipe ID:', equipeId);  // Log to verify the ID
     const response = await getClientsByEquipe(equipeId);
     return response.data;
+  }
+);
+
+export const checkDuplicateClient = createAsyncThunk(
+  'clients/checkDuplicateClient',
+  async (clientId,clientData) => {
+    const response = await checkDuplicatesAndUpdateApi(clientId,clientData);
+    return response.data;  // assuming your API returns the updated client object
   }
 );
 
@@ -207,7 +217,21 @@ const clientsSlice = createSlice({
       .addCase(getClientsByEquipeThunk.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;  // Handle error
-      });
+      })
+      .addCase(checkDuplicateClient.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(checkDuplicateClient.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const index = state.clientsx.findIndex(client => client._id === action.payload._id);
+        if (index !== -1) {
+          state.clientsx[index] = action.payload;  // Replace the client with updated duplicateList
+        }
+      })
+      .addCase(checkDuplicateClient.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
   },
 });
 

@@ -8,7 +8,7 @@ import SvgTest from './SvgTest';
 import AddClient from './AddClient';
 import useClient from '../../hooks/useClient';
 import { useDispatch } from "react-redux";
-import { addClient, fetchClients, fetchClientsByAgentId, getClientsByEquipeThunk } from "../../features/clientSlice";
+import { addClient, checkDuplicateClient, fetchClients, fetchClientsByAgentId, getClientsByEquipeThunk } from "../../features/clientSlice";
 import { fetchEquipes } from "../../features/equipeSlice";
 
 const TestPage = () => {
@@ -36,7 +36,8 @@ const TestPage = () => {
 
   const handleAddClient = async (newClient) => {
     try {
-      await dispatch(addClient(newClient));
+      const result = await dispatch(addClient(newClient));      
+      
 
       const role = localStorage.getItem('role');
       if (role === 'admin') {
@@ -48,6 +49,13 @@ const TestPage = () => {
         }
       }
       setShowAddModal(false);
+
+      await dispatch(checkDuplicateClient({
+        clientId: result.payload._id,
+        clientData: newClient
+      }));
+
+      
     } catch (error) {
       console.error("Failed to add client:", error);
     }

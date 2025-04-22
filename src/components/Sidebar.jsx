@@ -15,7 +15,9 @@ export default function Sidebar() {
   const userRole = localStorage.getItem("role");
   const dispatch = useDispatch();
   const items = [
-    { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+    ...(userRole === 'admin' ? [
+      { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+    ] : []), 
     { label: 'clients RDV', icon: 'pi pi-fw pi-user', to: '/test' },
     { label: 'RDV', icon: 'pi pi-fw pi-calendar', to: '/rdv' },
     ...(userRole === 'admin' ? [

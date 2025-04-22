@@ -4,6 +4,37 @@ import { fetchHistoryLogs } from '../../features/historyDataSlice';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
+const getStatusEmoji = (status) => {
+    switch (status) {
+        case 'A RAPPELER': return '🟥';
+        case 'NO STATUS': return '⬜';
+        case 'Confirmer': return '🟩';
+        case 'NRP': return '🟨';
+        case 'INJOIGNABLE': return '🟥';
+        case 'A RETRAITER': return '🟪';
+        case 'CONFIRMER RÉGIE': return '🟨';
+        case 'LEDS SOLAIRES': return '🟩';
+        case 'Chantier annuler': return '🟥';
+        case 'SAV': return '🟧';
+        case 'RENVOYER EQUIPE SUR PLACE': return '🟧';
+        case 'RETOURNER RECUPERER LEDS': return '🟦';
+        case 'MANQUE PIÈCES': return '🟧';
+        case 'LIVRAISON POSTALE': return '🟪';
+        case 'Chantier Terminé': return '🟦';
+        case 'MANQUES RÉGLETTES': return '🟦';
+        case 'MPR': return '⬜';
+        default: return '⬜';
+    }
+};
+
+const newValueBody = (rowData) => {
+    if (rowData.field === 'statusChantier') {
+        const emoji = getStatusEmoji(rowData.newValue);
+        return `${emoji} ${rowData.newValue}`;
+    }
+    return rowData.newValue ?? '';
+};
+
 export default function HistoryComponent() {
     const dispatch = useDispatch();
     const { historyLogs, status, error } = useSelector((state) => state.history);
@@ -25,13 +56,18 @@ export default function HistoryComponent() {
                     value={historyLogs}
                     paginator
                     rows={10}
-                    size="small" 
+                    size="small"
                     tableStyle={{ minWidth: '100%', fontSize: '0.75rem' }}
                 >
                     <Column field="clientName" header="Client Name" style={{ width: '15%' }} body={(rowData) => rowData.clientName ?? ''} />
                     <Column field="field" header="Field" style={{ width: '15%' }} body={(rowData) => rowData.field ?? ''} />
                     <Column field="oldValue" header="Old Value" style={{ width: '15%' }} body={(rowData) => rowData.oldValue ?? ''} />
-                    <Column field="newValue" header="New Value" style={{ width: '15%' }} body={(rowData) => rowData.newValue ?? ''} />
+                    <Column
+                        field="newValue"
+                        header="New Value"
+                        style={{ width: '15%' }}
+                        body={newValueBody}
+                    />
                     <Column
                         field="updatedAt"
                         header="Updated At"

@@ -40,3 +40,10 @@ export const updateClientNRPApi = (id, { nrp, updatePar }) => {
 export const addObservation = (id, newObservation) => {
   return axiosInstance.put(`clients/${id}/observations`, { newObservation });
 };
+
+export const checkDuplicatesAndUpdate = (clientId,clientData) => {
+  return axiosInstance.post('clients/checkDuplicates',{
+    clientId: clientId,
+    clientData: clientData
+  });
+};

@@ -10,6 +10,7 @@ import { Button as BootstrapButton } from 'react-bootstrap';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { getAllUsersAsync } from '../../features/userSlice';
 import StatusEditor from './StatusEditor';
+import Doublon from './DoublonClient.jsx';
 const TableComponent = ({ onRowClick }) => {
   const dispatch = useDispatch();
 
@@ -177,7 +178,7 @@ const TableComponent = ({ onRowClick }) => {
         return (
           <div>
             <div >
-              <div>{client.adresse} </div>
+              <div style={{whiteSpace: "nowrap"}}>{client.adresse} </div>
               <div>{client.ville} {client.codepostal}</div>
             </div>
             <div>
@@ -370,11 +371,23 @@ const TableComponent = ({ onRowClick }) => {
       },
     },
     {
+      field: 'nbrDuplicate',
+      header: 'Doublons',
+      body: (client) => (
+        <Doublon client={client} />
+      )
+    },
+    {
       field: 'dateRdv',
       header: 'Date RDV',
       body: (client) => {
         const formattedDateRdv = new Date(client.dateRdv).toLocaleDateString('en-CA');
-        return formattedDateRdv;
+        return (
+          <>
+            <div style={{whiteSpace: "nowrap"}}>{formattedDateRdv}</div>
+          </>
+
+        );
       },
     },
     ...(userRole === 'admin' ? [{
