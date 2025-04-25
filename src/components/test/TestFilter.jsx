@@ -66,21 +66,6 @@ const options = {
         { value: 'VT à rectifier', label: 'VT à rectifier' },
         { value: 'BAO à rectifier', label: 'BAO à rectifier' }
     ],
-    // typeDossier: [
-    //     { value: '', label: 'Aucun(e)' },
-    //     { value: '145', label: '145' },
-    //     { value: 'AMPLEUR', label: 'AMPLEUR' },
-    //     { value: 'Destratificateur', label: 'Destratificateur' },
-    //     { value: 'ITE', label: 'ITE' },
-    //     { value: 'ITE + TOITURE', label: 'ITE + TOITURE' },
-    //     { value: 'LED', label: 'LED' },
-    //     { value: 'LED INTERIEUR', label: 'LED INTERIEUR' },
-    //     { value: 'Réno - ISO', label: 'Réno - ISO' },
-    //     { value: 'Réno - ITE', label: 'Réno - ITE' },
-    //     { value: 'Réno - PAC', label: 'Réno - PAC' },
-    //     { value: 'Réno - PLACO', label: 'Réno - PLACO' }
-    // ],
-
     typeDossier: [
         { value: '', label: 'Aucun(e)' },
         { value: 'BAT EQ 127', label: 'BAT EQ 127' },
@@ -88,33 +73,15 @@ const options = {
         { value: 'ITE + TOITURE', label: 'ITE + TOITURE' },
         { value: 'RES EC 104', label: 'RES EC 104' }
     ],
-
-    statusChantier: [
-        { value: '', label: 'Aucun(e)' },
-        { value: 'NO STATUS', label: 'NO STATUS' },
-        { value: 'A RAPPELER', label: 'A RAPPELER' },
-        { value: 'NRP', label: 'NRP' },
-        { value: 'INJOIGNABLE', label: 'INJOIGNABLE' },
-        { value: 'A RETRAITER', label: 'A RETRAITER' },
-        { value: 'CONFIRMER RÉGIE', label: 'CONFIRMER RÉGIE' },
-        { value: 'LEDS SOLAIRES', label: 'LEDS SOLAIRES' },
-        { value: 'Confirmer', label: 'Confirmer' },
-        { value: 'Chantier annuler', label: 'Chantier annuler' },
-        { value: 'SAV', label: 'SAV' },
-        { value: 'RENVOYER EQUIPE SUR PLACE', label: 'RENVOYER EQUIPE SUR PLACE' },
-        { value: 'RETOURNER RECUPERER LEDS', label: 'RETOURNER RECUPERER LEDS' },
-        { value: 'MANQUE PIÈCES', label: 'MANQUE PIÈCES' },
-        { value: 'LIVRAISON POSTALE', label: 'LIVRAISON POSTALE' },
-        { value: 'Chantier Terminé', label: 'Chantier Terminé' },
-        { value: 'MANQUES RÉGLETTES', label: 'MANQUES RÉGLETTES' },
-        { value: 'MPR', label: 'MPR' }
-    ],
-    // equipe: [
-    //     { value: '', label: 'Aucun(e)' },
-    //     { value: '67ed6e1cff2b70c4c5583724', label: 'EQUIPE 1' },
-    //     { value: '67ed6e3bff2b70c4c5583727', label: 'EQUIPE 2' },
-    //     { value: '67ee50102c2321b1acbfa187', label: 'EQUIPE 3' },
-    // ]
+    statusChantier :[
+      { value: '', label: 'Aucun(e)' },
+      { value: 'NO STATUS', label: 'NO STATUS' },
+      { value: 'A RAPPELER', label: 'A RAPPELER' },
+      { value: 'NRP', label: 'NRP' },
+      { value: 'Confirmer', label: 'Confirmer' },
+      { value: 'Chantier annuler', label: 'Chantier annuler' },
+      { value: 'Chantier Terminé', label: 'Chantier Terminé' },
+  ],
 };
 
 const FilterComponenttest = ({ fieldsToShow = [] }) => {

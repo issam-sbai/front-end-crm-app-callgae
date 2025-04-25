@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Offcanvas, Button, Form, Alert } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import PappersSearch from "./PappersSearch";
 
 const AddClient = ({ show, onHide, onAdd }) => {
 
@@ -111,6 +112,14 @@ const AddClient = ({ show, onHide, onAdd }) => {
                 {userError && <Alert variant="danger">Error loading agents</Alert>}
                 <Form>
 
+                    <Form.Group className="mx-2 mb-3">
+                        <Form.Label>Recherche Entreprise</Form.Label>
+                        <PappersSearch
+                            onSelectEntreprise={(data) =>
+                                setNewClient((prev) => ({ ...prev, ...data }))
+                            }
+                        />
+                    </Form.Group>
                     <Form.Group className="mx-2 mb-3">
                         <Form.Label>Civilité</Form.Label>
                         <Form.Control

@@ -2,108 +2,75 @@ import React, { useState, useEffect } from 'react';
 import { Chart } from 'primereact/chart';
 import { useSelector } from 'react-redux';
 
+const STATUSES = [
+    'A RAPPELER',
+    'NO STATUS',
+    'NRP',
+    'Confirmer',
+    'Chantier annuler',
+    'Chantier Terminé'
+];
+
+const STATUS_COLORS = {
+    'A RAPPELER': '#FF6347',
+    'NO STATUS': '#808080',
+    'NRP': '#FF4500',
+    'Confirmer': '#32CD32',
+    'Chantier annuler': '#8B0000',
+    'Chantier Terminé': '#1E90FF'
+};
+
 export default function ClientStateDoughnutChart() {
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
-    
-    // Access the clients state from Redux (or pass as prop if you have a custom data source)
     const clients = useSelector((state) => state.clients.clientsx) || [];
 
     useEffect(() => {
-        const documentStyle = getComputedStyle(document.documentElement);
+        const counts = STATUSES.reduce((acc, status) => {
+            acc[status] = 0;
+            return acc;
+        }, {});
 
-        // Step 1: Calculate the counts of client statuses from statusChantier
-        const statusCounts = {
-            'A RAPPELER': 0,
-            'NO STATUS': 0,
-            'NRP': 0,
-            'INJOIGNABLE': 0,
-            'A RETRAITER': 0,
-            'LEDS SOLAIRES': 0,
-            'CONFIRMER RÉGIE': 0,
-            'Confirmer': 0,
-            'Chantier annuler': 0,
-            'SAV': 0,
-            'RENVOYER EQUIPE SUR PLACE': 0,
-            'RETOURNER RECUPERER LEDS': 0,
-            'MANQUE PIÈCES': 0,
-            'LIVRAISON POSTALE': 0,
-            'Chantier Terminé': 0,
-            'MANQUES RÉGLETTES': 0,
-            'MPR': 0
-        };
-
-        // Count each client status
-        clients.forEach(client => {
-            const status = client.statusChantier;
-            if (statusCounts[status] !== undefined) {
-                statusCounts[status]++;
+        clients.forEach(({ statusChantier }) => {
+            if (counts[statusChantier] !== undefined) {
+                counts[statusChantier]++;
             }
         });
 
-        // Step 2: Prepare chart data
-        const labels = Object.keys(statusCounts);
-        const values = Object.values(statusCounts);
+        const labels = Object.keys(counts);
+        const values = Object.values(counts);
 
-        // Color mapping for each status
-        const statusColors = {
-            'A RAPPELER': '#FF6347',  // Tomato
-            'NO STATUS': '#808080',   // Grey
-            'NRP': '#FF4500',         // OrangeRed
-            'INJOIGNABLE': '#00CED1', // DarkTurquoise
-            'A RETRAITER': '#FFD700', // Gold
-            'LEDS SOLAIRES': '#228B22', // ForestGreen
-            'CONFIRMER RÉGIE': '#DC143C', // Crimson
-            'Confirmer': '#32CD32',   // LimeGreen
-            'Chantier annuler': '#8B0000', // DarkRed
-            'SAV': '#4682B4',         // SteelBlue
-            'RENVOYER EQUIPE SUR PLACE': '#800080', // Purple
-            'RETOURNER RECUPERER LEDS': '#FFD700', // Gold
-            'MANQUE PIÈCES': '#8A2BE2', // BlueViolet
-            'LIVRAISON POSTALE': '#D2691E', // Chocolate
-            'Chantier Terminé': '#1E90FF', // DodgerBlue
-            'MANQUES RÉGLETTES': '#FF1493', // DeepPink
-            'MPR': '#00FA9A'          // MediumSpringGreen
-        };
+        const backgroundColors = labels.map(status => STATUS_COLORS[status] || '#ccc');
+        const hoverBackgroundColors = labels.map(color => color + '80');
 
-        // Map the status colors for each label
-        const backgroundColors = labels.map(status => statusColors[status] || '#808080'); // Default color if no specific match
-        const hoverBackgroundColors = labels.map(status => `${statusColors[status] ? statusColors[status] + '80' : '#80808080'}`); // Slightly darker shade for hover
-
-        const data = {
+        setChartData({
             labels,
-            datasets: [
-                {
-                    data: values,
-                    backgroundColor: backgroundColors,
-                    hoverBackgroundColor: hoverBackgroundColors
-                }
-            ]
-        };
+            datasets: [{
+                data: values,
+                backgroundColor: backgroundColors,
+                hoverBackgroundColor: hoverBackgroundColors
+            }]
+        });
 
-        // Step 3: Set the options for the chart
-        const options = {
-            cutout: '60%', // Make the center hole smaller if you want to see more of the chart
+        setChartOptions({
+            cutout: '60%',
             responsive: true,
-            maintainAspectRatio: false, // Allows the chart to fill the available container
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'bottom',
                     labels: {
-                        color: '#495057', // Color for labels
+                        color: '#495057',
                         usePointStyle: true,
                         boxWidth: 8
                     }
                 }
             }
-        };
-
-        setChartData(data);
-        setChartOptions(options);
-    }, [clients]); // Recalculate whenever clients state changes
+        });
+    }, [clients]);
 
     return (
-        <div className="card flex justify-content-center" style={{ width: '100%', height: '100%' }}>
+        <div className="card flex justify-content-center w-full h-full">
             <Chart type="doughnut" data={chartData} options={chartOptions} className="w-full h-full" />
         </div>
     );
