@@ -46,9 +46,10 @@ const TestPage = () => {
         }
       }
       setShowAddModal(false);
-
+      console.log(result);
+      
       await dispatch(checkDuplicateClient({
-        clientId: result.payload._id,
+        clientId: result.payload[0]._id,
         clientData: newClient
       }));
 
