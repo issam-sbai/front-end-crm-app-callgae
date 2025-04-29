@@ -45,19 +45,18 @@ const ProfileClientPage = () => {
         try {
             const token = localStorage.getItem('token');
             const username = localStorage.getItem('username');
-
             if (!token) throw new Error('No token found — please log in.');
 
             const {
                 prenom, codepostal, phone, civilite, infoRdv, statusChantier, email, adresse,
                 ville, siret, dateRdv, typeRdv, agentId, entreprise, commentaire, department,
-                flag, updatePar
+                flag, updatePar, quantiteDeLed
             } = clientData;
 
             const updatedClient = {
                 prenom, codepostal, phone, civilite, infoRdv, statusChantier, email, adresse,
                 ville, siret, dateRdv, typeRdv, agentId, entreprise, commentaire, department,
-                flag,
+                flag, quantiteDeLed,
                 updatePar: username
             };
 
@@ -88,7 +87,7 @@ const ProfileClientPage = () => {
         prenom = '', codepostal = '', phone = '', flag = '', civilite = '', infoRdv = '', statusChantier = '',
         equipe = '', adresse = '', ville = '', siret = '', validePar = '', createdPar = '',
         dateCreation = '', dateRdv = '', typeRdv = '', agentId = '', entreprise = '', department = '',
-        commentaire = '', email = ''
+        commentaire = '', email = '', quantiteDeLed = ''
     } = clientData || {};
 
     const enumOptions = {
@@ -153,6 +152,7 @@ const ProfileClientPage = () => {
                                     { label: 'Flag', value: flag, key: 'flag', enum: enumOptions.flag },
                                     { label: 'Civilité', value: civilite, key: 'civilite' },
                                     { label: 'Rdv Info', value: infoRdv, key: 'infoRdv' },
+                                    { label: 'Quantité de LED', value: quantiteDeLed, key: 'quantiteDeLed' },
                                     { label: 'Status Chantier', value: statusChantier, key: 'statusChantier', enum: enumOptions.statusChantier },
                                     { label: 'Equipe', value: equipe, key: 'equipe' },
                                     { label: 'Adresse', value: adresse, key: 'adresse' },
@@ -189,7 +189,7 @@ const ProfileClientPage = () => {
                                                     </select>
                                                 ) : (
                                                     <input
-                                                        type="text"
+                                                        type={field.key === 'quantiteDeLed' ? 'number' : 'text'}
                                                         className="form-control"
                                                         value={field.value}
                                                         onChange={(e) => {
