@@ -6,81 +6,81 @@ import useClient from '../../hooks/useClient';
 import { useSelector } from 'react-redux';
 
 const options = {
-    flag: [
-        { value: '', label: 'Aucun(e)' },
-        { value: 'PAY', label: 'PAY' },
-        { value: 'STAR', label: 'STAR' },
-        { value: 'PROTECT', label: 'PROTECT' },
-        { value: 'CHECK', label: 'CHECK' },
-        { value: 'MAP', label: 'MAP' },
-        { value: 'OK', label: 'OK' },
-        { value: 'TIME', label: 'TIME' },
-        { value: 'MESSAGE', label: 'MESSAGE' },
-        { value: 'ONE', label: 'ONE' },
-        { value: 'HOME', label: 'HOME' },
-        { value: 'BAN', label: 'BAN' },
-        { value: 'WORK', label: 'WORK' },
-        { value: 'START', label: 'START' },
-        { value: 'END', label: 'END' },
-        { value: 'TWO', label: 'TWO' },
-        { value: 'THREE', label: 'THREE' },
-        { value: 'FOUR', label: 'FOUR' },
-        { value: 'PHONE', label: 'PHONE' },
-        { value: '25%', label: '25%' },
-        { value: '50%', label: '50%' },
-        { value: 'PAY2', label: 'PAY2' },
-        { value: 'GIFT', label: 'GIFT' },
-        { value: 'CERTIF', label: 'CERTIF' },
-        { value: 'EXPORT', label: 'EXPORT' },
-        { value: 'PAY3', label: 'PAY3' },
-        { value: 'PAY4', label: 'PAY4' },
-        { value: 'PAY5', label: 'PAY5' },
-        { value: 'PAY6', label: 'PAY6' },
-        { value: 'PAY7', label: 'PAY7' },
-        { value: 'PAY8', label: 'PAY8' },
-        { value: 'PAY9', label: 'PAY9' },
-        { value: 'PICTURE', label: 'PICTURE' },
-        { value: 'EMAIL-NEW', label: 'EMAIL-NEW' },
-        { value: 'EMAIL-OPEN', label: 'EMAIL-OPEN' },
-    ],
-    document: [
-        { value: '', label: 'Aucun(e)' },
-        { value: 'OK', label: 'OK' },
-        { value: 'MANQUE CNI', label: 'MANQUE CNI' },
-        { value: 'MANQUE TAXE FONCIERE', label: 'MANQUE TAXE FONCIERE' },
-        { value: 'MANQUE AVIS', label: 'MANQUE AVIS' },
-        { value: 'DOCUMENTS VALIDES', label: 'DOCUMENTS VALIDES' }
-    ],
-    civilite: [
-        { value: '', label: 'Aucun(e)' },
-        { value: 'M.', label: 'M.' },
-        { value: 'Mme', label: 'Mme' },
-        { value: 'Melle', label: 'Melle' }
-    ],
-    audit: [
-        { value: '', label: 'Aucun(e)' },
-        { value: 'Envoyé en VT', label: 'Envoyé en VT' },
-        { value: 'VT reçu', label: 'VT reçu' },
-        { value: 'Envoyé en BAO', label: 'Envoyé en BAO' },
-        { value: 'BAO reçu', label: 'BAO reçu' },
-        { value: 'VT à rectifier', label: 'VT à rectifier' },
-        { value: 'BAO à rectifier', label: 'BAO à rectifier' }
-    ],
-    // typeDossier: [
-    //     { value: '', label: 'Aucun(e)' },
-    //     { value: 'BAT EQ 127', label: 'BAT EQ 127' },
-    //     { value: 'Destratificateur', label: 'Destratificateur' },
-    //     { value: 'ITE + TOITURE', label: 'ITE + TOITURE' },
-    //     { value: 'RES EC 104', label: 'RES EC 104' }
-    // ],
-    statusChantier :[
-      { value: '', label: 'Aucun(e)' },
-      { value: 'NO STATUS', label: 'NO STATUS' },
-      { value: 'A RAPPELER', label: 'A RAPPELER' },
-      { value: 'NRP', label: 'NRP' },
-      { value: 'Confirmer', label: 'Confirmer' },
-      { value: 'Chantier annuler', label: 'Chantier annuler' },
-      { value: 'Chantier Terminé', label: 'Chantier Terminé' },
+  flag: [
+    { value: '', label: 'Aucun(e)' },
+    { value: 'PAY', label: 'PAY' },
+    { value: 'STAR', label: 'STAR' },
+    { value: 'PROTECT', label: 'PROTECT' },
+    { value: 'CHECK', label: 'CHECK' },
+    { value: 'MAP', label: 'MAP' },
+    { value: 'OK', label: 'OK' },
+    { value: 'TIME', label: 'TIME' },
+    { value: 'MESSAGE', label: 'MESSAGE' },
+    { value: 'ONE', label: 'ONE' },
+    { value: 'HOME', label: 'HOME' },
+    { value: 'BAN', label: 'BAN' },
+    { value: 'WORK', label: 'WORK' },
+    { value: 'START', label: 'START' },
+    { value: 'END', label: 'END' },
+    { value: 'TWO', label: 'TWO' },
+    { value: 'THREE', label: 'THREE' },
+    { value: 'FOUR', label: 'FOUR' },
+    { value: 'PHONE', label: 'PHONE' },
+    { value: '25%', label: '25%' },
+    { value: '50%', label: '50%' },
+    { value: 'PAY2', label: 'PAY2' },
+    { value: 'GIFT', label: 'GIFT' },
+    { value: 'CERTIF', label: 'CERTIF' },
+    { value: 'EXPORT', label: 'EXPORT' },
+    { value: 'PAY3', label: 'PAY3' },
+    { value: 'PAY4', label: 'PAY4' },
+    { value: 'PAY5', label: 'PAY5' },
+    { value: 'PAY6', label: 'PAY6' },
+    { value: 'PAY7', label: 'PAY7' },
+    { value: 'PAY8', label: 'PAY8' },
+    { value: 'PAY9', label: 'PAY9' },
+    { value: 'PICTURE', label: 'PICTURE' },
+    { value: 'EMAIL-NEW', label: 'EMAIL-NEW' },
+    { value: 'EMAIL-OPEN', label: 'EMAIL-OPEN' },
+  ],
+  document: [
+    { value: '', label: 'Aucun(e)' },
+    { value: 'OK', label: 'OK' },
+    { value: 'MANQUE CNI', label: 'MANQUE CNI' },
+    { value: 'MANQUE TAXE FONCIERE', label: 'MANQUE TAXE FONCIERE' },
+    { value: 'MANQUE AVIS', label: 'MANQUE AVIS' },
+    { value: 'DOCUMENTS VALIDES', label: 'DOCUMENTS VALIDES' }
+  ],
+  civilite: [
+    { value: '', label: 'Aucun(e)' },
+    { value: 'M.', label: 'M.' },
+    { value: 'Mme', label: 'Mme' },
+    { value: 'Melle', label: 'Melle' }
+  ],
+  audit: [
+    { value: '', label: 'Aucun(e)' },
+    { value: 'Envoyé en VT', label: 'Envoyé en VT' },
+    { value: 'VT reçu', label: 'VT reçu' },
+    { value: 'Envoyé en BAO', label: 'Envoyé en BAO' },
+    { value: 'BAO reçu', label: 'BAO reçu' },
+    { value: 'VT à rectifier', label: 'VT à rectifier' },
+    { value: 'BAO à rectifier', label: 'BAO à rectifier' }
+  ],
+  // typeDossier: [
+  //     { value: '', label: 'Aucun(e)' },
+  //     { value: 'BAT EQ 127', label: 'BAT EQ 127' },
+  //     { value: 'Destratificateur', label: 'Destratificateur' },
+  //     { value: 'ITE + TOITURE', label: 'ITE + TOITURE' },
+  //     { value: 'RES EC 104', label: 'RES EC 104' }
+  // ],
+  statusChantier: [
+    { value: '', label: 'Aucun(e)' },
+    { value: 'NO STATUS', label: 'NO STATUS' },
+    { value: 'A RAPPELER', label: 'A RAPPELER' },
+    { value: 'NRP', label: 'NRP' },
+    { value: 'Confirmer', label: 'Confirmer' },
+    { value: 'Chantier annuler', label: 'Chantier annuler' },
+    { value: 'Chantier Terminé', label: 'Chantier Terminé' },
   ],
 };
 
@@ -101,7 +101,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
   const { filterClients, getAllClients } = useClient();
   const { equipes, loading: equipeLoading } = useSelector(s => s.equipe);
   const { users, loading: userLoading, error: userError } = useSelector((state) => state.user);
-  
+
   // helper
   const isVisible = key => fieldsToShow.includes(key);
 
@@ -151,9 +151,9 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
 
   return (
     <Form onSubmit={handleFilter}>
-      <div className="row g-1">
+      <div className="d-flex flex-wrap g-1" style={{ width: '100%', flexWrap: 'nowrap' }}>
         {isVisible('prenom') && (
-          <div className="col-2">
+          <div className="flex-item" style={{ flex: '1 1 auto', marginRight: '5px' }}>
             <Form.Control
               type="text"
               name="prenom"
@@ -166,7 +166,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
           </div>
         )}
         {isVisible('department') && (
-          <div className="col-2">
+          <div className="flex-item ml-1" style={{ flex: '1 1 auto', marginRight: '5px' }}>
             <Form.Control
               type="text"
               value={department}
@@ -176,79 +176,8 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
             />
           </div>
         )}
-
-
-
-        {isVisible('flag') && (
-          <div className="col-2">
-            <Select
-              options={options.flag}
-              value={flag}
-              placeholder="Flag"
-              onChange={setFlag}
-              styles={{
-                control: base => ({
-                  ...base,
-                  fontSize: '0.85rem',
-                  padding: '0px',
-                  minHeight: '33px',
-                  height: '33px',
-                }),
-                singleValue: base => ({ ...base, fontSize: '0.85rem' }),
-                option: base => ({ ...base, fontSize: '0.85rem', padding: '0px' }),
-              }}
-            />
-          </div>
-        )}
-
-        {isVisible('statusChantier') && (
-          <div className="col-2">
-            <Select
-              options={options.statusChantier}
-              value={statusChantier}
-              placeholder="Status Chantier"
-              onChange={setStatusChantier}
-              styles={{
-                control: base => ({
-                  ...base,
-                  fontSize: '0.85rem',
-                  padding: '0px',
-                  minHeight: '33px',
-                  height: '33px',
-                }),
-                singleValue: base => ({ ...base, fontSize: '0.85rem' }),
-                option: base => ({ ...base, fontSize: '0.85rem', padding: '0px' }),
-              }}
-            />
-          </div>
-        )}
-        
-        {isVisible('agent') && (
-          <div className="col-2">
-            <Select
-              options={userOptions}
-              value={userOptions.find(opt => opt.value === user?.value)}
-              onChange={setUser}
-              placeholder="Agent"
-              isLoading={userLoading}
-              styles={{
-                control: base => ({
-                  ...base,
-                  fontSize: '0.75rem',
-                  padding: '0px 0px',
-                  minHeight: '33px',
-                  height: '33px',
-                }),
-                singleValue: base => ({ ...base, fontSize: '0.75rem' }),
-                option: base => ({ ...base, fontSize: '0.75rem', padding: '0px' }),
-              }}
-            />
-          </div>
-        )}
-
-
         {isVisible('equipe') && (
-          <div className="col-2">
+          <div className="flex-item " style={{ flex: '1 1 auto', marginRight: '5px' }}>
             <Select
               options={equipeOptions}
               value={equipeOptions.find(opt => opt.value === equipe?.value)}
@@ -270,82 +199,136 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
           </div>
         )}
 
+        {isVisible('agent') && (
+          <div className="flex-item" style={{ flex: '1 1 auto', marginRight: '5px' }}>
+            <Select
+              options={userOptions}
+              value={userOptions.find(opt => opt.value === user?.value)}
+              onChange={setUser}
+              placeholder="Agent"
+              isLoading={userLoading}
+              styles={{
+                control: base => ({
+                  ...base,
+                  fontSize: '0.75rem',
+                  padding: '0px 0px',
+                  minHeight: '33px',
+                  height: '33px',
+                }),
+                singleValue: base => ({ ...base, fontSize: '0.75rem' }),
+                option: base => ({ ...base, fontSize: '0.75rem', padding: '0px' }),
+              }}
+            />
+          </div>
+        )}
+        {isVisible('statusChantier') && (
+          <div className="flex-item" style={{ flex: '1 1 auto' }}>
+            <Select
+              options={options.statusChantier}
+              value={statusChantier}
+              placeholder="Status Chantier"
+              onChange={setStatusChantier}
+              styles={{
+                control: base => ({
+                  ...base,
+                  fontSize: '0.85rem',
+                  padding: '0px',
+                  minHeight: '33px',
+                  height: '33px',
+                }),
+                singleValue: base => ({ ...base, fontSize: '0.85rem' }),
+                option: base => ({ ...base, fontSize: '0.85rem', padding: '0px' }),
+              }}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="d-flex flex-wrap mt-2" style={{ width: '100%', flexWrap: 'nowrap' }}>
+        {isVisible('flag') && (
+          <div style={{ flex: '1 1 auto', marginRight: '10px' }}>
+            <Select
+              options={options.flag}
+              value={flag}
+              placeholder="Flag"
+              onChange={setFlag}
+              styles={{
+                control: base => ({
+                  ...base,
+                  fontSize: '0.85rem',
+                  padding: '0px',
+                  minHeight: '33px',
+                  height: '33px',
+                }),
+                singleValue: base => ({ ...base, fontSize: '0.85rem' }),
+                option: base => ({ ...base, fontSize: '0.85rem', padding: '0px' }),
+              }}
+            />
+          </div>
+        )}
         {isVisible('dateCreated') && (
-          <div className="col-2" title="Sélectionnez la date de création">
+          <div style={{ flex: '1 1 auto', marginRight: '10px' }} title="Sélectionnez la date de création">
             <div className="input-group d-flex align-items-center">
-              <label className="input-group-text" htmlFor="dateCreatedFrom"
-                style={{ maxWidth: '14%', height: '33px' }}>
+              <label className="input-group-text" htmlFor="dateCreatedFrom" style={{ height: '33px' }}>
                 <i className="pi pi-calendar" style={{ color: '#666' }}></i>
               </label>
-              <div style={{ maxWidth: '43%' }}>
-                <input
-                  type="date"
-                  id="dateCreatedFrom"
-                  value={dateCreatedFrom}
-                  onChange={e => setDateCreatedFrom(e.target.value)}
-                  className="form-control"
-                  style={{ fontSize: '0.75rem', height: '33px', padding: '0 5px', borderRadius: 0 }}
-                />
-              </div>
-              <div style={{ maxWidth: '43%' }}>
-                <input
-                  type="date"
-                  id="dateCreatedTo"
-                  value={dateCreatedTo}
-                  onChange={e => setDateCreatedTo(e.target.value)}
-                  className="form-control"
-                  style={{ fontSize: '0.75rem', height: '33px', padding: '0 5px', borderRadius: 0 }}
-                />
-              </div>
+              <input
+                type="date"
+                id="dateCreatedFrom"
+                value={dateCreatedFrom}
+                onChange={e => setDateCreatedFrom(e.target.value)}
+                className="form-control"
+                style={{ fontSize: '0.75rem', height: '33px', padding: '0 5px', borderRadius: 0 }}
+              />
+              <input
+                type="date"
+                id="dateCreatedTo"
+                value={dateCreatedTo}
+                onChange={e => setDateCreatedTo(e.target.value)}
+                className="form-control"
+                style={{ fontSize: '0.75rem', height: '33px', padding: '0 5px', borderRadius: 0 }}
+              />
             </div>
           </div>
         )}
-
         {isVisible('dateRdv') && (
-          <div className="col-2" title="Sélectionnez la date de RDV">
-            <div className="input-group d-flex align-items-center justify-content-between">
-              <label className="input-group-text" htmlFor="dateRdvFrom"
-                style={{ maxWidth: '14%', height: '33px' }}>
-                <i className="pi pi-calendar" style={{ color: '#666' }}></i>
+          <div style={{ flex: '1 1 auto', marginRight: '10px' }} title="Sélectionnez la date de RDV">
+            <div className="input-group d-flex align-items-center">
+              <label className="input-group-text" htmlFor="dateRdvFrom" style={{ height: '33px' }}>
+                <i className="pi pi-calendar-clock" style={{ color: 'var(--primary-color)' }}></i>
               </label>
-              <div style={{ maxWidth: '43%' }}>
-                <input
-                  type="date"
-                  id="dateRdvFrom"
-                  value={dateRdvFrom}
-                  onChange={e => setDateRdvFrom(e.target.value)}
-                  className="form-control"
-                  style={{ fontSize: '0.75rem', height: '33px', padding: '0 5px', borderRadius: 0 }}
-                />
-              </div>
-              <div style={{ maxWidth: '43%' }}>
-                <input
-                  type="date"
-                  id="dateRdvTo"
-                  value={dateRdvTo}
-                  onChange={e => setDateRdvTo(e.target.value)}
-                  className="form-control"
-                  style={{ fontSize: '0.75rem', height: '33px', padding: '0 5px', borderRadius: 0 }}
-                />
-              </div>
+              <input
+                type="date"
+                id="dateRdvFrom"
+                value={dateRdvFrom}
+                onChange={e => setDateRdvFrom(e.target.value)}
+                className="form-control"
+                style={{ fontSize: '0.75rem', height: '33px', padding: '0 5px', borderRadius: 0 }}
+              />
+              <input
+                type="date"
+                id="dateRdvTo"
+                value={dateRdvTo}
+                onChange={e => setDateRdvTo(e.target.value)}
+                className="form-control"
+                style={{ fontSize: '0.75rem', height: '33px', padding: '0 5px', borderRadius: 0 }}
+              />
             </div>
           </div>
         )}
-
-        <div className="col-2">
+        <div style={{ flex: '0 0 auto' }}>
           <div className="d-flex">
             <Button
               variant="success"
               type="submit"
               onClick={handleFilter}
-              style={{ fontSize: '0.75rem', padding: '3px 8px' }}
+              style={{ fontSize: '0.75rem', padding: '3px 8px', marginRight: '5px' }}
             >
               Appliquer
             </Button>
             <Button
               variant="warning"
               onClick={handleCleanFilter}
-              className="mx-1"
               style={{ fontSize: '0.75rem', padding: '3px 8px' }}
             >
               Réinitialiser
@@ -353,6 +336,8 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
           </div>
         </div>
       </div>
+
+
     </Form>
   );
 };
