@@ -18,11 +18,11 @@ export default function Sidebar() {
     ...(userRole === 'admin' ? [
       { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
     ] : []), 
-    { label: 'clients RDV', icon: 'pi pi-fw pi-user', to: '/test' },
+    { label: 'clients', icon: 'pi pi-fw pi-user', to: '/test' },
     { label: 'RDV', icon: 'pi pi-fw pi-calendar', to: '/rdv' },
     ...(userRole === 'admin' ? [
-      { label: 'Users', icon: 'pi pi-fw pi-user', to: '/users' },
-      { label: 'History', icon: 'pi pi-fw pi-user', to: '/history' }
+      { label: 'Utilisateurs', icon: 'pi pi-fw pi-user', to: '/users' },
+      { label: 'Historique', icon: 'pi pi-fw pi-user', to: '/history' }
     ] : []),
   ];
 

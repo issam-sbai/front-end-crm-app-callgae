@@ -66,13 +66,13 @@ const options = {
         { value: 'VT à rectifier', label: 'VT à rectifier' },
         { value: 'BAO à rectifier', label: 'BAO à rectifier' }
     ],
-    typeDossier: [
-        { value: '', label: 'Aucun(e)' },
-        { value: 'BAT EQ 127', label: 'BAT EQ 127' },
-        { value: 'Destratificateur', label: 'Destratificateur' },
-        { value: 'ITE + TOITURE', label: 'ITE + TOITURE' },
-        { value: 'RES EC 104', label: 'RES EC 104' }
-    ],
+    // typeDossier: [
+    //     { value: '', label: 'Aucun(e)' },
+    //     { value: 'BAT EQ 127', label: 'BAT EQ 127' },
+    //     { value: 'Destratificateur', label: 'Destratificateur' },
+    //     { value: 'ITE + TOITURE', label: 'ITE + TOITURE' },
+    //     { value: 'RES EC 104', label: 'RES EC 104' }
+    // ],
     statusChantier :[
       { value: '', label: 'Aucun(e)' },
       { value: 'NO STATUS', label: 'NO STATUS' },
@@ -89,9 +89,6 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
   const [prenom, setPrenom] = useState('');
   // const [phone, setPhone] = useState('');
   const [department, setDepartment] = useState('');
-  const [audit, setAudit] = useState(null);
-  const [typeDossier, setTypeDossier] = useState(null);
-  const [document, setDocument] = useState(null);
   const [flag, setFlag] = useState(null);
   const [statusChantier, setStatusChantier] = useState(null);
   const [equipe, setEquipe] = useState(null);
@@ -123,9 +120,6 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
       prenom,
       // telephone: phone,
       department,
-      audit: audit?.value || '',
-      typeDossier: typeDossier?.value || '',
-      document: document?.value || '',
       flag: flag?.value || '',
       statusChantier: statusChantier?.value || '',
       dateCreatedFrom,
@@ -144,9 +138,6 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
     setPrenom('');
     // setPhone('');
     setDepartment('');
-    setAudit(null);
-    setTypeDossier(null);
-    setDocument(null);
     setFlag(null);
     setStatusChantier(null);
     setEquipe({ value: '', label: 'Aucun(e)' });
@@ -174,21 +165,6 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
             />
           </div>
         )}
-
-        {/* {isVisible('phone') && (
-          <div className="col-2">
-            <Form.Control
-              type="text"
-              name="phone"
-              value={phone}
-              onChange={e => setPhone(e.target.value)}
-              required
-              placeholder="Téléphone"
-              style={{ fontSize: '0.85rem', padding: '5px' }}
-            />
-          </div>
-        )} */}
-
         {isVisible('department') && (
           <div className="col-2">
             <Form.Control
@@ -201,71 +177,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
           </div>
         )}
 
-        {isVisible('audit') && (
-          <div className="col-2">
-            <Select
-              options={options.audit}
-              value={audit}
-              placeholder="Audit"
-              onChange={setAudit}
-              styles={{
-                control: base => ({
-                  ...base,
-                  fontSize: '0.85rem',
-                  padding: '0px',
-                  minHeight: '33px',
-                  height: '33px',
-                }),
-                singleValue: base => ({ ...base, fontSize: '0.85rem' }),
-                option: base => ({ ...base, fontSize: '0.85rem', padding: '5px' }),
-              }}
-            />
-          </div>
-        )}
 
-        {isVisible('typeDossier') && (
-          <div className="col-2">
-            <Select
-              options={options.typeDossier}
-              value={typeDossier}
-              placeholder="Type Dossier"
-              onChange={setTypeDossier}
-              styles={{
-                control: base => ({
-                  ...base,
-                  fontSize: '0.85rem',
-                  padding: '0px',
-                  minHeight: '33px',
-                  height: '33px',
-                }),
-                singleValue: base => ({ ...base, fontSize: '0.85rem' }),
-                option: base => ({ ...base, fontSize: '0.85rem', padding: '0px' }),
-              }}
-            />
-          </div>
-        )}
-
-        {isVisible('document') && (
-          <div className="col-2">
-            <Select
-              options={options.document}
-              value={document}
-              placeholder="Document"
-              onChange={setDocument}
-              styles={{
-                control: base => ({
-                  ...base,
-                  fontSize: '0.85rem',
-                  padding: '0px',
-                  minHeight: '33px',
-                  height: '33px',
-                }),
-                singleValue: base => ({ ...base, fontSize: '0.85rem' }),
-                option: base => ({ ...base, fontSize: '0.85rem', padding: '0px' }),
-              }}
-            />
-          </div>
-        )}
 
         {isVisible('flag') && (
           <div className="col-2">

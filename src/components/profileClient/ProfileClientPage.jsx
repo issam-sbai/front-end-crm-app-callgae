@@ -51,13 +51,13 @@ const ProfileClientPage = () => {
             const {
                 prenom, codepostal, phone, civilite, infoRdv, statusChantier, email, adresse,
                 ville, siret, dateRdv, typeRdv, agentId, entreprise, commentaire, department,
-                audit, document, flag, typeDossier
+                flag, updatePar
             } = clientData;
 
             const updatedClient = {
                 prenom, codepostal, phone, civilite, infoRdv, statusChantier, email, adresse,
                 ville, siret, dateRdv, typeRdv, agentId, entreprise, commentaire, department,
-                audit, document, flag, typeDossier,
+                flag,
                 updatePar: username
             };
 
@@ -85,19 +85,17 @@ const ProfileClientPage = () => {
     if (error) return <p style={{ fontSize: '0.75rem' }}>{error}</p>;
 
     const {
-        prenom = '', codepostal = '', phone = '', flag = '', document = '', civilite = '', audit = '', typeDossier = '',
-        infoRdv = '', statusChantier = '', equipe = '', documents = '', observations = [], email = '', adresse = '',
-        ville = '', siret = '', nrp = 0, validePar = '', createdPar = '', dateCreation = '', dateRdv = '', typeRdv = '',
-        agentId = '', entreprise = '', department = '', commentaire = '', longitude = '', latitude = '',
+        prenom = '', codepostal = '', phone = '', flag = '', civilite = '', infoRdv = '', statusChantier = '',
+        equipe = '', adresse = '', ville = '', siret = '', validePar = '', createdPar = '',
+        dateCreation = '', dateRdv = '', typeRdv = '', agentId = '', entreprise = '', department = '',
+        commentaire = '', email = ''
     } = clientData || {};
 
     const enumOptions = {
         flag: ['Aucun(e)', 'OK', 'MANQUE CNI', 'MANQUE TAXE FONCIERE', 'MANQUE AVIS', 'DOCUMENTS VALIDES'],
-        document: ['Aucun(e)', 'OK', 'MANQUE CNI', 'MANQUE TAXE FONCIERE', 'MANQUE AVIS', 'DOCUMENTS VALIDES'],
-        audit: ['Envoyé en VT', 'VT reçu', 'Envoyé en BAO', 'BAO reçu', 'VT à rectifier', 'BAO à rectifier'],
         statusChantier: ['A RAPPELER', 'NO STATUS', 'NRP', 'Confirmer', 'Chantier annuler', 'Chantier Terminé'],
     };
-                                                                                                                                                                    
+
     const readOnlyKeys = ['validePar', 'createdPar', 'dateCreation'];
 
     return (
@@ -118,7 +116,7 @@ const ProfileClientPage = () => {
                                     <div className="mt-3">
                                         <h4>{entreprise}</h4>
                                         <p className="text-secondary mb-1">Client : {prenom}</p>
-                                        <p className="text-muted mb-0 ">{adresse}</p>
+                                        <p className="text-muted mb-0">{adresse}</p>
                                         <p className="text-muted">{ville} {codepostal}</p>
                                         <button className="btn btn-primary" onClick={handleEditToggle}>
                                             {isEditing ? 'Cancel Edit' : 'Edit Client'}
@@ -153,10 +151,7 @@ const ProfileClientPage = () => {
                                     { label: 'Code Postal', value: codepostal, key: 'codepostal' },
                                     { label: 'Téléphone', value: phone, key: 'phone' },
                                     { label: 'Flag', value: flag, key: 'flag', enum: enumOptions.flag },
-                                    { label: 'Document', value: document, key: 'document', enum: enumOptions.document },
                                     { label: 'Civilité', value: civilite, key: 'civilite' },
-                                    { label: 'Audit', value: audit, key: 'audit', enum: enumOptions.audit },
-                                    { label: 'Type Dossier', value: typeDossier, key: 'typeDossier', enum: enumOptions.typeDossier },
                                     { label: 'Rdv Info', value: infoRdv, key: 'infoRdv' },
                                     { label: 'Status Chantier', value: statusChantier, key: 'statusChantier', enum: enumOptions.statusChantier },
                                     { label: 'Equipe', value: equipe, key: 'equipe' },

@@ -23,7 +23,6 @@ const PlanningPage = () => {
   const [fieldsToShow, setFieldsToShow] = useState([
     'prenom',
     'department',
-    'typeDossier',
     'statusChantier',
     'equipe',
   ]);
@@ -65,9 +64,6 @@ const PlanningPage = () => {
 
   return (
     <>
-      <FilterComponenttest
-fieldsToShow={fieldsToShow}
-    />
       <div className="container-fluid align-items-center px-1 my-4">
         <div className="d-flex align-items-center mb-4 px-0" style={{ gap: '10px' }}>
           <button onClick={() => setWeekOffset(weekOffset - 1)} className="btn btn-success">Previous Week</button>

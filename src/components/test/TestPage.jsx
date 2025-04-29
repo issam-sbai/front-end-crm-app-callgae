@@ -17,9 +17,6 @@ const TestPage = () => {
   const [fieldsToShow, setFieldsToShow] = useState([
     'prenom',
     'department',
-    'audit',
-    'typeDossier',
-    'document',
     'flag',
     'statusChantier',
     'equipe',
@@ -94,7 +91,7 @@ const TestPage = () => {
           style={{ fontSize: '0.75rem' }}
           onClick={() => setShowAddModal(true)}
         >
-          Add Client
+          Ajouter client
         </Button>
 
         <Button
@@ -102,7 +99,7 @@ const TestPage = () => {
           style={{ fontSize: '0.75rem' }}
           onClick={handleShowMap}
         >
-          Show Department
+          Département
         </Button>
 
         {

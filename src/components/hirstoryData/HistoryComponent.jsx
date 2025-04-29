@@ -35,6 +35,14 @@ const newValueBody = (rowData) => {
     return rowData.newValue ?? '';
 };
 
+const oldValueBody = (rowData) => {
+    if (rowData.field === 'statusChantier') {
+        const emoji = getStatusEmoji(rowData.oldValue);
+        return `${emoji} ${rowData.oldValue}`;
+    }
+    return rowData.oldValue ?? '';
+};
+
 export default function HistoryComponent() {
     const dispatch = useDispatch();
     const { historyLogs, status, error } = useSelector((state) => state.history);
@@ -45,12 +53,12 @@ export default function HistoryComponent() {
         }
     }, [dispatch, status]);
 
-    if (status === 'loading') return <div>Loading history...</div>;
-    if (status === 'failed') return <div>Error: {error}</div>;
+    if (status === 'loading') return <div>Chargement de l'historique...</div>;
+    if (status === 'failed') return <div>Erreur : {error}</div>;
 
     return (
         <>
-            <h3 className="text mb-4">History Logs</h3>
+            <h3 className="text mb-4">Données de l'historique</h3>
             <div className="card">
                 <DataTable
                     value={historyLogs}
@@ -59,22 +67,27 @@ export default function HistoryComponent() {
                     size="small"
                     tableStyle={{ minWidth: '100%', fontSize: '0.75rem' }}
                 >
-                    <Column field="clientName" header="Client Name" style={{ width: '15%' }} body={(rowData) => rowData.clientName ?? ''} />
-                    <Column field="field" header="Field" style={{ width: '15%' }} body={(rowData) => rowData.field ?? ''} />
-                    <Column field="oldValue" header="Old Value" style={{ width: '15%' }} body={(rowData) => rowData.oldValue ?? ''} />
+                    <Column field="clientName" header="Nom du client" style={{ width: '15%' }} body={(rowData) => rowData.clientName ?? ''} />
+                    <Column field="field" header="Champ modifié" style={{ width: '15%' }} body={(rowData) => rowData.field ?? ''} />
+                    <Column
+                        field="oldValue"
+                        header="Ancienne valeur"
+                        style={{ width: '15%' }}
+                        body={oldValueBody}
+                    />
                     <Column
                         field="newValue"
-                        header="New Value"
+                        header="Nouvelle valeur"
                         style={{ width: '15%' }}
                         body={newValueBody}
                     />
                     <Column
                         field="updatedAt"
-                        header="Updated At"
-                        body={(rowData) => rowData.updatedAt ? new Date(rowData.updatedAt).toLocaleString() : ''}
+                        header="Date de mise à jour"
+                        body={(rowData) => rowData.updatedAt ? new Date(rowData.updatedAt).toLocaleString('fr-FR') : ''}
                         style={{ width: '20%' }}
                     />
-                    <Column field="updatedBy" header="Updated By" style={{ width: '20%' }} body={(rowData) => rowData.updatedBy ?? ''} />
+                    <Column field="updatedBy" header="Mis à jour par" style={{ width: '20%' }} body={(rowData) => rowData.updatedBy ?? ''} />
                 </DataTable>
             </div>
         </>

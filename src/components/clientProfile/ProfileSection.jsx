@@ -44,9 +44,6 @@ const ProfileSection = ({ client }) => {
         <h3 className="text-xl font-semibold mb-2">🔧 Chantier</h3>
         <div className="grid grid-cols-2 gap-4">
           <p><strong>Statut:</strong> {client.statusChantier}</p>
-          <p><strong>Type Dossier:</strong> {client.typeDossier}</p>
-          <p><strong>Documents:</strong> {client.documents}</p>
-          <p><strong>Audit:</strong> {client.audit}</p>
         </div>
       </div>
 
@@ -71,7 +68,6 @@ const ProfileSection = ({ client }) => {
           <p><strong>Equipe (ID):</strong> {client.equipe}</p>
           <p><strong>NRP:</strong> {client.nrp}</p>
           <p><strong>Flag:</strong> {client.flag}</p>
-          <p><strong>Document:</strong> {client.document}</p>
         </div>
       </div>
 
