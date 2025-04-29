@@ -45,9 +45,7 @@ const TestPage = () => {
           dispatch(getClientsByEquipeThunk(equipId));
         }
       }
-      setShowAddModal(false);
-      console.log(result);
-      
+      setShowAddModal(false);    
       await dispatch(checkDuplicateClient({
         clientId: result.payload[0]._id,
         clientData: newClient
