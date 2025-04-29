@@ -9,47 +9,7 @@ const options = {
   flag: [
     { value: '', label: 'Aucun(e)' },
     { value: 'PAY', label: 'PAY' },
-    { value: 'STAR', label: 'STAR' },
-    { value: 'PROTECT', label: 'PROTECT' },
-    { value: 'CHECK', label: 'CHECK' },
-    { value: 'MAP', label: 'MAP' },
-    { value: 'OK', label: 'OK' },
-    { value: 'TIME', label: 'TIME' },
-    { value: 'MESSAGE', label: 'MESSAGE' },
-    { value: 'ONE', label: 'ONE' },
-    { value: 'HOME', label: 'HOME' },
-    { value: 'BAN', label: 'BAN' },
-    { value: 'WORK', label: 'WORK' },
-    { value: 'START', label: 'START' },
-    { value: 'END', label: 'END' },
-    { value: 'TWO', label: 'TWO' },
-    { value: 'THREE', label: 'THREE' },
-    { value: 'FOUR', label: 'FOUR' },
-    { value: 'PHONE', label: 'PHONE' },
-    { value: '25%', label: '25%' },
-    { value: '50%', label: '50%' },
-    { value: 'PAY2', label: 'PAY2' },
-    { value: 'GIFT', label: 'GIFT' },
-    { value: 'CERTIF', label: 'CERTIF' },
-    { value: 'EXPORT', label: 'EXPORT' },
-    { value: 'PAY3', label: 'PAY3' },
-    { value: 'PAY4', label: 'PAY4' },
-    { value: 'PAY5', label: 'PAY5' },
-    { value: 'PAY6', label: 'PAY6' },
-    { value: 'PAY7', label: 'PAY7' },
-    { value: 'PAY8', label: 'PAY8' },
-    { value: 'PAY9', label: 'PAY9' },
-    { value: 'PICTURE', label: 'PICTURE' },
-    { value: 'EMAIL-NEW', label: 'EMAIL-NEW' },
-    { value: 'EMAIL-OPEN', label: 'EMAIL-OPEN' },
-  ],
-  document: [
-    { value: '', label: 'Aucun(e)' },
-    { value: 'OK', label: 'OK' },
-    { value: 'MANQUE CNI', label: 'MANQUE CNI' },
-    { value: 'MANQUE TAXE FONCIERE', label: 'MANQUE TAXE FONCIERE' },
-    { value: 'MANQUE AVIS', label: 'MANQUE AVIS' },
-    { value: 'DOCUMENTS VALIDES', label: 'DOCUMENTS VALIDES' }
+    { value: 'NO PAY', label: 'NO PAY' }
   ],
   civilite: [
     { value: '', label: 'Aucun(e)' },
@@ -57,22 +17,13 @@ const options = {
     { value: 'Mme', label: 'Mme' },
     { value: 'Melle', label: 'Melle' }
   ],
-  audit: [
+
+  flag: [
     { value: '', label: 'Aucun(e)' },
-    { value: 'Envoyé en VT', label: 'Envoyé en VT' },
-    { value: 'VT reçu', label: 'VT reçu' },
-    { value: 'Envoyé en BAO', label: 'Envoyé en BAO' },
-    { value: 'BAO reçu', label: 'BAO reçu' },
-    { value: 'VT à rectifier', label: 'VT à rectifier' },
-    { value: 'BAO à rectifier', label: 'BAO à rectifier' }
+    { value: 'PAY', label: 'PAY' },
+    { value: 'NO PAY', label: 'NO PAY' }
   ],
-  // typeDossier: [
-  //     { value: '', label: 'Aucun(e)' },
-  //     { value: 'BAT EQ 127', label: 'BAT EQ 127' },
-  //     { value: 'Destratificateur', label: 'Destratificateur' },
-  //     { value: 'ITE + TOITURE', label: 'ITE + TOITURE' },
-  //     { value: 'RES EC 104', label: 'RES EC 104' }
-  // ],
+
   statusChantier: [
     { value: '', label: 'Aucun(e)' },
     { value: 'NO STATUS', label: 'NO STATUS' },
@@ -245,6 +196,28 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
       </div>
 
       <div className="d-flex flex-wrap mt-2" style={{ width: '100%', flexWrap: 'nowrap' }}>
+        {isVisible('flag') && (
+          <div style={{ flex: '1 1 auto', marginRight: '10px' }}>
+            <Select
+              options={options.flag}
+              value={flag}
+              placeholder="Flag"
+              onChange={setFlag}
+              styles={{
+                control: base => ({
+                  ...base,
+                  fontSize: '0.85rem',
+                  padding: '0px',
+                  minHeight: '33px',
+                  height: '33px',
+                }),
+                singleValue: base => ({ ...base, fontSize: '0.85rem' }),
+                option: base => ({ ...base, fontSize: '0.85rem', padding: '0px' }),
+              }}
+            />
+          </div>
+        )}
+
         {isVisible('flag') && (
           <div style={{ flex: '1 1 auto', marginRight: '10px' }}>
             <Select
