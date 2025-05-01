@@ -19,6 +19,7 @@ const TestPage = () => {
     'department',
     'flag',
     'statusChantier',
+    'typeRdv',
     'equipe',
     'agent',
     'dateCreated',

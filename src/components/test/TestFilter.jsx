@@ -6,10 +6,10 @@ import useClient from '../../hooks/useClient';
 import { useSelector } from 'react-redux';
 
 const options = {
-  flag: [
+  typeRdv: [
     { value: '', label: 'Aucun(e)' },
-    { value: 'PAY', label: 'PAY' },
-    { value: 'NO PAY', label: 'NO PAY' }
+    { value: 'Extérieur', label: 'Extérieur' },
+    { value: 'Intérieur', label: 'Intérieur' }
   ],
   civilite: [
     { value: '', label: 'Aucun(e)' },
@@ -41,6 +41,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
   // const [phone, setPhone] = useState('');
   const [department, setDepartment] = useState('');
   const [flag, setFlag] = useState(null);
+  const [typeRdv, setTypeRdv] = useState(null);
   const [statusChantier, setStatusChantier] = useState(null);
   const [equipe, setEquipe] = useState(null);
   const [user, setUser] = useState(null);
@@ -72,6 +73,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
       // telephone: phone,
       department,
       flag: flag?.value || '',
+      typeRdv: typeRdv?.value || '',
       statusChantier: statusChantier?.value || '',
       dateCreatedFrom,
       dateCreatedTo,
@@ -90,6 +92,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
     // setPhone('');
     setDepartment('');
     setFlag(null);
+    setTypeRdv(null);
     setStatusChantier(null);
     setEquipe({ value: '', label: 'Aucun(e)' });
     setUser({ value: '', label: 'Aucun(e)' });
@@ -196,13 +199,13 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
       </div>
 
       <div className="d-flex flex-wrap mt-2" style={{ width: '100%', flexWrap: 'nowrap' }}>
-        {isVisible('flag') && (
+        {isVisible('typeRdv') && (
           <div style={{ flex: '1 1 auto', marginRight: '10px' }}>
             <Select
-              options={options.flag}
-              value={flag}
-              placeholder="Flag"
-              onChange={setFlag}
+              options={options.typeRdv}
+              value={typeRdv}
+              placeholder="typeRdv"
+              onChange={setTypeRdv}
               styles={{
                 control: base => ({
                   ...base,

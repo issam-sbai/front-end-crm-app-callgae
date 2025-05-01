@@ -11,6 +11,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { getAllUsersAsync } from '../../features/userSlice';
 import StatusEditor from './StatusEditor';
 import Doublon from './DoublonClient.jsx';
+import ClientHistory from './ClientHistory.jsx';
 const TableComponent = ({ onRowClick }) => {
   const dispatch = useDispatch();
 
@@ -22,6 +23,19 @@ const TableComponent = ({ onRowClick }) => {
   const [showModal, setShowModal] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState('');
   const [selectedClient, setSelectedClient] = useState(null);  // Track the client being edited
+
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [selectedClientId, setSelectedClientId] = useState(null);
+
+  const handleShowHistoryModal = (clientId) => {
+    setSelectedClientId(clientId);
+    setShowHistoryModal(true);
+  };
+
+  const handleCloseHistoryModal = () => {
+    setShowHistoryModal(false);
+    setSelectedClientId(null);
+  };
 
   // Popup for adding new observation
   const handleShow = (client) => {
@@ -114,7 +128,7 @@ const TableComponent = ({ onRowClick }) => {
             <a href={`/client/${client._id}`} className="text-primary hover:underline"> <b>{client.prenom}</b></a> {client.entreprise}
           </div>
           <div style={{ whiteSpace: 'nowrap' }} ><i className="pi" style={{ color: "green" }}>siret:</i> {client.siret}</div>
-          <div style={{ whiteSpace: 'nowrap' }}><i className="pi pi-flag" style={{ fontSize: "0.8rem",color: "green" }} ></i> <span >{client.typeRdv}</span></div>
+          <div style={{ whiteSpace: 'nowrap' }}><i className="pi pi-flag" style={{ fontSize: "0.8rem", color: "green" }} ></i> <span >{client.typeRdv}</span></div>
         </div>
       ),
     },
@@ -178,7 +192,7 @@ const TableComponent = ({ onRowClick }) => {
         return (
           <div>
             <div >
-              <div style={{whiteSpace: "nowrap"}}>{client.adresse} </div>
+              <div style={{ whiteSpace: "nowrap" }}>{client.adresse} </div>
               <div>{client.ville} {client.codepostal}</div>
             </div>
             <div>
@@ -231,11 +245,11 @@ const TableComponent = ({ onRowClick }) => {
               >
                 <i className="pi pi-minus-circle" style={{ fontSize: "0.8rem", color: "red" }}></i>
               </button>
-    
+
               <span style={{ minWidth: "20px", fontSize: "0.9rem", textAlign: "center" }}>
                 {client.nrp ?? 0}
               </span>
-    
+
               <button
                 className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
                 aria-label="Increase NRP"
@@ -299,7 +313,7 @@ const TableComponent = ({ onRowClick }) => {
               <i className="pi pi-plus-circle" style={{ fontSize: "0.7rem", color: "green" }}></i>
             </button>
           )}
-    
+
           {client.observations && client.observations.length > 0 ? (
             client.observations.map((obs, index) => (
               <OverlayTrigger
@@ -384,30 +398,50 @@ const TableComponent = ({ onRowClick }) => {
         const formattedDateRdv = new Date(client.dateRdv).toLocaleDateString('en-CA');
         return (
           <>
-            <div style={{whiteSpace: "nowrap"}}>{formattedDateRdv}</div>
+            <div style={{ whiteSpace: "nowrap" }}>{formattedDateRdv}</div>
           </>
 
         );
       },
     },
-    ...(userRole === 'admin' ? [{
-      header: 'Delete',
-      body: (client) => (
-        <button
-          className="btn rounded-circle"
-          aria-label="Cancel"
-          onClick={() => handleDeleteClient(client._id)}
-          style={{
-            width: "35px",
-            height: "35px",
-            padding: "0",
-            borderRadius: "50%",
-          }}
-        >
-          <i className="pi pi-times-circle" style={{ fontSize: "1.2rem", color: 'red' }}></i>
-        </button>
-      )
-    }] : []),
+    ...(userRole === 'admin' ? [
+      {
+        header: 'Historique',
+        body: (client) => (
+          <button
+            className="btn rounded-circle"
+            aria-label="History"
+            onClick={() => handleShowHistoryModal(client._id)}
+            style={{
+              width: "35px",
+              height: "35px",
+              padding: "0",
+              borderRadius: "50%",
+            }}
+          >
+            <i className="pi pi-clock" style={{ fontSize: "1.2rem", color: '#3b82f6' }}></i>
+          </button>
+        )
+      },
+      {
+        header: 'Delete',
+        body: (client) => (
+          <button
+            className="btn rounded-circle"
+            aria-label="Cancel"
+            onClick={() => handleDeleteClient(client._id)}
+            style={{
+              width: "35px",
+              height: "35px",
+              padding: "0",
+              borderRadius: "50%",
+            }}
+          >
+            <i className="pi pi-times-circle" style={{ fontSize: "1.2rem", color: 'red' }}></i>
+          </button>
+        )
+      }
+    ] : []),
   ];
 
   // Handle delete client action
@@ -464,6 +498,17 @@ const TableComponent = ({ onRowClick }) => {
           </BootstrapButton>
         </Modal.Footer>
       </Modal>
+
+      <Modal show={showHistoryModal} onHide={handleCloseHistoryModal} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Historique du client</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedClientId && <ClientHistory clientId={selectedClientId} />}
+        </Modal.Body>
+      </Modal>
+
+
     </div>
   );
 };
