@@ -7,7 +7,7 @@ const ClientHistory = ({ clientId }) => {
   const [historyData, setHistoryData] = useState([]);
 
   useEffect(() => {
-    axios.get(`https://my-express-mongo-app.onrender.com/api/historyData/${clientId}`)
+    axios.get(`https://crm-backend-rs8c.onrender.com/api/historyData/${clientId}`)
       .then(res => {
         const data = Array.isArray(res.data) ? res.data : [];
         setHistoryData(data);

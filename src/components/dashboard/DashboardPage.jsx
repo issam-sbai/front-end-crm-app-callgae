@@ -81,57 +81,57 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="my-4 px-2">
-      <div className="row g-3 justify-content-center">
-        {cards.map((card, index) => (
-          <div className="col-6 col-sm-4 col-md-3" key={index}>
-            <div style={cardStyle(card.bg)}>
-              <div style={titleStyle}>{card.title}</div>
-              <div style={numberStyle}>{card.value}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <br />
+    // <div className="my-4 px-2">
+    //   <div className="row g-3 justify-content-center">
+    //     {cards.map((card, index) => (
+    //       <div className="col-6 col-sm-4 col-md-3" key={index}>
+    //         <div style={cardStyle(card.bg)}>
+    //           <div style={titleStyle}>{card.title}</div>
+    //           <div style={numberStyle}>{card.value}</div>
+    //         </div>
+    //       </div>
+    //     ))}
+    //   </div>
+    //   <br />
       <h4>Client Status</h4>
-      <ClientStateDoughnutChart />
-      <br />
-      <div style={{ display: 'flex', gap: '20px', }}>
-        <div style={{ flex: '1', height: '100%' }}>
-          <p>Clients Ajoutés par Équipe</p>
-          <EquipeClientChart />
-        </div>
+      // <ClientStateDoughnutChart />
+      // <br />
+      // <div style={{ display: 'flex', gap: '20px', }}>
+      //   <div style={{ flex: '1', height: '100%' }}>
+      //     <p>Clients Ajoutés par Équipe</p>
+      //     <EquipeClientChart />
+      //   </div>
 
-        <div style={{ flex: '1', height: '100%' }}>
-          <p>Clients Ajoutés Ce Mois par Équipe</p>
-          <MonthlyEquipeClientChart />
-        </div>
-      </div>
+      //   <div style={{ flex: '1', height: '100%' }}>
+      //     <p>Clients Ajoutés Ce Mois par Équipe</p>
+      //     <MonthlyEquipeClientChart />
+      //   </div>
+      // </div>
 
-      <h4>Ageny chart</h4>
-      <ChartClientsByAgentThisDay />
-      <br />
+      // <h4>Ageny chart</h4>
+      // <ChartClientsByAgentThisDay />
+      // <br />
 
-      <br />
+      // <br />
 
-      <div style={{ display: 'flex', gap: '20px', }}>
-        <div style={{ flex: '1', height: '100%' }}>
-          <p>Clients Ajoutés par Agent</p>
-          <ChartClientsByAgent />
-        </div>
+      // <div style={{ display: 'flex', gap: '20px', }}>
+      //   <div style={{ flex: '1', height: '100%' }}>
+      //     <p>Clients Ajoutés par Agent</p>
+      //     <ChartClientsByAgent />
+      //   </div>
 
-        <div style={{ flex: '1', height: '100%' }}>
-          <p>Clients Ajoutés Ce Mois par Agent</p>
-          <ChartClientsByAgentThisMonth />
-        </div>
-      </div>
+      //   <div style={{ flex: '1', height: '100%' }}>
+      //     <p>Clients Ajoutés Ce Mois par Agent</p>
+      //     <ChartClientsByAgentThisMonth />
+      //   </div>
+      // </div>
 
-      <br />
+      // <br />
       
 
 
 
-    </div>
+    // </div>
 
   );
 };

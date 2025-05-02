@@ -2,7 +2,7 @@ import axios from 'axios';
 import axiosInstance from './axiosInstance.JS';
 // Import your axiosInstance
 
-const API_URL = 'https://my-express-mongo-app.onrender.com/api/users'; // Keep the base URL
+const API_URL = 'https://crm-backend-rs8c.onrender.com/api/users'; // Keep the base URL
 
 // Register user (no change here)
 export const registerUser = async (userData) => {
@@ -17,7 +17,7 @@ export const registerUser = async (userData) => {
 // Login user (no change here)
 export const loginUser = async (credentials) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, credentials); // Login doesn't need the token
+    const response = await axiosInstance.post(`${API_URL}/login`, credentials); // Login doesn't need the token
     return response.data;
   } catch (error) {
     throw error;
