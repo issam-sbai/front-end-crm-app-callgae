@@ -7,6 +7,9 @@ import ClientStateDoughnutChart from './ClientStateDoughnutChart';
 import ChartEquipe from './ChartEquipe';
 import EquipeClientChart from './EquipeClientChart';
 import MonthlyEquipeClientChart from './MonthlyEquipeClientChart';
+import ChartClientsByAgentThisMonth from './ChartClientsByAgentThisMonth';
+import ChartClientsByAgent from './ChartClientsByAgent';
+import ChartClientsByAgentThisDay from './ChartClientsByAgentThisDay';
 
 const cardStyle = (bg) => ({
   backgroundColor: bg,
@@ -92,11 +95,8 @@ const Dashboard = () => {
       <br />
       <h4>Client Status</h4>
       <ClientStateDoughnutChart />
-
-
-
-
-      <div style={{ display: 'flex', gap: '20px', height: '500px' }}>
+      <br />
+      <div style={{ display: 'flex', gap: '20px', }}>
         <div style={{ flex: '1', height: '100%' }}>
           <p>Clients Ajoutés par Équipe</p>
           <EquipeClientChart />
@@ -107,7 +107,27 @@ const Dashboard = () => {
           <MonthlyEquipeClientChart />
         </div>
       </div>
+
+      <h4>Ageny chart</h4>
+      <ChartClientsByAgentThisDay />
       <br />
+
+      <br />
+
+      <div style={{ display: 'flex', gap: '20px', }}>
+        <div style={{ flex: '1', height: '100%' }}>
+          <p>Clients Ajoutés par Agent</p>
+          <ChartClientsByAgent />
+        </div>
+
+        <div style={{ flex: '1', height: '100%' }}>
+          <p>Clients Ajoutés Ce Mois par Agent</p>
+          <ChartClientsByAgentThisMonth />
+        </div>
+      </div>
+
+      <br />
+      
 
 
 
