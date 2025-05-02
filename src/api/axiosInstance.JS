@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://my-express-mongo-app.onrender.com/api/',
+  baseURL: 'http://localhost:5000/api/',
 });
 
 // Add the token to every request

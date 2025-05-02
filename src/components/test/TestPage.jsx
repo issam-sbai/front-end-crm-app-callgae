@@ -19,6 +19,7 @@ const TestPage = () => {
     'department',
     'flag',
     'statusChantier',
+    'typeRdv',
     'equipe',
     'agent',
     'dateCreated',
@@ -64,7 +65,7 @@ const TestPage = () => {
     const equipId = localStorage.getItem("equipId");
     const username = localStorage.getItem("username");
 
-    if (role === "admin") {
+    if (role === "admin" ||role === "superSupervisor") {
       dispatch(fetchClients());
     } else if (role === "superviseur") {
       if (equipId) {

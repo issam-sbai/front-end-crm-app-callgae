@@ -15,7 +15,7 @@ const ProfileClientPage = () => {
                 const token = localStorage.getItem('token');
                 if (!token) throw new Error('No token found — please log in.');
 
-                const response = await fetch(`https://my-express-mongo-app.onrender.com/api/clients/${id}`, {
+                const response = await fetch(`http://localhost:5000/api/clients/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const ProfileClientPage = () => {
                 updatePar: username
             };
 
-            const response = await fetch(`https://my-express-mongo-app.onrender.com/api/clients/${id}`, {
+            const response = await fetch(`http://localhost:5000/api/clients/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,17 +85,18 @@ const ProfileClientPage = () => {
 
     const {
         prenom = '', codepostal = '', phone = '', flag = '', civilite = '', infoRdv = '', statusChantier = '',
-        equipe = '', adresse = '', ville = '', siret = '', validePar = '', createdPar = '',
+        adresse = '', ville = '', siret = '', updatePar = '',
         dateCreation = '', dateRdv = '', typeRdv = '', agentId = '', entreprise = '', department = '',
         commentaire = '', email = '', quantiteDeLed = ''
     } = clientData || {};
 
     const enumOptions = {
-        flag: ['Aucun(e)', 'OK', 'MANQUE CNI', 'MANQUE TAXE FONCIERE', 'MANQUE AVIS', 'DOCUMENTS VALIDES'],
+        flag: ['Aucun(e)', 'PAY', 'NO PAY'],
+        typeRdv: ['Extérieur', 'Intérieur'],
         statusChantier: ['A RAPPELER', 'NO STATUS', 'NRP', 'Confirmer', 'Chantier annuler', 'Chantier Terminé'],
     };
 
-    const readOnlyKeys = ['validePar', 'createdPar', 'dateCreation'];
+    const readOnlyKeys = ['updatePar', 'createdPar', 'dateCreation'];
 
     return (
         <div className="container">
@@ -146,27 +147,24 @@ const ProfileClientPage = () => {
                         <div className="card mb-3">
                             <div className="card-body" style={{ fontSize: '0.75rem' }}>
                                 {[
-                                    { label: 'Nom', value: prenom, key: 'prenom' },
-                                    { label: 'Code Postal', value: codepostal, key: 'codepostal' },
-                                    { label: 'Téléphone', value: phone, key: 'phone' },
-                                    { label: 'Flag', value: flag, key: 'flag', enum: enumOptions.flag },
                                     { label: 'Civilité', value: civilite, key: 'civilite' },
-                                    { label: 'Rdv Info', value: infoRdv, key: 'infoRdv' },
-                                    { label: 'Quantité de LED', value: quantiteDeLed, key: 'quantiteDeLed' },
-                                    { label: 'Status Chantier', value: statusChantier, key: 'statusChantier', enum: enumOptions.statusChantier },
-                                    { label: 'Equipe', value: equipe, key: 'equipe' },
+                                    { label: 'Nom', value: prenom, key: 'prenom' },
+                                    { label: 'Entreprise', value: entreprise, key: 'entreprise' },
+                                    { label: 'Type Rdv', value: typeRdv, key: 'typeRdv', enum: enumOptions.typeRdv },
                                     { label: 'Adresse', value: adresse, key: 'adresse' },
                                     { label: 'Ville', value: ville, key: 'ville' },
-                                    { label: 'Siret', value: siret, key: 'siret' },
-                                    { label: 'Valide Par', value: validePar, key: 'validePar' },
-                                    { label: 'Created By', value: createdPar, key: 'createdPar' },
-                                    { label: 'Date Creation', value: dateCreation, key: 'dateCreation' },
-                                    { label: 'Date Rdv', value: dateRdv, key: 'dateRdv' },
-                                    { label: 'Type Rdv', value: typeRdv, key: 'typeRdv' },
-                                    { label: 'Agent ID', value: agentId, key: 'agentId' },
-                                    { label: 'Entreprise', value: entreprise, key: 'entreprise' },
+                                    { label: 'Code Postal', value: codepostal, key: 'codepostal' },
                                     { label: 'Department', value: department, key: 'department' },
+                                    { label: 'Téléphone', value: phone, key: 'phone' },                                    
+                                    { label: 'Quantité de LED', value: quantiteDeLed, key: 'quantiteDeLed' },
+                                    { label: 'Status Chantier', value: statusChantier, key: 'statusChantier', enum: enumOptions.statusChantier },                                    
+                                    { label: 'Siret', value: siret, key: 'siret' },
+                                    { label: 'Valide Par', value: updatePar, key: 'updatePar' },
+                                    { label: 'Created By', value: agentId, key: 'createdPar' },
+                                    { label: 'Date Creation', value: dateCreation, key: 'dateCreation' },
+                                    { label: 'Date Rdv', value: dateRdv, key: 'dateRdv' },                                                              
                                     { label: 'Commentaire', value: commentaire, key: 'commentaire' },
+                                    { label: 'Rdv Info', value: infoRdv, key: 'infoRdv' },
                                 ].map((field, i) => (
                                     <div className="row mb-3" key={i}>
                                         <div className="col-sm-3">

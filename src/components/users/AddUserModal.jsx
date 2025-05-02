@@ -102,6 +102,7 @@ const AddUserModal = ({ users, show, onHide }) => {
                             <option value="">Select Role</option>
                             <option value="agent">Agent</option>
                             <option value="supervisor">Supervisor</option>
+                            <option value="superSupervisor">Super Supervisor</option>
                         </Form.Control>
                     </Form.Group>
 
