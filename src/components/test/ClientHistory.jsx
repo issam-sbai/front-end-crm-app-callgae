@@ -7,7 +7,7 @@ const ClientHistory = ({ clientId }) => {
   const [historyData, setHistoryData] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/historyData/${clientId}`)
+    axios.get(`https://front-end-crm-app-callgae.onrender.com/api/historyData/${clientId}`)
       .then(res => {
         const data = Array.isArray(res.data) ? res.data : [];
         setHistoryData(data);

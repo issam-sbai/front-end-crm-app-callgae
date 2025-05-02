@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api/',
+  baseURL: 'https://front-end-crm-app-callgae.onrender.com/api/',
 });
 
 // Add the token to every request

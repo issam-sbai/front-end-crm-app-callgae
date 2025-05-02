@@ -19,7 +19,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchClient = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/clients/${id}`);
+        const response = await fetch(`https://front-end-crm-app-callgae.onrender.com/api/clients/${id}`);
         if (!response.ok) throw new Error('Client not found');
         const data = await response.json();
 

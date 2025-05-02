@@ -2,7 +2,7 @@ import axios from 'axios';
 import axiosInstance from './axiosInstance.JS';
 // Import your axiosInstance
 
-const API_URL = 'http://localhost:5000/api/users'; // Keep the base URL
+const API_URL = 'https://front-end-crm-app-callgae.onrender.com//api/users'; // Keep the base URL
 
 // Register user (no change here)
 export const registerUser = async (userData) => {
