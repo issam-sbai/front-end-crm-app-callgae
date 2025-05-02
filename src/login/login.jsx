@@ -25,6 +25,9 @@ const LoginPage = () => {
             const role = response.user.role;
             const equipId = response.user.equip._id;
 
+            console.log(role,equipId);
+            
+
             if (role === "admin" || role === "superSupervisor") {
                 dispatch(fetchClients()); // Fetch all clients
             } else if (role === "superviseur") {

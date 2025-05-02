@@ -22,7 +22,6 @@ const ProfileClientPage = () => {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-
                 if (!response.ok) throw new Error('Client not found');
                 const data = await response.json();
                 console.log('Client Data:', data);
