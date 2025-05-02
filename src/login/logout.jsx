@@ -8,6 +8,8 @@ const Logout = () => {
     // Clear user session data from localStorage
     localStorage.removeItem("username");
     localStorage.removeItem("role");
+ 
+    
     
     // Redirect to the login page
     navigate("/");
