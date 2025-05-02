@@ -15,7 +15,7 @@ const ProfileClientPage = () => {
                 const token = localStorage.getItem('token');
                 if (!token) throw new Error('No token found — please log in.');
 
-                const response = await fetch(`https://front-end-crm-app-callgae.onrender.com/api/clients/${id}`, {
+                const response = await fetch(`https://my-express-mongo-app.onrender.com/api/clients/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ const ProfileClientPage = () => {
                 updatePar: username
             };
 
-            const response = await fetch(`https://front-end-crm-app-callgae.onrender.com/api/clients/${id}`, {
+            const response = await fetch(`https://my-express-mongo-app.onrender.com/api/clients/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

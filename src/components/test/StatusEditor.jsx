@@ -52,7 +52,7 @@ const StatusEditor = ({ clientId, currentStatus }) => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`https://front-end-crm-app-callgae.onrender.com/api/clients/${clientId}`, {
+            const response = await fetch(`https://my-express-mongo-app.onrender.com/api/clients/${clientId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
