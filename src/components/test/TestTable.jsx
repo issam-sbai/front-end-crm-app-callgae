@@ -123,7 +123,12 @@ const TableComponent = ({ onRowClick }) => {
       field: 'prenom',
       header: 'Nom/Prenom ',
       body: (client) => (
-        <div>
+        <div style={{
+          backgroundColor: client.isDuplicate ? 'rgba(55, 69, 162, 0.73)' : 'transparent', // Apply red if isDuplicate is true
+          color: client.isDuplicate ? 'white' : 'inherit', // Change text color to white for better contrast if isDuplicate is true
+          padding: '5px',
+          borderRadius: '4px',
+        }} >
           <div style={{ whiteSpace: 'nowrap' }}>
             <a href={`/client/${client._id}`} className="text-primary hover:underline"> <b>{client.prenom}</b></a> {client.entreprise}
           </div>
@@ -137,18 +142,30 @@ const TableComponent = ({ onRowClick }) => {
       header: 'Equipe',
       body: (client) => (
         <>
-          <div style={{ whiteSpace: 'nowrap' }}>
-            <i className="pi pi-bookmark" style={{ fontSize: "0.8rem", color: "rgb(13, 110, 253)", marginRight: '5px' }}></i>
-            {client.equipe ? ` ${client.equipe.name}` : 'No equipe'}
+          <div style={{
+              backgroundColor: client.isDuplicate ? 'rgba(55, 69, 162, 0.73)' : 'transparent', // Apply red if isDuplicate is true
+              color: client.isDuplicate ? 'white' : 'inherit', // Change text color to white for better contrast if isDuplicate is true
+              padding: '5px',
+              borderRadius: '4px',
+            }}
+          >
+            <div style={{
+              whiteSpace: 'nowrap',
+              
+            }}>
+              <i className="pi pi-bookmark" style={{ fontSize: "0.8rem", color: "rgb(13, 110, 253)", marginRight: '5px' }}></i>
+              {client.equipe ? ` ${client.equipe.name}` : 'No equipe'}
+            </div>
+            <div style={{ whiteSpace: 'nowrap' }}>
+              <i className="pi pi-check" style={{ fontSize: "0.8rem", color: "green", marginRight: '5px' }}></i>
+              {client.updatePar ? ` ${client.updatePar}` : ''}
+            </div>
+            <div style={{ whiteSpace: 'nowrap' }}>
+              <i className="pi pi-file-import" style={{ fontSize: "0.8rem", color: "#d1b800", marginRight: '5px' }}></i>
+              {client.agentId ? ` ${client.agentId}` : ''}
+            </div>
           </div>
-          <div style={{ whiteSpace: 'nowrap' }}>
-            <i className="pi pi-check" style={{ fontSize: "0.8rem", color: "green", marginRight: '5px' }}></i>
-            {client.updatePar ? ` ${client.updatePar}` : ''}
-          </div>
-          <div style={{ whiteSpace: 'nowrap' }}>
-            <i className="pi pi-file-import" style={{ fontSize: "0.8rem", color: "#d1b800", marginRight: '5px' }}></i>
-            {client.agentId ? ` ${client.agentId}` : ''}
-          </div>
+
         </>
       ),
     },
@@ -156,7 +173,13 @@ const TableComponent = ({ onRowClick }) => {
       field: 'contact',
       header: 'Contact',
       body: (client) => (
-        <div>
+        <div style={{
+          backgroundColor: client.isDuplicate ? 'rgba(55, 69, 162, 0.73)' : 'transparent', // Apply red if isDuplicate is true
+          color: client.isDuplicate ? 'white' : 'inherit', // Change text color to white for better contrast if isDuplicate is true
+          padding: '5px',
+          borderRadius: '4px',
+          height:"100%" ,
+          margin:"0px"        }} >
           <div><i className="pi pi-phone " style={{ fontSize: "0.8rem" }}></i> {client.phone}</div>
           <div>{client.email}</div>
         </div>
