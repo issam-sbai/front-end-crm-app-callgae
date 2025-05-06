@@ -50,13 +50,20 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
   const [dateRdvFrom, setDateRdvFrom] = useState('');
   const [dateRdvTo, setDateRdvTo] = useState('');
 
+  const role = localStorage.getItem('role');
+  const equipId = localStorage.getItem('equipId');
+
   const { filterClients, getAllClients } = useClient();
   const { equipes, loading: equipeLoading } = useSelector(s => s.equipe);
   const { users, loading: userLoading, error: userError } = useSelector((state) => state.user);
 
+  const filteredUsers = role === 'supervisor'
+    ? users.filter(user => user.equip && user.equip._id === equipId)
+    : users;
+
   // helper
   const isVisible = key => fieldsToShow.includes(key);
-
+  
   // build equipe options
 
   const roleuser = localStorage.getItem('role');
@@ -64,7 +71,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
   equipes?.forEach(eq => equipeOptions.push({ value: eq._id, label: eq.name }));
 
   const userOptions = [{ value: '', label: 'Aucun(e)' }];
-  users?.forEach(us => userOptions.push({ value: us.username, label: us.username }));
+  filteredUsers?.forEach(us => userOptions.push({ value: us.username, label: us.username }));
 
   const handleFilter = e => {
     e.preventDefault();
