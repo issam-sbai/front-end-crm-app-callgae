@@ -8,6 +8,7 @@ const ProfileClientPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const role = localStorage.getItem('role');
 
     useEffect(() => {
         const fetchClient = async () => {
@@ -117,9 +118,11 @@ const ProfileClientPage = () => {
                                         <p className="text-secondary mb-1">Client : {prenom}</p>
                                         <p className="text-muted mb-0">{adresse}</p>
                                         <p className="text-muted">{ville} {codepostal}</p>
-                                        <button className="btn btn-primary" onClick={handleEditToggle}>
-                                            {isEditing ? 'Cancel Edit' : 'Edit Client'}
-                                        </button>
+                                        {role !== 'agent' && (
+                                            <button className="btn btn-primary" onClick={handleEditToggle}>
+                                                {isEditing ? 'Cancel Edit' : 'Edit Client'}
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                                 <hr className="my-4" />
@@ -154,17 +157,17 @@ const ProfileClientPage = () => {
                                     { label: 'Ville', value: ville, key: 'ville' },
                                     { label: 'Code Postal', value: codepostal, key: 'codepostal' },
                                     { label: 'Department', value: department, key: 'department' },
-                                    { label: 'Téléphone', value: phone, key: 'phone' },                                    
-                                    { label: 'Quantité de LED', value: quantiteDeLed, key: 'quantiteDeLed' },
-                                    { label: 'Status Chantier', value: statusChantier, key: 'statusChantier', enum: enumOptions.statusChantier },                                    
+                                    { label: 'Téléphone', value: phone, key: 'phone' },
+                                    !['agent', 'supervisor'].includes(role) && { label: 'Quantité de LED', value: quantiteDeLed, key: 'quantiteDeLed' },
+                                    { label: 'Status Chantier', value: statusChantier, key: 'statusChantier', enum: enumOptions.statusChantier },
                                     { label: 'Siret', value: siret, key: 'siret' },
                                     { label: 'Valide Par', value: updatePar, key: 'updatePar' },
                                     { label: 'Created By', value: agentId, key: 'createdPar' },
                                     { label: 'Date Creation', value: dateCreation, key: 'dateCreation' },
-                                    { label: 'Date Rdv', value: dateRdv, key: 'dateRdv' },                                                              
+                                    { label: 'Date Rdv', value: dateRdv, key: 'dateRdv' },
                                     { label: 'Commentaire', value: commentaire, key: 'commentaire' },
                                     { label: 'Rdv Info', value: infoRdv, key: 'infoRdv' },
-                                ].map((field, i) => (
+                                ].filter(Boolean).map((field, i) => (
                                     <div className="row mb-3" key={i}>
                                         <div className="col-sm-3">
                                             <h6 className="mb-0" style={{ fontSize: '0.75rem' }}>{field.label}</h6>
@@ -201,7 +204,6 @@ const ProfileClientPage = () => {
                                         </div>
                                     </div>
                                 ))}
-
                                 {isEditing && (
                                     <>
                                         <button className="btn btn-success mr-2" onClick={handleSave} style={{ fontSize: '0.75rem' }}>
