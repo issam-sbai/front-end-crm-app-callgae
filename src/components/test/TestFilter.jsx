@@ -58,6 +58,8 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
   const isVisible = key => fieldsToShow.includes(key);
 
   // build equipe options
+
+  const roleuser = localStorage.getItem('role');
   const equipeOptions = [{ value: '', label: 'Aucun(e)' }];
   equipes?.forEach(eq => equipeOptions.push({ value: eq._id, label: eq.name }));
 
@@ -130,28 +132,29 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
             />
           </div>
         )}
-        {isVisible('equipe') && (
-          <div className="flex-item " style={{ flex: '1 1 auto', marginRight: '5px' }}>
-            <Select
-              options={equipeOptions}
-              value={equipeOptions.find(opt => opt.value === equipe?.value)}
-              onChange={setEquipe}
-              placeholder="Équipe"
-              isLoading={equipeLoading}
-              styles={{
-                control: base => ({
-                  ...base,
-                  fontSize: '0.75rem',
-                  padding: '0px 0px',
-                  minHeight: '33px',
-                  height: '33px',
-                }),
-                singleValue: base => ({ ...base, fontSize: '0.75rem' }),
-                option: base => ({ ...base, fontSize: '0.75rem', padding: '0px' }),
-              }}
-            />
-          </div>
-        )}
+{isVisible('equipe') && roleuser !== 'supervisor' && (
+  <div className="flex-item " style={{ flex: '1 1 auto', marginRight: '5px' }}>
+    <Select
+      options={equipeOptions}
+      value={equipeOptions.find(opt => opt.value === equipe?.value)}
+      onChange={setEquipe}
+      placeholder="Équipe"
+      isLoading={equipeLoading}
+      styles={{
+        control: base => ({
+          ...base,
+          fontSize: '0.75rem',
+          padding: '0px 0px',
+          minHeight: '33px',
+          height: '33px',
+        }),
+        singleValue: base => ({ ...base, fontSize: '0.75rem' }),
+        option: base => ({ ...base, fontSize: '0.75rem', padding: '0px' }),
+      }}
+    />
+  </div>
+)}
+
 
         {isVisible('agent') && (
           <div className="flex-item" style={{ flex: '1 1 auto', marginRight: '5px' }}>
