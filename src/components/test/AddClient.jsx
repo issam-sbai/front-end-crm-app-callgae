@@ -120,7 +120,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
                             }
                         />
                     </Form.Group>
-                    <Form.Group className="mx-2 mb-3">
+                    {/* <Form.Group className="mx-2 mb-3">
                         <Form.Label>Civilité</Form.Label>
                         <Form.Control
                             type="text"
@@ -129,6 +129,18 @@ const AddClient = ({ show, onHide, onAdd }) => {
                             onChange={handleChange}
                             required
                         />
+                    </Form.Group> */}
+                    <Form.Group className="mx-2 mb-3">
+                        <Form.Label>Civilité</Form.Label>
+                        <Form.Control
+                            as="select"
+                            name="civilite"
+                            value={newClient.civilite}
+                            onChange={handleChange}
+                        >
+                            <option value="M.">M.</option>
+                            <option value="Mme">Mme</option>
+                        </Form.Control>
                     </Form.Group>
 
                     <Form.Group className="mx-2 mb-3">
