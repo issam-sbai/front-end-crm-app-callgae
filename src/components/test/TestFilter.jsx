@@ -224,7 +224,7 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
           </div>
         )}
 
-        {isVisible('flag') && (
+        {isVisible('flag')  && roleuser !== 'supervisor' && (
           <div style={{ flex: '1 1 auto', marginRight: '10px' }}>
             <Select
               options={options.flag}
