@@ -10,6 +10,7 @@ import useClient from '../../hooks/useClient';
 import { useDispatch } from "react-redux";
 import { addClient, checkDuplicateClient, fetchClients, fetchClientsByAgentId, getClientsByEquipeThunk } from "../../features/clientSlice";
 import { fetchEquipes } from "../../features/equipeSlice";
+import RegionCards from './RegionCards';
 
 const TestPage = () => {
   const [showMap, setShowMap] = useState(false);
@@ -121,6 +122,7 @@ const TestPage = () => {
       <Modal show={showMap} fullscreen={true} onHide={handleCloseMap} size="lg">
         <Modal.Body>
           <SvgTest />
+          <RegionCards/>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseMap}>
