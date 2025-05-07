@@ -161,7 +161,7 @@ const TableComponent = ({ onRowClick }) => {
               {client.updatePar ? ` ${client.updatePar}` : ''}
             </div>
             <div style={{ whiteSpace: 'nowrap' }}>
-              <i className="pi pi-file-import" style={{ fontSize: "0.8rem", color: client.isDuplicate ? 'rgba(176, 90, 243, 0.73)' : 'transparent', marginRight: '5px' }}></i>
+              <i className="pi pi-file-import" style={{ fontSize: "0.8rem", color: client.isDuplicate ? 'rgba(176, 90, 243, 0.73)' : 'rgba(230, 215, 17, 0.73)', marginRight: '5px' }}></i>
               {client.agentId ? ` ${client.agentId}` : ''}
             </div>
           </div>
