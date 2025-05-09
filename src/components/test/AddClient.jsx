@@ -41,6 +41,12 @@ const AddClient = ({ show, onHide, onAdd }) => {
                 return `${field} is required`;
             }
         }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+        if (!emailRegex.test(newClient.email)) {
+            return "Email format is invalid";
+        }
+
+
         return "";
     };
 
