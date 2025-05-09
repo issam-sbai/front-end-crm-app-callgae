@@ -121,8 +121,10 @@ const TestPage = () => {
 
       <Modal show={showMap} fullscreen={true} onHide={handleCloseMap} size="lg">
         <Modal.Body>
-          <SvgTest />
-          <RegionCards/>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+      <SvgTest />
+      <RegionCards />
+    </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseMap}>

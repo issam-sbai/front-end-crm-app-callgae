@@ -189,14 +189,19 @@ const ProfileClientPage = () => {
                                                     </select>
                                                 ) : (
                                                     <input
-                                                        type={field.key === 'quantiteDeLed' ? 'number' : 'text'}
+                                                        type={field.key === 'quantiteDeLed' ? 'number' : field.key === 'dateRdv' ? 'date' : 'text'}
                                                         className="form-control"
-                                                        value={field.value}
+                                                        value={
+                                                            field.key === 'dateRdv'
+                                                                ? (field.value ? field.value.substring(0, 10) : '')
+                                                                : field.value
+                                                        }
                                                         onChange={(e) => {
                                                             setClientData({ ...clientData, [field.key]: e.target.value });
                                                         }}
                                                         style={{ fontSize: '0.75rem' }}
                                                     />
+
                                                 )
                                             ) : (
                                                 <span>{field.value}</span>
