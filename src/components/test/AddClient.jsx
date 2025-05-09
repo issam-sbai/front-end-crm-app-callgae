@@ -35,7 +35,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
     };
 
     const validateForm = () => {
-        const requiredFields = ["civilite", "prenom", "entreprise", "phone", "email", "siret", "adresse", "codepostal", "ville", "dateRdv", "typeRdv", "agentId","infoRdv","commentaire"];
+        const requiredFields = ["civilite", "prenom", "entreprise", "phone", "email", "siret", "adresse", "codepostal", "ville", "dateRdv", "typeRdv", "agentId"];
         for (let field of requiredFields) {
             if (!newClient[field]) {
                 return `${field} is required`;
@@ -64,8 +64,8 @@ const AddClient = ({ show, onHide, onAdd }) => {
             dateRdv: newClient.dateRdv,
             typeRdv: newClient.typeRdv,
             agentId: newClient.agentId,
-            infoRdv: newClient.infoRdv,
-            commentaire: newClient.commentaire,
+            infoRdv: newClient.infoRdv || "...",
+            commentaire: newClient.commentaire || "...",
             statusChantier: "NO STATUS",
         };
 
