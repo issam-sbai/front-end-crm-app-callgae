@@ -35,7 +35,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
     };
 
     const validateForm = () => {
-        const requiredFields = ["civilite", "prenom", "entreprise", "phone", "email", "siret", "adresse", "codepostal", "ville", "dateRdv", "typeRdv", "agentId"];
+        const requiredFields = ["civilite", "prenom", "entreprise", "phone", "email", "siret", "adresse", "codepostal", "ville", "dateRdv", "typeRdv", "agentId","infoRdv","commentaire"];
         for (let field of requiredFields) {
             if (!newClient[field]) {
                 return `${field} is required`;
@@ -291,6 +291,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
                             name="commentaire"
                             value={newClient.commentaire}
                             onChange={handleChange}
+                            required
                         />
                     </Form.Group>
 
@@ -302,6 +303,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
                             name="infoRdv"
                             value={newClient.infoRdv}
                             onChange={handleChange}
+                            required
                         />
                     </Form.Group>
                 </Form>
