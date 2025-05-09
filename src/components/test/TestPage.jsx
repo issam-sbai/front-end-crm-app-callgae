@@ -7,7 +7,7 @@ import { Modal } from 'react-bootstrap';
 import SvgTest from './SvgTest';
 import AddClient from './AddClient';
 import useClient from '../../hooks/useClient';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addClient, checkDuplicateClient, fetchClients, fetchClientsByAgentId, getClientsByEquipeThunk } from "../../features/clientSlice";
 import { fetchEquipes } from "../../features/equipeSlice";
 import RegionCards from './RegionCards';
@@ -27,6 +27,8 @@ const TestPage = () => {
     'dateCreated',
     'dateRdv',
   ]);
+  const clients = useSelector((state) => state.clients.clientsx);
+  const clientsLength = clients.length;
 
   const dispatch = useDispatch();
   const { exportToCSV } = useClient();
@@ -36,8 +38,8 @@ const TestPage = () => {
 
   const handleAddClient = async (newClient) => {
     try {
-      const result = await dispatch(addClient(newClient));      
-      
+      const result = await dispatch(addClient(newClient));
+
 
       const role = localStorage.getItem('role');
       if (role === 'admin') {
@@ -48,13 +50,13 @@ const TestPage = () => {
           dispatch(getClientsByEquipeThunk(equipId));
         }
       }
-      setShowAddModal(false);    
+      setShowAddModal(false);
       await dispatch(checkDuplicateClient({
         clientId: result.payload[0]._id,
         clientData: newClient
       }));
 
-      
+
     } catch (error) {
       console.error("Failed to add client:", error);
     }
@@ -72,7 +74,7 @@ const TestPage = () => {
     const equipId = localStorage.getItem("equipId");
     const username = localStorage.getItem("username");
 
-    if (role === "admin" ||role === "superSupervisor") {
+    if (role === "admin" || role === "superSupervisor") {
       dispatch(fetchClients());
     } else if (role === "superviseur") {
       if (equipId) {
@@ -98,29 +100,30 @@ const TestPage = () => {
           style={{ fontSize: '0.75rem' }}
           onClick={() => setShowAddModal(true)}
         >
-          Ajouter client
+          Ajouter client <span style={{ fontSize: '0.85rem' }}>{clientsLength}</span>
         </Button>
+        
 
-        <Button
-          className="btn btn-primary mx-2"
-          style={{ fontSize: '0.75rem' }}
-          onClick={handleShowMap}
-        >
-          Département
-        </Button>
+      <Button
+        className="btn btn-primary mx-2"
+        style={{ fontSize: '0.75rem' }}
+        onClick={handleShowMap}
+      >
+        Département
+      </Button>
 
-        {
-          role === 'admin' && (
-            <Button
-              className="btn btn-primary"
-              style={{ fontSize: '0.75rem' }}
-              onClick={exportToCSV}
-            >
-              Export to CSV
-            </Button>
-          )
-        }
-      </div>
+      {
+        role === 'admin' && (
+          <Button
+            className="btn btn-primary"
+            style={{ fontSize: '0.75rem' }}
+            onClick={exportToCSV}
+          >
+            Export to CSV
+          </Button>
+        )
+      }
+    </div >
 
       <TestTable />
       <br />

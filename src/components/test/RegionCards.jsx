@@ -95,12 +95,12 @@ const regions = [
     ]
   },
   {
-    name: 'Midi-Pyrénées',
+    name: 'Lorraine',
     departments: [
-      { id: '9', name: '9 Ariège' },
-      { id: '12', name: '12 Aveyron' },
-      { id: '31', name: '31 Haute-Garonne' },
-      { id: '32', name: '32 Gers' }
+      { id: '54', name: '54 Meuthe-Mos.' },
+      { id: '55', name: '55 Meuse' },
+      { id: '57', name: '57 Moselle' },
+      { id: '88', name: '88 Vosges' }
     ]
   },
   {
@@ -165,13 +165,18 @@ const regions = [
       { id: '95', name: "95 Val-d'Oise" }
     ]
   },
+
   {
-    name: 'Lorraine',
+    name: 'Midi-Pyrénées',
     departments: [
-      { id: '54', name: '54 Meuthe-Mos.' },
-      { id: '55', name: '55 Meuse' },
-      { id: '57', name: '57 Moselle' },
-      { id: '88', name: '88 Vosges' }
+      { id: '9', name: '9 Ariège' },
+      { id: '12', name: '12 Aveyron' },
+      { id: '31', name: '31 Haute-Garonne' },
+      { id: '32', name: '32 Gers' },
+      { id: '46', name: '46 Lot' },
+      { id: '65', name: '65 Hautes-Pyrénées' },
+      { id: '81', name: '81 Tarn' },
+      { id: '82', name: '82 Tarn-et-Garonne' }
     ]
   },
   {
