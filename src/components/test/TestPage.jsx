@@ -13,6 +13,7 @@ import { fetchEquipes } from "../../features/equipeSlice";
 import RegionCards from './RegionCards';
 
 const TestPage = () => {
+  const [selectedDeps, setSelectedDeps] = useState('');
   const [showMap, setShowMap] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [fieldsToShow, setFieldsToShow] = useState([
@@ -59,6 +60,11 @@ const TestPage = () => {
     }
   };
 
+  const handleSelectedDeps = (departments) => {
+    // Update the parent state with the departments
+    setSelectedDeps(departments);
+  };
+
   useEffect(() => {
     dispatch(fetchEquipes());  // Always fetch equipes first
 
@@ -84,7 +90,7 @@ const TestPage = () => {
   return (
     <>
       {/* Only show filter if not agent */}
-      {role !== 'agent' && <FilterComponenttest fieldsToShow={fieldsToShow} />}
+      {role !== 'agent' && <FilterComponenttest fieldsToShow={fieldsToShow} filterData={selectedDeps} />}
 
       <div className="d-flex justify-content-start align-items-center mt-3 mb-3">
         <Button
@@ -123,7 +129,7 @@ const TestPage = () => {
         <Modal.Body>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
       <SvgTest />
-      <RegionCards />
+      <RegionCards onSelectDeps={handleSelectedDeps}  />
     </div>
         </Modal.Body>
         <Modal.Footer>

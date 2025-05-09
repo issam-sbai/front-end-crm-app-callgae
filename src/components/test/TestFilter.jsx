@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import 'primeicons/primeicons.css';
@@ -35,7 +35,7 @@ const options = {
   ],
 };
 
-const FilterComponenttest = ({ fieldsToShow = [] }) => {
+const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
   // form state
   const [prenom, setPrenom] = useState('');
   // const [phone, setPhone] = useState('');
@@ -111,6 +111,13 @@ const FilterComponenttest = ({ fieldsToShow = [] }) => {
     setDateRdvTo('');
     getAllClients();
   };
+
+  useEffect(() => {
+    // If filterData is not empty, update the department state
+    if (filterData) {
+      setDepartment(filterData);
+    }
+  }, [filterData]);
 
   return (
     <Form onSubmit={handleFilter}>
