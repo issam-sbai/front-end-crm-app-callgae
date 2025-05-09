@@ -35,18 +35,19 @@ const AddClient = ({ show, onHide, onAdd }) => {
     };
 
     const validateForm = () => {
-        const requiredFields = ["civilite", "prenom", "entreprise", "phone", "email", "siret", "adresse", "codepostal", "ville", "dateRdv", "typeRdv", "agentId"];
+        const requiredFields = ["civilite", "prenom", "entreprise", "phone", "email", "siret", "adresse", "codepostal", "ville", "dateRdv", "typeRdv", "agentId","commentaire","infoRdv"];
         for (let field of requiredFields) {
             if (!newClient[field]) {
                 return `${field} is required`;
             }
         }
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
         if (!emailRegex.test(newClient.email)) {
             return "Email format is invalid";
         }
 
-
+        
         return "";
     };
 
