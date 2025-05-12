@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Chart } from 'primereact/chart';
-import { useSelector } from 'react-redux';
-
-const STATUSES = [
-    'A RAPPELER',
-    'NO STATUS',
-    'NRP',
-    'Confirmer',
-    'Chantier annuler',
-    'Chantier Terminé'
-];
 
 const STATUS_COLORS = {
     'A RAPPELER': '#FF6347',
@@ -23,51 +13,49 @@ const STATUS_COLORS = {
 export default function ClientStateDoughnutChart() {
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
-    const clients = useSelector((state) => state.clients.clientsx) || [];
 
     useEffect(() => {
-        const counts = STATUSES.reduce((acc, status) => {
-            acc[status] = 0;
-            return acc;
-        }, {});
+        const fetchData = async () => {
+            try {
+                const res = await fetch('http://localhost:5000/api/dashboard/client-status');
+                const data = await res.json(); // expecting format: [{ status: 'NRP', count: 5 }, ...]
 
-        clients.forEach(({ statusChantier }) => {
-            if (counts[statusChantier] !== undefined) {
-                counts[statusChantier]++;
-            }
-        });
+                const labels = data.map(item => item.status);
+                const values = data.map(item => item.count);
+                const backgroundColors = labels.map(status => STATUS_COLORS[status] || '#ccc');
+                const hoverBackgroundColors = backgroundColors.map(color => color + '80');
 
-        const labels = Object.keys(counts);
-        const values = Object.values(counts);
+                setChartData({
+                    labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: backgroundColors,
+                        hoverBackgroundColor: hoverBackgroundColors
+                    }]
+                });
 
-        const backgroundColors = labels.map(status => STATUS_COLORS[status] || '#ccc');
-        const hoverBackgroundColors = labels.map(color => color + '80');
-
-        setChartData({
-            labels,
-            datasets: [{
-                data: values,
-                backgroundColor: backgroundColors,
-                hoverBackgroundColor: hoverBackgroundColors
-            }]
-        });
-
-        setChartOptions({
-            cutout: '60%',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        color: '#495057',
-                        usePointStyle: true,
-                        boxWidth: 8
+                setChartOptions({
+                    cutout: '60%',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#495057',
+                                usePointStyle: true,
+                                boxWidth: 8
+                            }
+                        }
                     }
-                }
+                });
+            } catch (error) {
+                console.error('Failed to fetch chart data:', error);
             }
-        });
-    }, [clients]);
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <div className="card flex justify-content-center w-full h-full">
