@@ -86,6 +86,7 @@ const FilterComponenttest = ({ fieldsToShow = [], filterData }) => {
       equipe: equipeList?.value || '',
       agentId: userList?.value || '',
     };
+    if (role !== 'admin' && equipId) filterData.equipe = equipId;
     filterClients(filterData);
   };
 
