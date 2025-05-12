@@ -33,7 +33,7 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchCardData = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/dashboard/overview');
+        const res = await fetch('https://crm-backend-rs8c.onrender.com/api/dashboard/overview');
         const data = await res.json();
         setCards(data);
       } catch (error) {

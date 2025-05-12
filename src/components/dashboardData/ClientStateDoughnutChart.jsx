@@ -17,7 +17,7 @@ export default function ClientStateDoughnutChart() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/dashboard/client-status');
+                const res = await fetch('https://crm-backend-rs8c.onrender.com/api/dashboard/client-status');
                 const data = await res.json(); // expecting format: [{ status: 'NRP', count: 5 }, ...]
 
                 const labels = data.map(item => item.status);
