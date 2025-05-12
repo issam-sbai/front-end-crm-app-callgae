@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import { Form, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import 'primeicons/primeicons.css';
@@ -35,16 +35,15 @@ const options = {
   ],
 };
 
-const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
+const FilterComponenttest = ({ fieldsToShow = [], filterData }) => {
   // form state
   const [prenom, setPrenom] = useState('');
-  // const [phone, setPhone] = useState('');
   const [department, setDepartment] = useState('');
-  const [flag, setFlag] = useState(null);
-  const [typeRdv, setTypeRdv] = useState(null);
-  const [statusChantier, setStatusChantier] = useState(null);
-  const [equipe, setEquipe] = useState(null);
-  const [user, setUser] = useState(null);
+  const [flags, setFlags] = useState([]);  // State for multi-select
+  const [typeRdvList, setTypeRdvList] = useState([]);  // State for multi-select
+  const [statusChantierList, setStatusChantierList] = useState([]);  // State for multi-select
+  const [equipeList, setEquipeList] = useState([]);
+  const [userList, setUserList] = useState([]);
   const [dateCreatedFrom, setDateCreatedFrom] = useState('');
   const [dateCreatedTo, setDateCreatedTo] = useState('');
   const [dateRdvFrom, setDateRdvFrom] = useState('');
@@ -55,17 +54,16 @@ const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
 
   const { filterClients, getAllClients } = useClient();
   const { equipes, loading: equipeLoading } = useSelector(s => s.equipe);
-  const { users, loading: userLoading, error: userError } = useSelector((state) => state.user);
+  const { users, loading: userLoading } = useSelector((state) => state.user);
 
   const filteredUsers = role === 'supervisor'
     ? users.filter(user => user.equip && user.equip._id === equipId)
     : users;
 
-  // helper
+  // helper function
   const isVisible = key => fieldsToShow.includes(key);
-  
-  // build equipe options
 
+  // build equipe options
   const roleuser = localStorage.getItem('role');
   const equipeOptions = [{ value: '', label: 'Aucun(e)' }];
   equipes?.forEach(eq => equipeOptions.push({ value: eq._id, label: eq.name }));
@@ -75,36 +73,30 @@ const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
 
   const handleFilter = e => {
     e.preventDefault();
-    const role = localStorage.getItem('role');
-    const equipId = localStorage.getItem('equipId');
     const filterData = {
       prenom,
-      // telephone: phone,
       department,
-      flag: flag?.value || '',
-      typeRdv: typeRdv?.value || '',
-      statusChantier: statusChantier?.value || '',
+      flag: flags.map(flag => flag.value).join(', ') || '', // Handle multiple flags
+      typeRdv: typeRdvList.map(type => type.value).join(', ') || '', // Handle multiple types
+      statusChantier: statusChantierList.map(status => status.value).join(', ') || '', // Handle multiple statuses
       dateCreatedFrom,
       dateCreatedTo,
       dateRdvFrom,
       dateRdvTo,
-      equipe: equipe?.value || '',
-      agentId: user?.value || '',
-
+      equipe: equipeList?.value || '',
+      agentId: userList?.value || '',
     };
-    if (role !== 'admin' && equipId) filterData.equipe = equipId;
     filterClients(filterData);
   };
 
   const handleCleanFilter = () => {
     setPrenom('');
-    // setPhone('');
     setDepartment('');
-    setFlag(null);
-    setTypeRdv(null);
-    setStatusChantier(null);
-    setEquipe({ value: '', label: 'Aucun(e)' });
-    setUser({ value: '', label: 'Aucun(e)' });
+    setFlags([]);
+    setTypeRdvList([]);
+    setStatusChantierList([]);
+    setEquipeList({ value: '', label: 'Aucun(e)' });
+    setUserList({ value: '', label: 'Aucun(e)' });
     setDateCreatedFrom('');
     setDateCreatedTo('');
     setDateRdvFrom('');
@@ -113,7 +105,6 @@ const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
   };
 
   useEffect(() => {
-    // If filterData is not empty, update the department state
     if (filterData) {
       setDepartment(filterData);
     }
@@ -147,11 +138,11 @@ const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
           </div>
         )}
         {isVisible('equipe') && roleuser !== 'supervisor' && (
-          <div className="flex-item " style={{ flex: '1 1 auto', marginRight: '5px' }}>
+          <div className="flex-item" style={{ flex: '1 1 auto', marginRight: '5px' }}>
             <Select
               options={equipeOptions}
-              value={equipeOptions.find(opt => opt.value === equipe?.value)}
-              onChange={setEquipe}
+              value={equipeOptions.find(opt => opt.value === equipeList?.value)}
+              onChange={setEquipeList}
               placeholder="Équipe"
               isLoading={equipeLoading}
               styles={{
@@ -169,13 +160,12 @@ const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
           </div>
         )}
 
-
         {isVisible('agent') && (
           <div className="flex-item" style={{ flex: '1 1 auto', marginRight: '5px' }}>
             <Select
               options={userOptions}
-              value={userOptions.find(opt => opt.value === user?.value)}
-              onChange={setUser}
+              value={userOptions.find(opt => opt.value === userList?.value)}
+              onChange={setUserList}
               placeholder="Agent"
               isLoading={userLoading}
               styles={{
@@ -189,16 +179,19 @@ const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
                 singleValue: base => ({ ...base, fontSize: '0.75rem' }),
                 option: base => ({ ...base, fontSize: '0.75rem', padding: '0px' }),
               }}
+              isMulti
             />
           </div>
         )}
+
         {isVisible('statusChantier') && (
           <div className="flex-item" style={{ flex: '1 1 auto' }}>
             <Select
               options={options.statusChantier}
-              value={statusChantier}
+              value={statusChantierList}
               placeholder="Status Chantier"
-              onChange={setStatusChantier}
+              onChange={setStatusChantierList}
+              isMulti
               styles={{
                 control: base => ({
                   ...base,
@@ -220,9 +213,10 @@ const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
           <div style={{ flex: '1 1 auto', marginRight: '10px' }}>
             <Select
               options={options.typeRdv}
-              value={typeRdv}
-              placeholder="typeRdv"
-              onChange={setTypeRdv}
+              value={typeRdvList}
+              placeholder="Type RDV"
+              onChange={setTypeRdvList}
+              isMulti
               styles={{
                 control: base => ({
                   ...base,
@@ -238,13 +232,14 @@ const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
           </div>
         )}
 
-        {isVisible('flag')  && roleuser !== 'supervisor' && (
+        {isVisible('flag') && roleuser !== 'supervisor' && (
           <div style={{ flex: '1 1 auto', marginRight: '10px' }}>
             <Select
               options={options.flag}
-              value={flag}
+              value={flags}
               placeholder="Flag"
-              onChange={setFlag}
+              onChange={setFlags}
+              isMulti
               styles={{
                 control: base => ({
                   ...base,
@@ -309,28 +304,26 @@ const FilterComponenttest = ({ fieldsToShow = [] ,filterData }) => {
             </div>
           </div>
         )}
-        <div style={{ flex: '0 0 auto' }}>
-          <div className="d-flex">
-            <Button
-              variant="success"
-              type="submit"
-              onClick={handleFilter}
-              style={{ fontSize: '0.75rem', padding: '3px 8px', marginRight: '5px' }}
-            >
-              Appliquer
-            </Button>
-            <Button
-              variant="warning"
-              onClick={handleCleanFilter}
-              style={{ fontSize: '0.75rem', padding: '3px 8px' }}
-            >
-              Réinitialiser
-            </Button>
-          </div>
+              <div style={{ flex: '0 0 auto' }}>
+        <div className="d-flex">
+          <Button
+            variant="success"
+            type="submit"
+            onClick={handleFilter}
+            style={{ fontSize: '0.75rem', padding: '3px 8px', marginRight: '5px' }}
+          >
+            Appliquer
+          </Button>
+          <Button
+            variant="warning"
+            onClick={handleCleanFilter}
+            style={{ fontSize: '0.75rem', padding: '3px 8px' }}
+          >
+            Réinitialiser
+          </Button>
         </div>
       </div>
-
-
+      </div>
     </Form>
   );
 };

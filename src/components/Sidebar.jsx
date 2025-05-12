@@ -16,7 +16,8 @@ export default function Sidebar() {
   const dispatch = useDispatch();
   const items = [
     ...(userRole === 'admin' || userRole === 'superSupervisor' ? [
-      { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+      { label: 'home', icon: 'pi pi-fw pi-home', to: '/' },
+      { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard' },
     ] : []), 
     { label: 'clients', icon: 'pi pi-fw pi-user', to: '/test' },
     { label: 'RDV', icon: 'pi pi-fw pi-calendar', to: '/rdv' },
