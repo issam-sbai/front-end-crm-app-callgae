@@ -250,6 +250,7 @@ const FilterComponenttest = ({ fieldsToShow = [], filterData }) => {
                 singleValue: base => ({ ...base, fontSize: '0.85rem' }),
                 option: base => ({ ...base, fontSize: '0.85rem', padding: '0px' }),
               }}
+              
             />
           </div>
         )}
