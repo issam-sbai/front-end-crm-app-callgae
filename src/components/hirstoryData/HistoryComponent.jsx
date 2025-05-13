@@ -1,97 +1,144 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchHistoryLogs } from '../../features/historyDataSlice';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const getStatusEmoji = (status) => {
-    switch (status) {
-        case 'A RAPPELER': return '🟥';
-        case 'NO STATUS': return '◼️';
-        case 'Confirmer': return '🟩';
-        case 'NRP': return '🟨';
-        case 'INJOIGNABLE': return '🟥';
-        case 'A RETRAITER': return '🟪';
-        case 'CONFIRMER RÉGIE': return '🟨';
-        case 'LEDS SOLAIRES': return '🟩';
-        case 'Chantier annuler': return '🟥';
-        case 'SAV': return '🟧';
-        case 'RENVOYER EQUIPE SUR PLACE': return '🟧';
-        case 'RETOURNER RECUPERER LEDS': return '🟦';
-        case 'MANQUE PIÈCES': return '🟧';
-        case 'LIVRAISON POSTALE': return '🟪';
-        case 'Chantier Terminé': return '🟦';
-        case 'MANQUES RÉGLETTES': return '🟦';
-        case 'MPR': return '⬜';
-        default: return '⬜';
-    }
+  const map = {
+    'A RAPPELER': '🟥',
+    'NO STATUS': '◼️',
+    'Confirmer': '🟩',
+    'NRP': '🟨',
+    'INJOIGNABLE': '🟥',
+    'A RETRAITER': '🟪',
+    'CONFIRMER RÉGIE': '🟨',
+    'LEDS SOLAIRES': '🟩',
+    'Chantier annuler': '🟥',
+    'SAV': '🟧',
+    'RENVOYER EQUIPE SUR PLACE': '🟧',
+    'RETOURNER RECUPERER LEDS': '🟦',
+    'MANQUE PIÈCES': '🟧',
+    'LIVRAISON POSTALE': '🟪',
+    'Chantier Terminé': '🟦',
+    'MANQUES RÉGLETTES': '🟦',
+    'MPR': '⬜'
+  };
+  return map[status] || '⬜';
 };
 
 const newValueBody = (rowData) => {
-    if (rowData.field === 'statusChantier') {
-        const emoji = getStatusEmoji(rowData.newValue);
-        return `${emoji} ${rowData.newValue}`;
-    }
-    return rowData.newValue ?? '';
+  return rowData.field === 'statusChantier'
+    ? `${getStatusEmoji(rowData.newValue)} ${rowData.newValue}`
+    : rowData.newValue ?? '';
 };
 
 const oldValueBody = (rowData) => {
-    if (rowData.field === 'statusChantier') {
-        const emoji = getStatusEmoji(rowData.oldValue);
-        return `${emoji} ${rowData.oldValue}`;
-    }
-    return rowData.oldValue ?? '';
+  return rowData.field === 'statusChantier'
+    ? `${getStatusEmoji(rowData.oldValue)} ${rowData.oldValue}`
+    : rowData.oldValue ?? '';
 };
 
 export default function HistoryComponent() {
-    const dispatch = useDispatch();
-    const { historyLogs, status, error } = useSelector((state) => state.history);
+  const [historyLogs, setHistoryLogs] = useState([]);
+  const [totalItems, setTotalItems] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [status, setStatus] = useState('idle');
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchHistoryLogs());
-        }
-    }, [dispatch, status]);
+  useEffect(() => {
+    const fetchHistoryData = async () => {
+      setStatus('loading');
+      try {
+        const response = await axios.get('https://crm-backend-rs8c.onrender.com/api/historyData', {
+          params: { page: currentPage }
+        });
+        setHistoryLogs(response.data.data); // Assumed response structure
+        setTotalItems(response.data.totalItems); // Total number of items
+        setTotalPages(response.data.totalPages); // Total pages
+        setStatus('succeeded');
+      } catch (err) {
+        setError(err.message);
+        setStatus('failed');
+      }
+    };
 
-    if (status === 'loading') return <div>Chargement de l'historique...</div>;
-    if (status === 'failed') return <div>Erreur : {error}</div>;
+    fetchHistoryData();
+  }, [currentPage]);
 
-    // Flatten changes
-    const flatLogs = historyLogs.flatMap((log) =>
+  if (status === 'loading') return <div>Chargement...</div>;
+  if (status === 'failed') return <div>Erreur : {error}</div>;
+
+  const flatLogs = Array.isArray(historyLogs)
+    ? historyLogs.flatMap((log) =>
         log.changes.map((change) => ({
-            ...change,
-            clientName: `${log.clientId?.prenom ?? ''} ${log.clientId?.entreprise ?? ''}`,
-            updatedAt: log.updatedAt,
-            updatedBy: log.updatedBy
+          ...change,
+          clientName: `${log.clientId?.prenom ?? ''} ${log.clientId?.entreprise ?? ''}`,
+          updatedAt: log.updatedAt,
+          updatedBy: log.updatedBy,
         }))
-    );
+      )
+    : [];
 
-    console.log('🔍 Flat logs:', flatLogs); // Optional: log to console
+  const onPageChange = (e) => {
+    setCurrentPage(e.selected + 1); // Bootstrap pagination starts from 1
+  };
 
-    return (
-        <>
-            <h3 className="text mb-4">Données de l'historique</h3>
-            <div className="card">
-                <DataTable
-                    value={flatLogs}
-                    paginator
-                    rows={10}
-                    size="small"
-                    tableStyle={{ minWidth: '100%', fontSize: '0.75rem' }}
-                >
-                    <Column field="clientName" header="Nom du client" style={{ width: '15%' }} />
-                    <Column field="field" header="Champ modifié" style={{ width: '15%' }} />
-                    <Column field="oldValue" header="Ancienne valeur" style={{ width: '15%' }} body={oldValueBody} />
-                    <Column field="newValue" header="Nouvelle valeur" style={{ width: '15%' }} body={newValueBody} />
-                    <Column
-                        field="updatedAt"
-                        header="Date de mise à jour"
-                        body={(rowData) => rowData.updatedAt ? new Date(rowData.updatedAt).toLocaleString('fr-FR') : ''}
-                        style={{ width: '20%' }}
-                    />
-                    <Column field="updatedBy" header="Mis à jour par" style={{ width: '20%' }} />
-                </DataTable>
-            </div>
-        </>
-    );
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  return (
+    <>
+      <h3 className="text mb-4">Historique</h3>
+      <div className="card">
+        <table className="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Nom du client</th>
+              <th>Champ modifié</th>
+              <th>Ancienne valeur</th>
+              <th>Nouvelle valeur</th>
+              <th>Date de mise à jour</th>
+              <th>Mis à jour par</th>
+            </tr>
+          </thead>
+          <tbody>
+            {flatLogs.map((log, index) => (
+              <tr key={index}>
+                <td>{log.clientName}</td>
+                <td>{log.field}</td>
+                <td>{oldValueBody(log)}</td>
+                <td>{newValueBody(log)}</td>
+                <td>{log.updatedAt ? new Date(log.updatedAt).toLocaleString('fr-FR') : ''}</td>
+                <td>{log.updatedBy}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {/* Pagination Controls */}
+        <nav aria-label="Page navigation">
+          <ul className="pagination justify-content-center">
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={handlePrevious}>
+                Précédent
+              </button>
+            </li>
+            <li className="page-item disabled">
+              <span className="page-link">
+                {currentPage} / {totalPages}
+              </span>
+            </li>
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={handleNext}>
+                Suivant
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </>
+  );
 }

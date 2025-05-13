@@ -5,6 +5,7 @@ import PlanningPage from "./Planning/PlanningPage";
 import TestPage from "./test/TestPage";
 import ProfileClientPage from "./profileClient/ProfileClientPage";
 import HistoryComponent from './../components/hirstoryData/HistoryComponent';
+import Hello from "./Hello";
 import DashboardPage from "../components/dashboardData/DashboardPage";
 import PrivateRoute from "./PrivateRoute";
 
@@ -19,7 +20,7 @@ const AppRoutes = () => {
       {/* Protected routes */}
       <Route path="/" element={
         <PrivateRoute>
-          <DashboardPage />
+          <Hello/>
         </PrivateRoute>
       } />
 
