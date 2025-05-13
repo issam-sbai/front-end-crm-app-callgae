@@ -301,7 +301,7 @@ const TableComponent = ({ onRowClick }) => {
             overflowX: 'hidden',           // prevent horizontal scrollbar
           }}
         >
-          {client.historyStatus && client.historyStatus.length > 0 ? (
+          {client.historyStatus && client.historyStatus?.length > 0 ? (
             [...client.historyStatus].reverse().map((status, index) => (  // reversed here
               <div
                 key={index}
@@ -337,7 +337,7 @@ const TableComponent = ({ onRowClick }) => {
             </button>
           )}
 
-          {client.observations && client.observations.length > 0 ? (
+          {client.observations && client.observations?.length > 0 ? (
             client.observations.map((obs, index) => (
               <OverlayTrigger
                 key={index}
@@ -356,7 +356,7 @@ const TableComponent = ({ onRowClick }) => {
                   }}
                 >
                   <p className='p-0 m-0'>
-                    {obs.length > 15 ? `${obs.substring(0, 15)}...` : obs}
+                    {obs?.length > 15 ? `${obs.substring(0, 15)}...` : obs}
                   </p>
                 </div>
               </OverlayTrigger>
