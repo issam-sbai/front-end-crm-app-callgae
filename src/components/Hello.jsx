@@ -3,13 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchClients } from '../features/clientSlice';
 import { getAllUsersAsync } from '../features/userSlice';
 import { fetchEquipes } from '../features/equipeSlice';
-import ClientStateDoughnutChart from './dashboard/ClientStateDoughnutChart';
-import ChartEquipe from './dashboard/ChartEquipe';
-import EquipeClientChart from './dashboard/EquipeClientChart';
-import MonthlyEquipeClientChart from './dashboard/MonthlyEquipeClientChart';
-import ChartClientsByAgentThisMonth from './dashboard/ChartClientsByAgentThisMonth';
-import ChartClientsByAgent from './dashboard/ChartClientsByAgent';
-import ChartClientsByAgentThisDay from './dashboard/ChartClientsByAgentThisDay';
+
 
 const cardStyle = (bg) => ({
   backgroundColor: bg,
