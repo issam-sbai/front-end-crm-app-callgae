@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ClientStateDoughnutChart from './ClientStateDoughnutChart';
 import ChartClientsByAgent from './ChartClientsByAgentAll';
+import ChartClientsByAgentThisMonth from './ChartClientsByAgentThisMonth';
+import ChartClientsByAgentToday from './ChartClientsByAgentThisDay';
+import ChartClientsByEquipe from './ChartClientsByEquipe';
+import ChartClientsByEquipeThisMonth from './ChartClientsByEquipeThisMonth';
 
 const cardStyle = (bg) => ({
   backgroundColor: bg,
@@ -61,14 +65,37 @@ const DashboardPage = () => {
       <h4>Client Status</h4>
       <ClientStateDoughnutChart />
       <br />
-      {/* <h4>Ageny chart</h4>
       <ChartClientsByAgent/>
-      <br /> */}
+      <br /> 
+      <div style={{ display: 'flex', gap: '20px', }}>
+            <div style={{ flex: '1', height: '100%' }}>
+              <ChartClientsByAgentThisMonth />
+            </div>
+            <div style={{ flex: '1', height: '100%' }}>
+              <ChartClientsByAgentToday />
+            </div>
+      </div>
+      <br />
+      <h4>Equipe Status</h4>
+      <br />
+      <div style={{ display: 'flex', gap: '20px', }}>
+          <div style={{ flex: '1', height: '100%' }}>
+            <ChartClientsByEquipe/>
+          </div>
+
+          <div style={{ flex: '1', height: '100%' }}>
+            <ChartClientsByEquipeThisMonth />
+          </div>
+      </div>
+
     </div>
   );
 };
 
 export default DashboardPage;
+
+
+
 
 
     // <div className="my-4 px-2">
@@ -85,17 +112,7 @@ export default DashboardPage;
     //   <br />
     // <ClientStateDoughnutChart />
     // <br />
-    // <div style={{ display: 'flex', gap: '20px', }}>
-    //   <div style={{ flex: '1', height: '100%' }}>
-    //     <p>Clients Ajoutés par Équipe</p>
-    //     <EquipeClientChart />
-    //   </div>
 
-    //   <div style={{ flex: '1', height: '100%' }}>
-    //     <p>Clients Ajoutés Ce Mois par Équipe</p>
-    //     <MonthlyEquipeClientChart />
-    //   </div>
-    // </div>
 
     // <h4>Ageny chart</h4>
     // <ChartClientsByAgentThisDay />

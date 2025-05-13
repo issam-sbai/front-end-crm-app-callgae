@@ -1,66 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { Chart } from 'primereact/chart';
+import React, { useEffect, useState } from 'react';
+import ReactECharts from 'echarts-for-react';
 
 export default function ChartClientsByAgentAll() {
-    const [chartData, setChartData] = useState({});
-    const [chartOptions, setChartOptions] = useState({});
+    const [options, setOptions] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchClientData = async () => {
+        const fetchData = async () => {
             try {
                 const response = await fetch('http://localhost:5000/api/dashboard/clients-by-agent');
                 const data = await response.json();
-                console.log(data);
-                
 
-                const labels = data.map(item => item.name);
-                const values = data.map(item => item.value);
+                const agentNames = data.map(item => item.name);
+                const clientCounts = data.map(item => item.value);
 
-                setChartData({
-                    labels,
-                    datasets: [
+                setOptions({
+                    title: {
+                        text: 'Nombre de clients par Agent'
+                    },
+                    tooltip: {},
+                    xAxis: {
+                        type: 'category',
+                        data: agentNames,
+                        axisLabel: {
+                            rotate: 45, // rotates labels for better readability
+                            interval: 0,
+                        }
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
                         {
-                            label: 'Nombre de Clients créés',
-                            data: values,
-                            backgroundColor: labels.map((_, i) => `hsl(${(i * 35) % 360}, 70%, 70%)`),
-                            borderColor: labels.map((_, i) => `hsl(${(i * 35) % 360}, 70%, 40%)`),
-                            borderWidth: 1
+                            name: 'Clients',
+                            type: 'bar',
+                            data: clientCounts,
+                            itemStyle: {
+                                color: '#5470C6'
+                            }
                         }
                     ]
                 });
 
-                setChartOptions({
-                    plugins: {
-                        legend: { position: 'top' },
-                        title: { display: true, text: 'Nombre de clients par Agent' }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            precision: 0
-                        }
-                    }
-                });
-
                 setLoading(false);
             } catch (err) {
-                console.error("Error fetching client data:", err);
-                setError("Échec du chargement des données");
+                console.error('Error loading chart data:', err);
+                setError('Failed to load chart data');
                 setLoading(false);
             }
         };
 
-        fetchClientData();
+        fetchData();
     }, []);
 
     if (loading) return <div>Chargement...</div>;
     if (error) return <div>{error}</div>;
 
-    return (
-        <div className="card" style={{ direction: 'ltr' }}>
-            <Chart type="bar" data={chartData} options={chartOptions} />
-        </div>
-    );
+    return <ReactECharts option={options} style={{ height: '400px', width: '100%' }} />;
 }

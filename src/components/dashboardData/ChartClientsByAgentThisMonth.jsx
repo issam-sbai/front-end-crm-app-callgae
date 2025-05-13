@@ -1,104 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { Chart } from 'primereact/chart';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import ReactECharts from 'echarts-for-react';
 
 export default function ChartClientsByAgentThisMonth() {
-  const clients = useSelector((state) => state.clients.clientsx) || [];
-  const users = useSelector((state) => state.user.users) || [];
+    const [options, setOptions] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  const [chartData, setChartData] = useState({});
-  const [chartOptions, setChartOptions] = useState({});
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/dashboard/clients-by-agent-this-month');
+                const data = await response.json();
 
-  useEffect(() => {
-    if (!users.length) return;
+                const agentNames = data.map(item => item.name);
+                const clientCounts = data.map(item => item.value);
 
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
+                setOptions({
+                    title: {
+                        text: 'Nombre de clients par Agent (ce mois)'
+                    },
+                    tooltip: {},
+                    xAxis: {
+                        type: 'category',
+                        data: agentNames,
+                        axisLabel: {
+                            rotate: 45,
+                            interval: 0,
+                        }
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: 'Clients',
+                            type: 'bar',
+                            data: clientCounts,
+                            itemStyle: {
+                                color: '#73C0DE'
+                            }
+                        }
+                    ]
+                });
 
-    const agents = users.filter((user) => user.role === 'agent');
+                setLoading(false);
+            } catch (err) {
+                console.error('Error loading chart data:', err);
+                setError('Erreur lors du chargement du graphique');
+                setLoading(false);
+            }
+        };
 
-    const agentCountMap = {};
-    agents.forEach((agent) => {
-      agentCountMap[agent.username] = 0;
-    });
+        fetchData();
+    }, []);
 
-    clients.forEach((client) => {
-      if (client.createdAt) {
-        const createdAtDate = new Date(client.createdAt);
-        const isThisMonth =
-          createdAtDate.getMonth() === currentMonth &&
-          createdAtDate.getFullYear() === currentYear;
+    if (loading) return <div>Chargement...</div>;
+    if (error) return <div>{error}</div>;
 
-        if (isThisMonth && client.agentId) {
-          // Match agentId to username or default to ID if no match
-          const agent = users.find((u) => u._id === client.agentId);
-          const agentKey = agent ? agent.username : client.agentId;
-
-          if (agentCountMap.hasOwnProperty(agentKey)) {
-            agentCountMap[agentKey]++;
-          } else {
-            agentCountMap[agentKey] = 1;
-          }
-        }
-      }
-    });
-
-    const labels = Object.keys(agentCountMap);
-    const values = Object.values(agentCountMap);
-
-    const data = {
-      labels,
-      datasets: [
-        {
-          label: 'Nombre de Clients créés ce mois',
-          data: values,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(201, 203, 207, 0.2)',
-          ],
-          borderColor: [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
-            'rgb(255, 206, 86)',
-            'rgb(75, 192, 192)',
-            'rgb(153, 102, 255)',
-            'rgb(255, 159, 64)',
-            'rgb(201, 203, 207)',
-          ],
-          borderWidth: 1,
-        },
-      ],
-    };
-
-    const options = {
-      plugins: {
-        legend: { position: 'top' },
-        title: {
-          display: true,
-          text: 'Nombre de clients par Agent (Ce Mois)',
-        },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          precision: 0,
-        },
-      },
-    };
-
-    setChartData(data);
-    setChartOptions(options);
-  }, [clients, users]);
-
-  return (
-    <div className="card">
-      <Chart type="bar" data={chartData} options={chartOptions} />
-    </div>
-  );
+    return <ReactECharts option={options} style={{ height: '400px', width: '100%' }} />;
 }
