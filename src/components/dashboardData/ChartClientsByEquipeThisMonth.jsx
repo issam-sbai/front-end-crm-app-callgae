@@ -9,7 +9,7 @@ export default function ChartClientsByEquipeThisMonth() {
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/dashboard/clients-by-equipe-this-month');
+        const response = await fetch('https://crm-backend-rs8c.onrender.com/api/dashboard/clients-by-equipe-this-month');
         const data = await response.json();
 
         const labels = data.map(item => item.name);

@@ -9,7 +9,7 @@ export default function ChartClientsByAgentAll() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/dashboard/clients-by-agent');
+                const response = await fetch('https://crm-backend-rs8c.onrender.com/api/dashboard/clients-by-agent');
                 const data = await response.json();
 
                 const agentNames = data.map(item => item.name);

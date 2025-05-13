@@ -9,7 +9,7 @@ export default function ChartClientsByEquipe() {
   useEffect(() => {
     const fetchEquipeData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/dashboard/clients-by-equipe');
+        const response = await fetch('https://crm-backend-rs8c.onrender.com/api/dashboard/clients-by-equipe');
         const data = await response.json();
 
         const equipeNames = data.map(item => item.name);
@@ -47,6 +47,10 @@ export default function ChartClientsByEquipe() {
               itemStyle: {
                 color: '#91cc75',
               },
+              label: {
+                show: true,
+                position: 'top'
+              }
             },
           ],
         };
