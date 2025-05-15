@@ -260,6 +260,7 @@ const AddClient = ({ show, onHide, onAdd }) => {
                             <option value="Intérieur">Intérieur</option>
                             <option value="Extérieur">Extérieur</option>
                             <option value="Intérieur et Extérieur">Intérieur et Extérieur</option>
+                            <option value="Déshumidificateur">Déshumidificateur</option>
                         </Form.Control>
                     </Form.Group>
 

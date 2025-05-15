@@ -92,7 +92,7 @@ const ProfileClientPage = () => {
 
     const enumOptions = {
         flag: ['Aucun(e)', 'PAY', 'NO PAY'],
-        typeRdv: ['Extérieur', 'Intérieur'],
+        typeRdv: ['Extérieur', 'Intérieur','Déshumidificateur'],
         statusChantier: ['A RAPPELER', 'NO STATUS', 'NRP', 'Confirmer', 'Chantier annuler', 'Chantier Terminé'],
     };
 

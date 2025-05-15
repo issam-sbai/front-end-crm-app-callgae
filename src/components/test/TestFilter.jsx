@@ -9,7 +9,8 @@ const options = {
   typeRdv: [
     { value: '', label: 'Aucun(e)' },
     { value: 'Extérieur', label: 'Extérieur' },
-    { value: 'Intérieur', label: 'Intérieur' }
+    { value: 'Intérieur', label: 'Intérieur' },
+    { value: 'Déshumidificateur', label: 'Déshumidificateur' }
   ],
   civilite: [
     { value: '', label: 'Aucun(e)' },
