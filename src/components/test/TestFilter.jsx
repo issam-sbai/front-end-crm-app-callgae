@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import 'primeicons/primeicons.css';
@@ -87,7 +87,9 @@ const FilterComponenttest = ({ fieldsToShow = [], filterData }) => {
       equipe: equipeList?.value || '',
       agentId: userList?.value || '',
     };
-    if (role !== 'admin' && equipId) filterData.equipe = equipId;
+    if (role !== 'admin' && role !== 'superSupervisor' && equipId) {
+      filterData.equipe = equipId;
+    }
     filterClients(filterData);
   };
 
@@ -103,7 +105,7 @@ const FilterComponenttest = ({ fieldsToShow = [], filterData }) => {
     setDateCreatedTo('');
     setDateRdvFrom('');
     setDateRdvTo('');
-    getAllClients();
+    filterClients()
   };
 
   useEffect(() => {
@@ -252,7 +254,7 @@ const FilterComponenttest = ({ fieldsToShow = [], filterData }) => {
                 singleValue: base => ({ ...base, fontSize: '0.85rem' }),
                 option: base => ({ ...base, fontSize: '0.85rem', padding: '0px' }),
               }}
-              
+
             />
           </div>
         )}
@@ -306,25 +308,25 @@ const FilterComponenttest = ({ fieldsToShow = [], filterData }) => {
             </div>
           </div>
         )}
-              <div style={{ flex: '0 0 auto' }}>
-        <div className="d-flex">
-          <Button
-            variant="success"
-            type="submit"
-            onClick={handleFilter}
-            style={{ fontSize: '0.75rem', padding: '3px 8px', marginRight: '5px' }}
-          >
-            Appliquer
-          </Button>
-          <Button
-            variant="warning"
-            onClick={handleCleanFilter}
-            style={{ fontSize: '0.75rem', padding: '3px 8px' }}
-          >
-            Réinitialiser
-          </Button>
+        <div style={{ flex: '0 0 auto' }}>
+          <div className="d-flex">
+            <Button
+              variant="success"
+              type="submit"
+              onClick={handleFilter}
+              style={{ fontSize: '0.75rem', padding: '3px 8px', marginRight: '5px' }}
+            >
+              Appliquer
+            </Button>
+            <Button
+              variant="warning"
+              onClick={handleCleanFilter}
+              style={{ fontSize: '0.75rem', padding: '3px 8px' }}
+            >
+              Réinitialiser
+            </Button>
+          </div>
         </div>
-      </div>
       </div>
     </Form>
   );
