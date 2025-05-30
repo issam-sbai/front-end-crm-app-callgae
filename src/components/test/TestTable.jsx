@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClients, removeClient, updateClientNRP, addObservation, getClientsByEquipeThunk } from '../../features/clientSlice';
+import { fetchClients, removeClient, updateClientNRP, addObservation, getClientsByEquipeThunk, fetchClientsByAgentId } from '../../features/clientSlice';
 import Swal from 'sweetalert2';
 import 'primeicons/primeicons.css';
 import Modal from 'react-bootstrap/Modal';
@@ -12,8 +12,16 @@ import { getAllUsersAsync } from '../../features/userSlice';
 import StatusEditor from './StatusEditor';
 import Doublon from './DoublonClient.jsx';
 import ClientHistory from './ClientHistory.jsx';
-const TableComponent = ({ onRowClick }) => {
+import { fetchEquipes } from '../../features/equipeSlice.js';
+
+
+const TableComponent = ({ filterData2  }) => {
   const dispatch = useDispatch();
+  const [clientsUrl, setClientsUrl] = useState([]);
+  const [page, setPage] = useState(1); // Current page number
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalClient, setTotalClients] = useState(0);
+  const role = localStorage.getItem("role");
 
   // Fetch clients from Redux store
   const clients = useSelector((state) => state.clients.clientsx);
@@ -90,23 +98,68 @@ const TableComponent = ({ onRowClick }) => {
   };
 
   const userRole = localStorage.getItem('role');
-  useEffect(() => {
-    const role = localStorage.getItem('role');  // Get the role from localStorage
-    dispatch(getAllUsersAsync());
-    if (role === 'admin') {
-      // Admin: Fetch all clients
-      dispatch(fetchClients());
-    } else if (role === 'supervisor') {
-      // Supervisor: Get equipId from localStorage and fetch clients by equipe
-      const equipId = localStorage.getItem("equipId");
-      // console.log(equipId);
 
-      if (equipId) {
-        dispatch(getClientsByEquipeThunk(equipId));
+useEffect(() => {
+  const role = localStorage.getItem("role");
+  const equipId = localStorage.getItem("equipId");
+  const username = localStorage.getItem("username");
+  const token = localStorage.getItem("token");
 
+  dispatch(getAllUsersAsync());
+  dispatch(fetchEquipes());
+  
+  const fetchClientsDirectly = async () => {
+    try {
+      let response;
+      console.log("tttttttt");
+      
+      if (filterData2 && Object.keys(filterData2).length > 0) {
+        console.log(filterData2);
+        
+        // POST request when filteredData exists
+        response = await fetch(`http://localhost:5000/api/clients/filter`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            ...filterData2,
+            page,
+            role,
+          }),
+        });
+      } else {
+        // GET request when no filter
+        const params = new URLSearchParams({ page, role });
+
+        if (role === "supervisor" && equipId) {
+          params.append("equipId", equipId);
+        } else if (role === "agent" && username) {
+          params.append("username", username);
+        }
+
+        response = await fetch(`http://localhost:5000/api/clients?${params.toString()}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
       }
+
+      const data = await response.json();
+      setClientsUrl(data.clients);
+      setTotalPages(data.totalPages);
+      setTotalClients(data.totalClients);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
     }
-  }, [dispatch]);
+  };
+
+  fetchClientsDirectly();
+}, [dispatch, page, filterData2]); // Make sure to add filteredData to dependencies
+
 
   // Runs every time clients are updated
   const columns = [
@@ -143,15 +196,15 @@ const TableComponent = ({ onRowClick }) => {
       body: (client) => (
         <>
           <div style={{
-              backgroundColor: client.isDuplicate ? 'rgba(227, 155, 67, 0.73)' : 'transparent', // Apply red if isDuplicate is true
-              color: client.isDuplicate ? 'white' : 'inherit', // Change text color to white for better contrast if isDuplicate is true
-              padding: '5px',
-              borderRadius: '4px',
-            }}
+            backgroundColor: client.isDuplicate ? 'rgba(227, 155, 67, 0.73)' : 'transparent', // Apply red if isDuplicate is true
+            color: client.isDuplicate ? 'white' : 'inherit', // Change text color to white for better contrast if isDuplicate is true
+            padding: '5px',
+            borderRadius: '4px',
+          }}
           >
             <div style={{
               whiteSpace: 'nowrap',
-              
+
             }}>
               <i className="pi pi-bookmark" style={{ fontSize: "0.8rem", color: "rgb(13, 110, 253)", marginRight: '5px' }}></i>
               {client.equipe ? ` ${client.equipe.name}` : 'No equipe'}
@@ -178,8 +231,9 @@ const TableComponent = ({ onRowClick }) => {
           color: client.isDuplicate ? 'white' : 'inherit', // Change text color to white for better contrast if isDuplicate is true
           padding: '5px',
           borderRadius: '4px',
-          height:"100%" ,
-          margin:"0px"        }} >
+          height: "100%",
+          margin: "0px"
+        }} >
           <div><i className="pi pi-phone " style={{ fontSize: "0.8rem" }}></i> {client.phone}</div>
           <div>{client.email}</div>
         </div>
@@ -487,7 +541,7 @@ const TableComponent = ({ onRowClick }) => {
 
   return (
     <div className="card">
-      <DataTable stripedRows value={clients} size={'small'} paginator rows={25} rowsPerPageOptions={[ 25, 50]} tableStyle={{ minWidth: '120%', fontSize: '0.75rem' }} loading={status === 'loading'}>
+      <DataTable stripedRows value={clientsUrl} size={'small'}  tableStyle={{ minWidth: '120%', fontSize: '0.75rem' }} >
         {columns.map((col, index) => (
           <Column
             key={index}
@@ -497,6 +551,49 @@ const TableComponent = ({ onRowClick }) => {
           />
         ))}
       </DataTable>
+        <nav aria-label="Page navigation example" className="mt-3 d-flex justify-content-between align-items-center">
+          <span className="ms-2">
+            Page <strong>{page}</strong> of <strong>{totalPages}</strong>
+          </span>
+          <p> total Client : <strong>{totalClient}</strong></p>
+
+          <ul className="pagination mb-0">
+            <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setPage(prev => Math.max(prev - 1, 1))}>
+                Previous
+              </button>
+            </li>
+
+            {page > 1 && (
+              <li className="page-item">
+                <button className="page-link" onClick={() => setPage(page - 1)}>
+                  {page - 1}
+                </button>
+              </li>
+            )}
+
+            <li className="page-item active">
+              <button className="page-link" disabled>{page}</button>
+            </li>
+
+            {page < totalPages && (
+              <li className="page-item">
+                <button className="page-link" onClick={() => setPage(page + 1)}>
+                  {page + 1}
+                </button>
+              </li>
+            )}
+
+            <li className={`page-item ${page === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}>
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
+
+
+
 
       {/* Modal for adding new observation */}
       <Modal show={showModal} onHide={handleClose} centered>

@@ -84,7 +84,7 @@ export default PrivateRoute;
 // import axios from 'axios';
 
 // // ✅ List of allowed public IPs
-// const allowedIPs = ['105.188.120.143', '41.251.86.187'];
+// const allowedIPs = ['41.141.47.34', '41.251.86.187'];
 
 // const PrivateRoute = ({ children }) => {
 //   const [isAllowed, setIsAllowed] = useState(null);

@@ -19,6 +19,8 @@ const initialState = {
   currentClient: null,  // Add this for storing a single client
   status: 'idle',
   error: null,
+  totalPages: 1,
+  totalClients: 0
 };
 
 // Async thunk to fetch clients
@@ -128,7 +130,7 @@ const clientsSlice = createSlice({
       })
       .addCase(fetchClients.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.clientsx = action.payload;
+        state.clientsx = action.payload; 
       })
       .addCase(fetchClients.rejected, (state, action) => {
         state.status = 'failed';

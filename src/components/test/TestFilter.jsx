@@ -36,7 +36,7 @@ const options = {
   ],
 };
 
-const FilterComponenttest = ({ fieldsToShow = [], filterData }) => {
+const FilterComponenttest = ({ fieldsToShow = [], filterData , onFilterSubmit }) => {
   // form state
   const [prenom, setPrenom] = useState('');
   const [department, setDepartment] = useState('');
@@ -90,7 +90,7 @@ const FilterComponenttest = ({ fieldsToShow = [], filterData }) => {
     if (role !== 'admin' && role !== 'superSupervisor' && equipId) {
       filterData.equipe = equipId;
     }
-    filterClients(filterData);
+    onFilterSubmit(filterData);
   };
 
   const handleCleanFilter = () => {
@@ -105,7 +105,6 @@ const FilterComponenttest = ({ fieldsToShow = [], filterData }) => {
     setDateCreatedTo('');
     setDateRdvFrom('');
     setDateRdvTo('');
-    filterClients()
   };
 
   useEffect(() => {

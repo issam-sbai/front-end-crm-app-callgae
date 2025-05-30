@@ -13,6 +13,10 @@ const RdvCard = ({ apt }) => {
       return { backgroundColor: '#c0392b', color: '#fff' };
     }else if (statut === "CONFIRMER RÉGIE") {
       return { backgroundColor: '#d1b800', color: '#fff' };
+    } else if (statut === "A RAPPELER") {
+      return { backgroundColor: '#ffa347', color: '#fff' };
+    }else if (statut === "NRP") {
+      return { backgroundColor: '#f1c40f', color: '#fff' };
     }
     return {};
   };

@@ -27,14 +27,20 @@ const TestPage = () => {
     'dateCreated',
     'dateRdv',
   ]);
-  const clients = useSelector((state) => state.clients.clientsx);
-  const clientsLength = clients.length;
+  const [filterData2, setFilterData2] = useState(null);
 
   const dispatch = useDispatch();
   const { exportToCSV } = useClient();
 
   const handleShowMap = () => setShowMap(true);
   const handleCloseMap = () => setShowMap(false);
+
+  const handleFilterData = (data) => {
+    setFilterData2(data); 
+    
+    
+    // receive from ChildA
+  };
 
   const handleAddClient = async (newClient) => {
     try {
@@ -92,7 +98,7 @@ const TestPage = () => {
   return (
     <>
       {/* Only show filter if not agent */}
-      {role !== 'agent' && <FilterComponenttest fieldsToShow={fieldsToShow} filterData={selectedDeps} />}
+      {role !== 'agent' && <FilterComponenttest fieldsToShow={fieldsToShow} filterData={selectedDeps} onFilterSubmit={handleFilterData}/>}
 
       <div className="d-flex justify-content-start align-items-center mt-3 mb-3">
         <Button
@@ -100,7 +106,7 @@ const TestPage = () => {
           style={{ fontSize: '0.75rem' }}
           onClick={() => setShowAddModal(true)}
         >
-          Ajouter client <span style={{ fontSize: '0.85rem' }}>{clientsLength}</span>
+          Ajouter client
         </Button>
         
 
@@ -125,7 +131,7 @@ const TestPage = () => {
       }
     </div >
 
-      <TestTable />
+      <TestTable  filterData2={filterData2}/>
       <br />
 
       <Modal show={showMap} fullscreen={true} onHide={handleCloseMap} size="lg">

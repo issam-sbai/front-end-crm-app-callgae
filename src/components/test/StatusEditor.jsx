@@ -18,29 +18,39 @@ const StatusEditor = ({ clientId, currentStatus }) => {
         'NRP',
         'Confirmer',
         'Chantier annuler',
-        'Chantier Terminé'
+        'Chantier Terminé',
+        'Confirmer regie',
+        'InJoignable',
+        'A Retraiter'
+
     ];
 
     const getStatusColor = (status) => {
         switch (status) {
-            case 'A RAPPELER': return '#FF6347';
+            case 'A RAPPELER': return '#ffa347';
             case 'NO STATUS': return '#808080';
             case 'NRP': return '#f1c40f';
             case 'Confirmer': return '#26ba12';
             case 'Chantier annuler': return '#c0392b';
             case 'Chantier Terminé': return '#3498db';
+            case 'InJoignable': return '#ffed47';
+            case 'A Retraiter': return '#ba0404';
+            case 'Confirmer regie': return '#ffed47';
             default: return '#808080';
         }
     };
 
     const getStatusEmoji = (status) => {
         switch (status) {
-            case 'A RAPPELER': return '🟥';
-            case 'NO STATUS': return '⬜';
-            case 'NRP': return '🟨';
+            case 'A RAPPELER': return '🟨';
+            case 'NO STATUS': return '⬛';
+            case 'NRP': return '🟧';
             case 'Confirmer': return '🟩';
             case 'Chantier annuler': return '🟥';
             case 'Chantier Terminé': return '🟦';
+            case 'InJoignable': return '🟪';
+            case 'A Retraiter': return '🟫';
+            case 'Confirmer regie': return '🟨';
             default: return '⬜';
         }
     };

@@ -5,13 +5,15 @@ export const createClient = (clientData) => {
   return axiosInstance.post('clients', clientData);
 };
 
+export const getClients = () => {
+  return axiosInstance.get('clients/all');
+};
+
 export const getClientsByEquipe = (equipeId) => {
   return axiosInstance.get(`clients/equipe/${equipeId}/clients`);
 };
 
-export const getClients = () => {
-  return axiosInstance.get('clients');
-};
+
 
 export const getClientById = (id) => {
   return axiosInstance.get(`clients/${id}`);

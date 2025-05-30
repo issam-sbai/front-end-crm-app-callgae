@@ -48,7 +48,7 @@ const Doublon = ({ client }) => {
                 {client.duplicateList.map((item, index) => (
                   <tr key={index}>
                     <td>{item.clientID}</td>
-                    <td>{item.agentID}</td>
+                    <td>{item.agentId}</td>
                     <td>{item.clientName}</td>
                     <td>{item.clientEntreprise}</td>
                     <td>{item.coords}</td>

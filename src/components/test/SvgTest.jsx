@@ -1,6 +1,9 @@
-import React, { useLayoutEffect, useState, useRef } from "react";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchEquipes } from "../../features/equipeSlice";
+import { fetchClients, fetchClientsByAgentId, getClientsByEquipeThunk } from "../../features/clientSlice";
 const SvgTest = () => {
+  const dispatch = useDispatch();
   const clientData = useSelector((state) => state.clients.clientsx);
 
   const [departmentCoordinates, setDepartmentCoordinates] = useState({});
@@ -9,6 +12,8 @@ const SvgTest = () => {
   const handleMouseEnter = (id) => {
     setHoveredPath(id);
   };
+
+  
 
   const handleMouseLeave = () => {
     setHoveredPath(null);
@@ -28,7 +33,7 @@ const SvgTest = () => {
       console.log("Calculated Coordinates:", newCoords);
     }
   }, []);
-
+   
   // Group clients by department id.
   const clientsByDep = clientData.reduce((acc, client) => {
     const dep = client.department;
@@ -38,6 +43,26 @@ const SvgTest = () => {
     acc[dep].push(client);
     return acc;
   }, {});
+
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    const equipId = localStorage.getItem("equipId");
+    const username = localStorage.getItem("username");
+
+    if (role === "admin" || role === "superSupervisor") {
+      dispatch(fetchClients());
+    } else if (role === "supervisor") {
+      if (equipId) {
+        dispatch(getClientsByEquipeThunk(equipId));
+      }
+    } else if (role === "agent") {
+      if (username) {
+        dispatch(fetchClientsByAgentId(username));
+      }
+    }
+    console.log(clientData);
+    
+  }, [dispatch]);
 
   return (
     <svg
