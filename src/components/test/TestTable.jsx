@@ -117,7 +117,7 @@ useEffect(() => {
         console.log(filterData2);
         
         // POST request when filteredData exists
-        response = await fetch(`http://localhost:5000/api/clients/filter`, {
+        response = await fetch(`https://crm-backend-rs8c.onrender.com/api/clients/filter`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -139,7 +139,7 @@ useEffect(() => {
           params.append("username", username);
         }
 
-        response = await fetch(`http://localhost:5000/api/clients?${params.toString()}`, {
+        response = await fetch(`https://crm-backend-rs8c.onrender.com/api/clients?${params.toString()}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

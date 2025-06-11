@@ -35,7 +35,7 @@ const PlanningPage = () => {
           equipeId,
         });
 
-        const res = await fetch(`http://localhost:5000/api/rdvs/weekly?${params.toString()}`);
+        const res = await fetch(`https://crm-backend-rs8c.onrender.com/api/rdvs/weekly?${params.toString()}`);
         if (!res.ok) throw new Error('Failed to fetch RDVs');
 
         const data = await res.json();
