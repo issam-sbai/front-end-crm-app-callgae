@@ -27,7 +27,7 @@
 
 //       // ❌ Check IP only for non-admin users
 //       try {
-//         const res = await axios.get('http://localhost:5000/api/ip'); // Your backend
+//         const res = await axios.get('https://crm-backend-rs8c.onrender.com/api/ip'); // Your backend
 //         const userIP = res.data.ip;
 //         console.log('User LAN IP:', userIP);
 

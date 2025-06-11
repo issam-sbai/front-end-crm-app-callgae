@@ -65,7 +65,7 @@ const StatusEditor = ({ clientId, currentStatus }) => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`http://localhost:5000/api/clients/${clientId}`, {
+            const response = await fetch(`https://crm-backend-rs8c.onrender.com/api/clients/${clientId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
