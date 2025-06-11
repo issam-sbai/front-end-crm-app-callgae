@@ -11,13 +11,22 @@ const RdvCard = ({ apt }) => {
       return { backgroundColor: '#696969', color: '#fff' };
     }else if (statut === "Chantier annuler") {
       return { backgroundColor: '#c0392b', color: '#fff' };
-    }else if (statut === "CONFIRMER RÉGIE") {
+    }else if (statut === "Confirmer regie") {
       return { backgroundColor: '#d1b800', color: '#fff' };
     } else if (statut === "A RAPPELER") {
       return { backgroundColor: '#ffa347', color: '#fff' };
     }else if (statut === "NRP") {
       return { backgroundColor: '#f1c40f', color: '#fff' };
+    }else if (statut === "doublon") {
+      return { backgroundColor: '#c0392b', color: '#fff' };
     }
+    else if (statut === "A Retraiter") {
+      return { backgroundColor: '#ba0404', color: '#fff' };
+    }
+    else if (statut === "InJoignable") {
+      return { backgroundColor: '#ffed47', color: '#fff' };
+    }
+
     return {};
   };
 

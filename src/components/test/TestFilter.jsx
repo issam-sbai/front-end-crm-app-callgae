@@ -33,6 +33,10 @@ const options = {
     { value: 'Confirmer', label: 'Confirmer' },
     { value: 'Chantier annuler', label: 'Chantier annuler' },
     { value: 'Chantier Terminé', label: 'Chantier Terminé' },
+    { value: 'Confirmer regie', label: 'Confirmer regie' },
+    { value: 'A Retraiter', label: 'A Retraiter' },
+    { value: 'InJoignable', label: 'InJoignable' },
+    { value: 'doublon', label: 'doublon' },
   ],
 };
 

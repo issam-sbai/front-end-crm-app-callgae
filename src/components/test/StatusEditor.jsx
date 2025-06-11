@@ -21,7 +21,8 @@ const StatusEditor = ({ clientId, currentStatus }) => {
         'Chantier Terminé',
         'Confirmer regie',
         'InJoignable',
-        'A Retraiter'
+        'A Retraiter',
+        'doublon'
 
     ];
 
@@ -36,6 +37,7 @@ const StatusEditor = ({ clientId, currentStatus }) => {
             case 'InJoignable': return '#ffed47';
             case 'A Retraiter': return '#ba0404';
             case 'Confirmer regie': return '#ffed47';
+            case 'doublon': return '#c0392b';
             default: return '#808080';
         }
     };
@@ -51,6 +53,7 @@ const StatusEditor = ({ clientId, currentStatus }) => {
             case 'InJoignable': return '🟪';
             case 'A Retraiter': return '🟫';
             case 'Confirmer regie': return '🟨';
+            case 'doublon': return '🟥';
             default: return '⬜';
         }
     };
@@ -62,7 +65,7 @@ const StatusEditor = ({ clientId, currentStatus }) => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`https://crm-backend-rs8c.onrender.com/api/clients/${clientId}`, {
+            const response = await fetch(`http://localhost:5000/api/clients/${clientId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
